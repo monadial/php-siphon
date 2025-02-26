@@ -6,3 +6,4 @@ services:
       - .:/app:delegated
     env_file:
       - .env
+    command: /bin/sh -c "while sleep 1000; do :; done"

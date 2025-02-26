@@ -1,0 +1,7 @@
+{
+  "name": "Siphon PHP SI library",
+  "workspaceFolder": "/app",
+  "service": "php-siphon-84",
+  "shutdownAction": "stopCompose",
+  "dockerComposeFile":"../docker-compose.yaml"
+}
