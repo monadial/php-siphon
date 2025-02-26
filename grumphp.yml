@@ -1,0 +1,15 @@
+grumphp:
+  stop_on_failure: true
+  process_timeout: 160
+  tasks:
+    phpcs:
+      standard: 'phpcs.ruleset.xml'
+      encoding: utf-8
+      triggered_by: [ 'php' ]
+    phpunit: ~
+    psalm:
+      config: psalm.xml
+      no_cache: true
+      report: ~
+      triggered_by: [ 'php' ]
+      show_info: true

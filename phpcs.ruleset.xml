@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<ruleset name="Monadial">
+  <description>Monadial Si</description>
+  <rule ref="vendor/pixelfederation/coding-standards/phpcs.ruleset.84.xml">
+    <exclude name="PixelFederationCodingStandard.ControlStructures.DisallowSwitchStatement"/>
+  </rule>
+</ruleset>

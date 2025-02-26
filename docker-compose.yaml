@@ -1,0 +1,8 @@
+services:
+  php-siphon-84:
+    container_name: php-siphon-84
+    build: .
+    volumes:
+      - .:/app:delegated
+    env_file:
+      - .env
