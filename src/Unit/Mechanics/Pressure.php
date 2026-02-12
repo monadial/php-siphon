@@ -147,6 +147,9 @@ final readonly class Pressure extends Quantity
         return $this->scaleTo(MillimetersOfMercury::make());
     }
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function timesArea(Area $area): Force
     {
         $base = $this->toBaseValue()->multipliedBy($area->toBaseValue());

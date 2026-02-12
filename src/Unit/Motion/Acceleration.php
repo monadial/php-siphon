@@ -55,6 +55,9 @@ final readonly class Acceleration extends Quantity
     // Cross-dimensional operations
     // ---------------------------------------------------------------
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function timesTime(Time $time): Velocity
     {
         $base = $this->toBaseValue()->multipliedBy($time->toBaseValue());

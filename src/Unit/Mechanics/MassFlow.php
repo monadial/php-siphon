@@ -52,6 +52,9 @@ final readonly class MassFlow extends Quantity
         return $this->scaleTo(KilogramsPerHour::make());
     }
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function timesTime(Time $time): Mass
     {
         $base = $this->toBaseValue()->multipliedBy($time->toBaseValue());

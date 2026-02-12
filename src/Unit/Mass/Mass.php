@@ -158,24 +158,36 @@ final readonly class Mass extends Quantity
     // Cross-dimensional operations
     // ---------------------------------------------------------------
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function timesAcceleration(Acceleration $acceleration): Force
     {
         $base = $this->toBaseValue()->multipliedBy($acceleration->toBaseValue());
         return Force::newtons($base);
     }
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function timesVelocity(Velocity $velocity): Momentum
     {
         $base = $this->toBaseValue()->multipliedBy($velocity->toBaseValue());
         return Momentum::kilogramMetersPerSecond($base);
     }
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function dividedByVolume(Volume $volume): Density
     {
         $base = $this->toBaseValue()->dividedBy($volume->toBaseValue(), 20, RoundingMode::HALF_UP);
         return Density::kilogramsPerCubicMeter($base);
     }
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function dividedByTime(Time $time): MassFlow
     {
         $base = $this->toBaseValue()->dividedBy($time->toBaseValue(), 20, RoundingMode::HALF_UP);

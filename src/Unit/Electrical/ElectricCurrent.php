@@ -86,12 +86,18 @@ final readonly class ElectricCurrent extends Quantity
     // Cross-dimensional operations
     // ---------------------------------------------------------------
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function timesResistance(ElectricalResistance $resistance): ElectricPotential
     {
         $base = $this->toBaseValue()->multipliedBy($resistance->toBaseValue());
         return ElectricPotential::volts($base);
     }
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function timesTime(Time $time): ElectricCharge
     {
         $base = $this->toBaseValue()->multipliedBy($time->toBaseValue());

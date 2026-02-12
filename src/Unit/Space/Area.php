@@ -204,6 +204,9 @@ final readonly class Area extends Quantity
     // Cross-dimensional operations
     // ---------------------------------------------------------------
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function timesLength(Length $length): Volume
     {
         $base = $this->toBaseValue()->multipliedBy($length->toBaseValue());

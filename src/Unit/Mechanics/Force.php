@@ -123,18 +123,27 @@ final readonly class Force extends Quantity
         return $this->scaleTo(KilogramForce::make());
     }
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function timesLength(Length $length): Energy
     {
         $base = $this->toBaseValue()->multipliedBy($length->toBaseValue());
         return Energy::joules($base);
     }
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function timesVelocity(Velocity $velocity): Power
     {
         $base = $this->toBaseValue()->multipliedBy($velocity->toBaseValue());
         return Power::watts($base);
     }
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function dividedByArea(Area $area): Pressure
     {
         $base = $this->toBaseValue()->dividedBy($area->toBaseValue(), 20, RoundingMode::HALF_UP);

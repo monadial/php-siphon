@@ -307,6 +307,9 @@ final readonly class Volume extends Quantity
     // Cross-dimensional operations
     // ---------------------------------------------------------------
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function dividedByTime(Time $time): VolumeFlow
     {
         $base = $this->toBaseValue()->dividedBy($time->toBaseValue(), 20, RoundingMode::HALF_UP);

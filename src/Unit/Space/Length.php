@@ -297,18 +297,27 @@ final readonly class Length extends Quantity
     // Cross-dimensional operations
     // ---------------------------------------------------------------
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function timesLength(Length $that): Area
     {
         $base = $this->toBaseValue()->multipliedBy($that->toBaseValue());
         return Area::squareMeters($base);
     }
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function timesArea(Area $that): Volume
     {
         $base = $this->toBaseValue()->multipliedBy($that->toBaseValue());
         return Volume::cubicMeters($base);
     }
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function dividedByTime(Time $that): Velocity
     {
         $base = $this->toBaseValue()->dividedBy($that->toBaseValue(), 20, RoundingMode::HALF_UP);

@@ -6,20 +6,20 @@ namespace Monadial\Siphon\Market;
 
 use Brick\Math\RoundingMode;
 use Monadial\Siphon\Quantity;
+use Override;
 use Stringable;
 
 /**
  * Represents a price per unit of a physical quantity (e.g., $5/kg, €0.12/kWh).
  *
  * @psalm-api
- * @psalm-immutable
  * @template T of Quantity
  */
 final readonly class Price implements Stringable
 {
     /**
-     * @param Money $money    The monetary amount.
-     * @param T     $quantity The denominator quantity (e.g., 1 kg).
+     * @param Money $money The monetary amount.
+     * @param T $quantity The denominator quantity (e.g., 1 kg).
      */
     public function __construct(
         private Money $money,
@@ -64,8 +64,9 @@ final readonly class Price implements Stringable
     /**
      * Returns string like "5.00 USD/kg".
      */
+    #[Override]
     public function __toString(): string
     {
-        return $this->money . '/' . $this->quantity->uom()->symbol();
+        return (string) $this->money . '/' . $this->quantity->uom()->symbol();
     }
 }

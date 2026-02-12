@@ -11,11 +11,11 @@ use Brick\Money\Currency;
 use Brick\Money\Money as BrickMoney;
 use LogicException;
 use Monadial\Siphon\Quantity;
+use Override;
 use Stringable;
 
 /**
  * @psalm-api
- * @psalm-immutable
  */
 final readonly class Money implements Stringable
 {
@@ -71,8 +71,10 @@ final readonly class Money implements Stringable
      */
     public static function parse(string $input): self
     {
-        if (!preg_match('/^\s*([A-Z]{3})\s+([+\-]?(?:\d+(?:\.\d+)?|\.\d+))\s*$/', $input, $m)
-            && !preg_match('/^\s*([+\-]?(?:\d+(?:\.\d+)?|\.\d+))\s+([A-Z]{3})\s*$/', $input, $m)) {
+        if (
+            !preg_match('/^\s*([A-Z]{3})\s+([+\-]?(?:\d+(?:\.\d+)?|\.\d+))\s*$/', $input, $m)
+            && !preg_match('/^\s*([+\-]?(?:\d+(?:\.\d+)?|\.\d+))\s+([A-Z]{3})\s*$/', $input, $m)
+        ) {
             throw new LogicException(sprintf('Unable to parse money from "%s"', $input));
         }
 
@@ -277,10 +279,10 @@ final readonly class Money implements Stringable
      */
     public function split(int $parts): array
     {
-        return array_map(
+        return array_values(array_map(
             static fn (BrickMoney $m): self => new self($m),
             $this->inner->split($parts),
-        );
+        ));
     }
 
     /**
@@ -289,10 +291,10 @@ final readonly class Money implements Stringable
      */
     public function allocate(int ...$ratios): array
     {
-        return array_map(
+        return array_values(array_map(
             static fn (BrickMoney $m): self => new self($m),
             $this->inner->allocate(...$ratios),
-        );
+        ));
     }
 
     // ---------------------------------------------------------------
@@ -357,8 +359,9 @@ final readonly class Money implements Stringable
     /**
      * Returns string like "50.00 USD".
      */
+    #[Override]
     public function __toString(): string
     {
-        return $this->inner->getAmount() . ' ' . $this->inner->getCurrency()->getCurrencyCode();
+        return (string) $this->inner->getAmount() . ' ' . $this->inner->getCurrency()->getCurrencyCode();
     }
 }

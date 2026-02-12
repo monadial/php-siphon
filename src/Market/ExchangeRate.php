@@ -12,7 +12,6 @@ use LogicException;
 
 /**
  * @psalm-api
- * @psalm-immutable
  */
 final readonly class ExchangeRate
 {

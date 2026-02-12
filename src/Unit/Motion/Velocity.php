@@ -106,12 +106,18 @@ final readonly class Velocity extends Quantity
     // Cross-dimensional operations
     // ---------------------------------------------------------------
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function timesTime(Time $time): Length
     {
         $base = $this->toBaseValue()->multipliedBy($time->toBaseValue());
         return Length::meters($base);
     }
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function dividedByTime(Time $time): Acceleration
     {
         $base = $this->toBaseValue()->dividedBy($time->toBaseValue(), 20, RoundingMode::HALF_UP);

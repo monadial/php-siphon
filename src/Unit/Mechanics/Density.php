@@ -52,6 +52,9 @@ final readonly class Density extends Quantity
         return $this->scaleTo(GramsPerLitre::make());
     }
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function timesVolume(Volume $volume): Mass
     {
         $base = $this->toBaseValue()->multipliedBy($volume->toBaseValue());

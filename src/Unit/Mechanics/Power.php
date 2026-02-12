@@ -131,6 +131,9 @@ final readonly class Power extends Quantity
         return $this->scaleTo(BtusPerHour::make());
     }
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function timesTime(Time $time): Energy
     {
         $base = $this->toBaseValue()->multipliedBy($time->toBaseValue());

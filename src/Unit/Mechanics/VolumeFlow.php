@@ -63,6 +63,9 @@ final readonly class VolumeFlow extends Quantity
         return $this->scaleTo(LitresPerSecond::make());
     }
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function timesTime(Time $time): Volume
     {
         $base = $this->toBaseValue()->multipliedBy($time->toBaseValue());

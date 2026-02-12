@@ -102,6 +102,9 @@ final readonly class ElectricPotential extends Quantity
     // Cross-dimensional operations
     // ---------------------------------------------------------------
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function timesCurrent(ElectricCurrent $current): Power
     {
         $base = $this->toBaseValue()->multipliedBy($current->toBaseValue());

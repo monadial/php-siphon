@@ -227,12 +227,18 @@ final readonly class Energy extends Quantity
         return $this->scaleTo(Electronvolts::make());
     }
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function dividedByTime(Time $time): Power
     {
         $base = $this->toBaseValue()->dividedBy($time->toBaseValue(), 20, RoundingMode::HALF_UP);
         return Power::watts($base);
     }
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function dividedByPower(Power $power): Time
     {
         $base = $this->toBaseValue()->dividedBy($power->toBaseValue(), 20, RoundingMode::HALF_UP);
