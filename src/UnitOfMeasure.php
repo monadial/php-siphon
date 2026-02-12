@@ -333,6 +333,10 @@ abstract readonly class UnitOfMeasure
             return $base[$word];
         }
 
+        if (array_key_exists($word, $prefixes)) {
+            return $prefixes[$word];
+        }
+
         foreach ($prefixes as $prefix => $prefixSymbol) {
             if (str_starts_with($word, $prefix)) {
                 $rest = substr($word, strlen($prefix));
