@@ -7,6 +7,8 @@ namespace Monadial\Siphon\Unit\Mechanics;
 use Brick\Math\BigDecimal;
 
 use Monadial\Siphon\Quantity;
+use Monadial\Siphon\Unit\Space\Volume;
+use Monadial\Siphon\Unit\Time\Time;
 use Monadial\Siphon\Unit\Mechanics\VolumeFlow\CubicMetersPerSecond;
 use Monadial\Siphon\Unit\Mechanics\VolumeFlow\GallonsPerMinute;
 use Monadial\Siphon\Unit\Mechanics\VolumeFlow\LitresPerMinute;
@@ -59,5 +61,11 @@ final readonly class VolumeFlow extends Quantity
     public function toLitresPerSecond(): self
     {
         return $this->scaleTo(LitresPerSecond::make());
+    }
+
+    public function timesTime(Time $time): Volume
+    {
+        $base = $this->toBaseValue()->multipliedBy($time->toBaseValue());
+        return Volume::cubicMeters($base);
     }
 }

@@ -7,6 +7,7 @@ namespace Monadial\Siphon\Unit\Motion;
 use Brick\Math\BigDecimal;
 
 use Monadial\Siphon\Quantity;
+use Monadial\Siphon\Unit\Time\Time;
 use Monadial\Siphon\Unit\Motion\Acceleration\FeetPerSecondSquared;
 use Monadial\Siphon\Unit\Motion\Acceleration\MetersPerSecondSquared;
 use Monadial\Siphon\Unit\Motion\Acceleration\StandardGravity;
@@ -48,5 +49,15 @@ final readonly class Acceleration extends Quantity
     public function toStandardGravity(): self
     {
         return $this->scaleTo(StandardGravity::make());
+    }
+
+    // ---------------------------------------------------------------
+    // Cross-dimensional operations
+    // ---------------------------------------------------------------
+
+    public function timesTime(Time $time): Velocity
+    {
+        $base = $this->toBaseValue()->multipliedBy($time->toBaseValue());
+        return Velocity::metersPerSecond($base);
     }
 }

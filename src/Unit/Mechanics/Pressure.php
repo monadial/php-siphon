@@ -7,6 +7,7 @@ namespace Monadial\Siphon\Unit\Mechanics;
 use Brick\Math\BigDecimal;
 
 use Monadial\Siphon\Quantity;
+use Monadial\Siphon\Unit\Space\Area;
 use Monadial\Siphon\Unit\Mechanics\Pressure\Atmospheres;
 use Monadial\Siphon\Unit\Mechanics\Pressure\Bars;
 use Monadial\Siphon\Unit\Mechanics\Pressure\Kilopascals;
@@ -144,5 +145,11 @@ final readonly class Pressure extends Quantity
     public function toMillimetersOfMercury(): self
     {
         return $this->scaleTo(MillimetersOfMercury::make());
+    }
+
+    public function timesArea(Area $area): Force
+    {
+        $base = $this->toBaseValue()->multipliedBy($area->toBaseValue());
+        return Force::newtons($base);
     }
 }

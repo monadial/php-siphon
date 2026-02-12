@@ -7,6 +7,7 @@ namespace Monadial\Siphon\Unit\Electrical;
 use Brick\Math\BigDecimal;
 
 use Monadial\Siphon\Quantity;
+use Monadial\Siphon\Unit\Time\Time;
 use Monadial\Siphon\Unit\Electrical\ElectricCurrent\Amperes;
 use Monadial\Siphon\Unit\Electrical\ElectricCurrent\Kiloamperes;
 use Monadial\Siphon\Unit\Electrical\ElectricCurrent\Microamperes;
@@ -79,5 +80,21 @@ final readonly class ElectricCurrent extends Quantity
     public function toKiloamperes(): self
     {
         return $this->scaleTo(Kiloamperes::make());
+    }
+
+    // ---------------------------------------------------------------
+    // Cross-dimensional operations
+    // ---------------------------------------------------------------
+
+    public function timesResistance(ElectricalResistance $resistance): ElectricPotential
+    {
+        $base = $this->toBaseValue()->multipliedBy($resistance->toBaseValue());
+        return ElectricPotential::volts($base);
+    }
+
+    public function timesTime(Time $time): ElectricCharge
+    {
+        $base = $this->toBaseValue()->multipliedBy($time->toBaseValue());
+        return ElectricCharge::coulombs($base);
     }
 }

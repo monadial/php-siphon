@@ -7,6 +7,8 @@ namespace Monadial\Siphon\Unit\Mechanics;
 use Brick\Math\BigDecimal;
 
 use Monadial\Siphon\Quantity;
+use Monadial\Siphon\Unit\Mass\Mass;
+use Monadial\Siphon\Unit\Time\Time;
 use Monadial\Siphon\Unit\Mechanics\MassFlow\KilogramsPerHour;
 use Monadial\Siphon\Unit\Mechanics\MassFlow\KilogramsPerSecond;
 use Monadial\Siphon\Unit\Mechanics\MassFlow\PoundsPerSecond;
@@ -48,5 +50,11 @@ final readonly class MassFlow extends Quantity
     public function toKilogramsPerHour(): self
     {
         return $this->scaleTo(KilogramsPerHour::make());
+    }
+
+    public function timesTime(Time $time): Mass
+    {
+        $base = $this->toBaseValue()->multipliedBy($time->toBaseValue());
+        return Mass::kilograms($base);
     }
 }

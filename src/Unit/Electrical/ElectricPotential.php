@@ -7,6 +7,7 @@ namespace Monadial\Siphon\Unit\Electrical;
 use Brick\Math\BigDecimal;
 
 use Monadial\Siphon\Quantity;
+use Monadial\Siphon\Unit\Mechanics\Power;
 use Monadial\Siphon\Unit\Electrical\ElectricPotential\Kilovolts;
 use Monadial\Siphon\Unit\Electrical\ElectricPotential\Megavolts;
 use Monadial\Siphon\Unit\Electrical\ElectricPotential\Microvolts;
@@ -95,5 +96,15 @@ final readonly class ElectricPotential extends Quantity
     public function toMegavolts(): self
     {
         return $this->scaleTo(Megavolts::make());
+    }
+
+    // ---------------------------------------------------------------
+    // Cross-dimensional operations
+    // ---------------------------------------------------------------
+
+    public function timesCurrent(ElectricCurrent $current): Power
+    {
+        $base = $this->toBaseValue()->multipliedBy($current->toBaseValue());
+        return Power::watts($base);
     }
 }

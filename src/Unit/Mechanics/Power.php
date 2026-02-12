@@ -7,6 +7,7 @@ namespace Monadial\Siphon\Unit\Mechanics;
 use Brick\Math\BigDecimal;
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\Unit\Mechanics\Energy\WattHours;
+use Monadial\Siphon\Unit\Time\Time;
 use Monadial\Siphon\Unit\Mechanics\Power\BtusPerHour;
 use Monadial\Siphon\Unit\Mechanics\Power\Gigawatts;
 use Monadial\Siphon\Unit\Mechanics\Power\Horsepower;
@@ -128,5 +129,11 @@ final readonly class Power extends Quantity
     public function toBtusPerHour(): self
     {
         return $this->scaleTo(BtusPerHour::make());
+    }
+
+    public function timesTime(Time $time): Energy
+    {
+        $base = $this->toBaseValue()->multipliedBy($time->toBaseValue());
+        return Energy::joules($base);
     }
 }

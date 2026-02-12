@@ -5,8 +5,17 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Mass;
 
 use Brick\Math\BigDecimal;
+use Brick\Math\RoundingMode;
 
 use Monadial\Siphon\Quantity;
+use Monadial\Siphon\Unit\Mechanics\Density;
+use Monadial\Siphon\Unit\Mechanics\Force;
+use Monadial\Siphon\Unit\Mechanics\MassFlow;
+use Monadial\Siphon\Unit\Mechanics\Momentum;
+use Monadial\Siphon\Unit\Motion\Acceleration;
+use Monadial\Siphon\Unit\Motion\Velocity;
+use Monadial\Siphon\Unit\Space\Volume;
+use Monadial\Siphon\Unit\Time\Time;
 use Monadial\Siphon\Unit\Mass\Mass\Grams;
 use Monadial\Siphon\Unit\Mass\Mass\Kilograms;
 use Monadial\Siphon\Unit\Mass\Mass\Micrograms;
@@ -143,5 +152,33 @@ final readonly class Mass extends Quantity
     public function toStones(): self
     {
         return $this->scaleTo(Stones::make());
+    }
+
+    // ---------------------------------------------------------------
+    // Cross-dimensional operations
+    // ---------------------------------------------------------------
+
+    public function timesAcceleration(Acceleration $acceleration): Force
+    {
+        $base = $this->toBaseValue()->multipliedBy($acceleration->toBaseValue());
+        return Force::newtons($base);
+    }
+
+    public function timesVelocity(Velocity $velocity): Momentum
+    {
+        $base = $this->toBaseValue()->multipliedBy($velocity->toBaseValue());
+        return Momentum::kilogramMetersPerSecond($base);
+    }
+
+    public function dividedByVolume(Volume $volume): Density
+    {
+        $base = $this->toBaseValue()->dividedBy($volume->toBaseValue(), 20, RoundingMode::HALF_UP);
+        return Density::kilogramsPerCubicMeter($base);
+    }
+
+    public function dividedByTime(Time $time): MassFlow
+    {
+        $base = $this->toBaseValue()->dividedBy($time->toBaseValue(), 20, RoundingMode::HALF_UP);
+        return MassFlow::kilogramsPerSecond($base);
     }
 }

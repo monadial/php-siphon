@@ -7,6 +7,8 @@ namespace Monadial\Siphon\Unit\Mechanics;
 use Brick\Math\BigDecimal;
 
 use Monadial\Siphon\Quantity;
+use Monadial\Siphon\Unit\Mass\Mass;
+use Monadial\Siphon\Unit\Space\Volume;
 use Monadial\Siphon\Unit\Mechanics\Density\GramsPerCubicCentimeter;
 use Monadial\Siphon\Unit\Mechanics\Density\GramsPerLitre;
 use Monadial\Siphon\Unit\Mechanics\Density\KilogramsPerCubicMeter;
@@ -48,5 +50,11 @@ final readonly class Density extends Quantity
     public function toGramsPerLitre(): self
     {
         return $this->scaleTo(GramsPerLitre::make());
+    }
+
+    public function timesVolume(Volume $volume): Mass
+    {
+        $base = $this->toBaseValue()->multipliedBy($volume->toBaseValue());
+        return Mass::kilograms($base);
     }
 }

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Mechanics;
 
 use Brick\Math\BigDecimal;
+use Brick\Math\RoundingMode;
 
 use Monadial\Siphon\Quantity;
+use Monadial\Siphon\Unit\Time\Time;
 use Monadial\Siphon\Unit\Mechanics\Energy\BritishThermalUnits;
 use Monadial\Siphon\Unit\Mechanics\Energy\Calories;
 use Monadial\Siphon\Unit\Mechanics\Energy\Electronvolts;
@@ -223,5 +225,17 @@ final readonly class Energy extends Quantity
     public function toElectronvolts(): self
     {
         return $this->scaleTo(Electronvolts::make());
+    }
+
+    public function dividedByTime(Time $time): Power
+    {
+        $base = $this->toBaseValue()->dividedBy($time->toBaseValue(), 20, RoundingMode::HALF_UP);
+        return Power::watts($base);
+    }
+
+    public function dividedByPower(Power $power): Time
+    {
+        $base = $this->toBaseValue()->dividedBy($power->toBaseValue(), 20, RoundingMode::HALF_UP);
+        return Time::seconds($base);
     }
 }

@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Motion;
 
 use Brick\Math\BigDecimal;
+use Brick\Math\RoundingMode;
 
 use Monadial\Siphon\Quantity;
+use Monadial\Siphon\Unit\Space\Length;
+use Monadial\Siphon\Unit\Time\Time;
 use Monadial\Siphon\Unit\Motion\Velocity\FeetPerSecond;
 use Monadial\Siphon\Unit\Motion\Velocity\KilometersPerHour;
 use Monadial\Siphon\Unit\Motion\Velocity\KilometersPerSecond;
@@ -97,5 +100,21 @@ final readonly class Velocity extends Quantity
     public function toMillimetersPerSecond(): self
     {
         return $this->scaleTo(MillimetersPerSecond::make());
+    }
+
+    // ---------------------------------------------------------------
+    // Cross-dimensional operations
+    // ---------------------------------------------------------------
+
+    public function timesTime(Time $time): Length
+    {
+        $base = $this->toBaseValue()->multipliedBy($time->toBaseValue());
+        return Length::meters($base);
+    }
+
+    public function dividedByTime(Time $time): Acceleration
+    {
+        $base = $this->toBaseValue()->dividedBy($time->toBaseValue(), 20, RoundingMode::HALF_UP);
+        return Acceleration::metersPerSecondSquared($base);
     }
 }

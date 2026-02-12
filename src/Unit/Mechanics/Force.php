@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Mechanics;
 
 use Brick\Math\BigDecimal;
+use Brick\Math\RoundingMode;
 
 use Monadial\Siphon\Quantity;
+use Monadial\Siphon\Unit\Motion\Velocity;
+use Monadial\Siphon\Unit\Space\Area;
+use Monadial\Siphon\Unit\Space\Length;
 use Monadial\Siphon\Unit\Mechanics\Force\Dynes;
 use Monadial\Siphon\Unit\Mechanics\Force\KilogramForce;
 use Monadial\Siphon\Unit\Mechanics\Force\Kilonewtons;
@@ -117,5 +121,23 @@ final readonly class Force extends Quantity
     public function toKilogramForce(): self
     {
         return $this->scaleTo(KilogramForce::make());
+    }
+
+    public function timesLength(Length $length): Energy
+    {
+        $base = $this->toBaseValue()->multipliedBy($length->toBaseValue());
+        return Energy::joules($base);
+    }
+
+    public function timesVelocity(Velocity $velocity): Power
+    {
+        $base = $this->toBaseValue()->multipliedBy($velocity->toBaseValue());
+        return Power::watts($base);
+    }
+
+    public function dividedByArea(Area $area): Pressure
+    {
+        $base = $this->toBaseValue()->dividedBy($area->toBaseValue(), 20, RoundingMode::HALF_UP);
+        return Pressure::pascals($base);
     }
 }

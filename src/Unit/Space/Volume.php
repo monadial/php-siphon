@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Space;
 
 use Brick\Math\BigDecimal;
+use Brick\Math\RoundingMode;
 
 use Monadial\Siphon\Quantity;
+use Monadial\Siphon\Unit\Mechanics\VolumeFlow;
 use Monadial\Siphon\Unit\Space\Volume\Centilitres;
 use Monadial\Siphon\Unit\Space\Volume\CubicCentimeters;
 use Monadial\Siphon\Unit\Space\Volume\CubicFeet;
@@ -25,6 +27,7 @@ use Monadial\Siphon\Unit\Space\Volume\UsCups;
 use Monadial\Siphon\Unit\Space\Volume\UsGallons;
 use Monadial\Siphon\Unit\Space\Volume\UsPints;
 use Monadial\Siphon\Unit\Space\Volume\UsQuarts;
+use Monadial\Siphon\Unit\Time\Time;
 
 /**
  * @psalm-api
@@ -298,5 +301,15 @@ final readonly class Volume extends Quantity
     public function toImperialGallons(): self
     {
         return $this->scaleTo(ImperialGallons::make());
+    }
+
+    // ---------------------------------------------------------------
+    // Cross-dimensional operations
+    // ---------------------------------------------------------------
+
+    public function dividedByTime(Time $time): VolumeFlow
+    {
+        $base = $this->toBaseValue()->dividedBy($time->toBaseValue(), 20, RoundingMode::HALF_UP);
+        return VolumeFlow::cubicMetersPerSecond($base);
     }
 }

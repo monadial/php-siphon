@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Space;
 
 use Brick\Math\BigDecimal;
+use Brick\Math\RoundingMode;
 
 use Monadial\Siphon\Quantity;
+use Monadial\Siphon\Unit\Motion\Velocity;
 use Monadial\Siphon\Unit\Space\Length\AstronomicalUnits;
 use Monadial\Siphon\Unit\Space\Length\Centimeters;
 use Monadial\Siphon\Unit\Space\Length\Decameters;
@@ -24,6 +26,7 @@ use Monadial\Siphon\Unit\Space\Length\Nanometers;
 use Monadial\Siphon\Unit\Space\Length\NauticalMiles;
 use Monadial\Siphon\Unit\Space\Length\Yards;
 use Monadial\Siphon\Unit\Space\Volume\CubicMeters;
+use Monadial\Siphon\Unit\Time\Time;
 
 /**
  * @psalm-api
@@ -288,5 +291,27 @@ final readonly class Length extends Quantity
     public function toLightYears(): self
     {
         return $this->scaleTo(LightYears::make());
+    }
+
+    // ---------------------------------------------------------------
+    // Cross-dimensional operations
+    // ---------------------------------------------------------------
+
+    public function timesLength(Length $that): Area
+    {
+        $base = $this->toBaseValue()->multipliedBy($that->toBaseValue());
+        return Area::squareMeters($base);
+    }
+
+    public function timesArea(Area $that): Volume
+    {
+        $base = $this->toBaseValue()->multipliedBy($that->toBaseValue());
+        return Volume::cubicMeters($base);
+    }
+
+    public function dividedByTime(Time $that): Velocity
+    {
+        $base = $this->toBaseValue()->dividedBy($that->toBaseValue(), 20, RoundingMode::HALF_UP);
+        return Velocity::metersPerSecond($base);
     }
 }

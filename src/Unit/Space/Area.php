@@ -199,4 +199,14 @@ final readonly class Area extends Quantity
     {
         return $this->scaleTo(Barns::make());
     }
+
+    // ---------------------------------------------------------------
+    // Cross-dimensional operations
+    // ---------------------------------------------------------------
+
+    public function timesLength(Length $length): Volume
+    {
+        $base = $this->toBaseValue()->multipliedBy($length->toBaseValue());
+        return Volume::cubicMeters($base);
+    }
 }
