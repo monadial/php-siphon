@@ -1,0 +1,85 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Monadial\Siphon\Tests\Unit\Electrical;
+
+use Brick\Math\BigDecimal;
+use Monadial\Siphon\Unit\Electrical\Inductance;
+use Monadial\Siphon\Unit\Electrical\Inductance\Henrys;
+use Monadial\Siphon\Unit\Electrical\Inductance\Microhenrys;
+use Monadial\Siphon\Unit\Electrical\Inductance\Millihenrys;
+use Monadial\Siphon\Unit\Electrical\Inductance\Nanohenrys;
+use Monadial\Siphon\Quantity;
+use Monadial\Siphon\System\MetricSystem;
+use Monadial\Siphon\UnitOfMeasure;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\TestCase;
+
+#[CoversClass(Inductance::class)]
+#[CoversClass(Quantity::class)]
+#[UsesClass(UnitOfMeasure::class)]
+#[UsesClass(MetricSystem::class)]
+#[UsesClass(Nanohenrys::class)]
+#[UsesClass(Microhenrys::class)]
+#[UsesClass(Millihenrys::class)]
+#[UsesClass(Henrys::class)]
+final class InductanceTest extends TestCase
+{
+    public function testIdentityConversion(): void
+    {
+        $inductance = new Inductance(BigDecimal::of('5'), Henrys::make());
+        $result = $inductance->toHenrys();
+
+        self::assertTrue($result->value()->isEqualTo(BigDecimal::of('5')));
+    }
+
+    public function testHenrysToMillihenrys(): void
+    {
+        $inductance = new Inductance(BigDecimal::of('2.5'), Henrys::make());
+        $result = $inductance->toMillihenrys();
+
+        self::assertTrue($result->value()->isEqualTo(BigDecimal::of('2500')));
+    }
+
+    public function testMillihenrysToHenrys(): void
+    {
+        $inductance = new Inductance(BigDecimal::of('500'), Millihenrys::make());
+        $result = $inductance->toHenrys();
+
+        self::assertTrue($result->value()->isEqualTo(BigDecimal::of('0.5')));
+    }
+
+    public function testHenrysToMicrohenrys(): void
+    {
+        $inductance = new Inductance(BigDecimal::of('1'), Henrys::make());
+        $result = $inductance->toMicrohenrys();
+
+        self::assertTrue($result->value()->isEqualTo(BigDecimal::of('1000000')));
+    }
+
+    public function testHenrysToNanohenrys(): void
+    {
+        $inductance = new Inductance(BigDecimal::of('1'), Henrys::make());
+        $result = $inductance->toNanohenrys();
+
+        self::assertTrue($result->value()->isEqualTo(BigDecimal::of('1000000000')));
+    }
+
+    public function testNanohenrysToMillihenrys(): void
+    {
+        $inductance = new Inductance(BigDecimal::of('5000000'), Nanohenrys::make());
+        $result = $inductance->toMillihenrys();
+
+        self::assertTrue($result->value()->isEqualTo(BigDecimal::of('5')));
+    }
+
+    public function testMicrohenrysToMillihenrys(): void
+    {
+        $inductance = new Inductance(BigDecimal::of('5000'), Microhenrys::make());
+        $result = $inductance->toMillihenrys();
+
+        self::assertTrue($result->value()->isEqualTo(BigDecimal::of('5')));
+    }
+}

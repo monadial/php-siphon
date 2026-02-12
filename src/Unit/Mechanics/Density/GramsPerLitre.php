@@ -1,0 +1,22 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Monadial\Siphon\Unit\Mechanics\Density;
+
+use Brick\Math\BigDecimal;
+use Monadial\Siphon\System\MetricSystem;
+use Monadial\Siphon\Unit\Mechanics\DensityUnit;
+use Override;
+
+/**
+ * @psalm-api
+ */
+final readonly class GramsPerLitre extends DensityUnit
+{
+    #[Override]
+    public function factor(): BigDecimal
+    {
+        return MetricSystem::BASE->factor();
+    }
+}

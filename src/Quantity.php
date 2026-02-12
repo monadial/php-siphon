@@ -6,155 +6,181 @@ namespace Monadial\Siphon;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
-use Fp\Functional\Either\Either;
-use Override;
-use Stringable;
+use LogicException;
 
 /**
  * @psalm-consistent-constructor
- * @template T of UnitOfMeasure
+ * @psalm-immutable
+ * @template-covariant TUoM of UnitOfMeasure
  */
-abstract readonly class Quantity implements Stringable
+abstract readonly class Quantity
 {
+    /**
+     * @psalm-api
+     * @param BigDecimal|int|float|string $value
+     * @param TUoM $uom
+     * @return static
+     */
+    public static function from(BigDecimal|int|float|string $value, UnitOfMeasure $uom): static
+    {
+        /** @psalm-suppress UnsafeGenericInstantiation */
+        return new static(BigDecimal::of($value), $uom);
+    }
+
+    /**
+     * @psalm-api
+     * @param BigDecimal|int|float|string $value
+     * @param TUoM $from
+     * @param TUoM $to
+     * @return static
+     */
+    public static function convert(
+        BigDecimal|int|float|string $value,
+        UnitOfMeasure $from,
+        UnitOfMeasure $to,
+    ): static {
+        return self::from($value, $from)->scaleTo($to);
+    }
+
+    public static function parse(string $input): static
+    {
+        if (!preg_match('/^\s*([+\-]?(?:\d+(?:\.\d+)?|\.\d+)(?:[eE][+\-]?\d+)?)\s*(.+?)\s*$/', $input, $m)) {
+            throw new LogicException(sprintf('Unable to parse quantity from "%s"', $input));
+        }
+
+        $value = BigDecimal::of($m[1]);
+        $unitToken = self::normalizeToken($m[2]);
+        $unitMap = self::unitAliasesForStaticClass();
+
+        if (!array_key_exists($unitToken, $unitMap)) {
+            throw new LogicException(sprintf('Unknown unit "%s" for quantity %s', $m[2], static::class));
+        }
+
+        /** @var class-string<UnitOfMeasure> $unitClass */
+        $unitClass = $unitMap[$unitToken];
+
+        /** @psalm-suppress UnsafeGenericInstantiation */
+        return new static($value, $unitClass::make());
+    }
+
+    /**
+     * @param TUoM $uom
+     */
     public function __construct(
-        protected private(set) BigDecimal $value,
-        protected private(set) UnitOfMeasure $uom,
-        private PrecisionScale $scale = PrecisionScale::GENERAL_HIGH,
+        protected BigDecimal $value,
+        protected UnitOfMeasure $uom,
     ) {
     }
 
     /**
-     * @return Option<Quantity<T>>
+     * @psalm-api
      */
-    abstract public static function fromString(Stringable|string $input): Either;
+    public function value(): BigDecimal
+    {
+        return $this->value;
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->value . ' ' . $this->uom->symbol();
+    }
+
+    public function toScientificString(int $precision = 6): string
+    {
+        return sprintf('%.' . $precision . 'E %s', (float) (string) $this->value, $this->uom->symbol());
+    }
 
     /**
-     * @return Quantity<T>
+     * @psalm-api
+     * @return TUoM
      */
-    public function to(UnitOfMeasure $uom): self
+    public function uom(): UnitOfMeasure
     {
+        return $this->uom;
+    }
+
+    /**
+     * @param TUoM $uom
+     * @return static
+     */
+    public function scaleTo(UnitOfMeasure $uom): static
+    {
+        /** @psalm-suppress ImpureMethodCall */
         return match (true) {
-            $uom instanceof $this->uom => $this,
-            default => $this->flatMap(
-                fn (self $quantity) => new static(
-                    $this->uom
-                        ->factor()
-                        ->dividedBy($uom->factor(), $this->scale->scale(), RoundingMode::HALF_UP)
-                        ->multipliedBy($quantity->value),
-                    $uom,
-                ),
+            $uom->equals($this->uom) => $this->with($this->value, $uom),
+            default => $this->with(
+                $this->value
+                    ->plus($this->uom->offset())
+                    ->multipliedBy($this->uom->factor())
+                    ->dividedBy($uom->factor(), max($this->value->getScale(), 10) + 10, RoundingMode::HALF_UP)
+                    ->minus($uom->offset()),
+                $uom,
             ),
         };
     }
 
     /**
-     * Quantity plus another quantity.
-     * This method returns a new quantity that is the result of adding the given quantity to this quantity.
+     * @psalm-pure
+     * @return static
      */
-    public function plus(self $that): static
+    private function with(BigDecimal $value, UnitOfMeasure $uom): static
     {
-        return $this
-            ->flatMap(static fn (self $quantity) => new static($quantity->to($that->uom)->value->plus($that->value), $that->uom));
+        /** @psalm-suppress UnsafeGenericInstantiation */
+        return new static($value, $uom);
     }
 
     /**
-     * Quantity plus a string.
-     * This method returns a new quantity that is the result of adding the given string to this quantity.
+     * @return array<string, class-string<UnitOfMeasure>>
      */
-    public function plusString(Stringable|string $input): static
+    private static function unitAliasesForStaticClass(): array
     {
-        return $this
-            ->plus(static::fromString($input));
-    }
+        /** @var array<class-string<self>, array<string, class-string<UnitOfMeasure>>> $cache */
+        static $cache = [];
 
-    /**
-     * Quantity minus another quantity.
-     * This method returns a new quantity that is the result of subtracting the given quantity from this quantity.
-     */
-    public function minus(self $that): static
-    {
-        return $this
-            ->flatMap(static fn (self $quantity) => new static($quantity->to($that->uom)->value->minus($that->value), $that->uom));
-    }
-
-    /**
-     * Quantity minus a string.
-     * This method returns a new quantity that is the result of subtracting the given string from this quantity.
-     */
-    public function minusString(Stringable|string $input): static
-    {
-        return $this
-            ->minus(static::fromString($input));
-    }
-
-    /**
-     * Ceil the quantity.
-     * This method returns a new quantity that is the result of rounding this quantity to the next whole number.
-     */
-    public function ceil(): static
-    {
-        return $this
-            ->map(static fn (BigDecimal $value) => $value->toScale(0, RoundingMode::CEILING));
-    }
-
-    /**
-     * Floor the quantity.
-     * This method returns a new quantity that is the result of rounding this quantity to the previous whole number.
-     */
-    public function floor(): static
-    {
-        return $this
-            ->map(static fn (BigDecimal $value) => $value->toScale(0, RoundingMode::FLOOR));
-    }
-
-    /**
-     * Rint the quantity.
-     * This method returns a new quantity that is the result of rounding this quantity to the nearest whole number.
-     */
-    public function rint(): static
-    {
-        return $this
-            ->map(static fn (BigDecimal $value) => $value->toScale(0, RoundingMode::HALF_EVEN));
-    }
-
-    public function equals(self $that): bool
-    {
-        return $that->uom->equals($this->uom) && $that->value->isEqualTo($this->value);
-    }
-
-    /**
-     * @param callable(BigDecimal): BigDecimal $f
-     */
-    public function map(callable $f): static
-    {
-        return new static($f($this->value), $this->uom);
-    }
-
-    /**
-     * @param callable(self): self $f
-     */
-    public function flatMap(callable $f): self
-    {
-        return $f($this);
-    }
-
-    #[Override]
-    public function __toString(): string
-    {
-        // If the scale is 0, then we don't need to display the decimal point.
-        // because the value is a whole number and the scale is 0.
-        if ($this->scale === PrecisionScale::UNSCALED || $this->value->getScale() === 0) {
-            return sprintf(
-                '%s %s',
-                $this->value->getUnscaledValue(),
-                $this->uom->symbols()->head()->get(),
-            );
+        if (array_key_exists(static::class, $cache)) {
+            return $cache[static::class];
         }
 
-        return sprintf(
-            '%s %s',
-            $this->value->toScale($this->scale->scale(), RoundingMode::HALF_UP),
-            $this->uom->symbols()->head()->get(),
-        );
+        $quantityClassPath = substr(static::class, strlen('Monadial\\Siphon\\'));
+        if (!is_string($quantityClassPath) || $quantityClassPath === '') {
+            throw new LogicException(sprintf('Unable to infer class path for quantity %s', static::class));
+        }
+
+        $unitDir = __DIR__ . '/' . str_replace('\\', '/', $quantityClassPath);
+        $unitFiles = glob($unitDir . '/*.php');
+
+        if ($unitFiles === false || $unitFiles === []) {
+            throw new LogicException(sprintf('No unit directory found for quantity %s', static::class));
+        }
+
+        $map = [];
+        foreach ($unitFiles as $unitFile) {
+            $shortName = pathinfo($unitFile, PATHINFO_FILENAME);
+            $unitClass = static::class . '\\' . $shortName;
+
+            if (!is_a($unitClass, UnitOfMeasure::class, true)) {
+                continue;
+            }
+
+            /** @var UnitOfMeasure $unit */
+            $unit = $unitClass::make();
+
+            foreach ($unit->aliases() as $alias) {
+                $map[self::normalizeToken($alias)] = $unitClass;
+            }
+        }
+
+        $cache[static::class] = $map;
+
+        return $map;
+    }
+
+    private static function normalizeToken(string $token): string
+    {
+        $normalized = strtolower(trim($token));
+        $normalized = preg_replace('/\s*\/\s*/', '/', $normalized) ?? $normalized;
+        $normalized = preg_replace('/\s+/', ' ', $normalized) ?? $normalized;
+
+        return $normalized;
     }
 }
