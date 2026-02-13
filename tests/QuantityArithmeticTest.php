@@ -591,4 +591,89 @@ final class QuantityArithmeticTest extends TestCase
         self::assertTrue($result->value()->isEqualTo(BigDecimal::of('1')));
         self::assertInstanceOf(Kilometers::class, $result->uom());
     }
+
+    // ---------------------------------------------------------------
+    // toScientificString (kills IncrementInteger, DecrementInteger,
+    // Concat, ConcatOperandRemoval mutants)
+    // ---------------------------------------------------------------
+
+    public function testToScientificStringDefaultPrecision(): void
+    {
+        $length = Length::meters('1234.5');
+
+        self::assertSame('1.234500E+3 m', $length->toScientificString());
+    }
+
+    public function testToScientificStringCustomPrecision(): void
+    {
+        $length = Length::meters('1234.5');
+
+        self::assertSame('1.23E+3 m', $length->toScientificString(2));
+    }
+
+    public function testToScientificStringIncludesUnitSymbol(): void
+    {
+        $length = Length::kilometers(5);
+
+        self::assertSame('5.000000E+0 km', $length->toScientificString());
+    }
+
+    // ---------------------------------------------------------------
+    // min() continue mutation
+    // ---------------------------------------------------------------
+
+    public function testMinSelectsSmallestFromArguments(): void
+    {
+        $result = Length::meters(5)->min(
+            Length::meters(10),
+            Length::meters(3),
+        );
+
+        self::assertSame('3', (string) $result->value());
+        self::assertInstanceOf(Meters::class, $result->uom());
+    }
+
+    public function testMinReturnsOriginalWhenAllLarger(): void
+    {
+        $result = Length::meters(1)->min(
+            Length::meters(10),
+            Length::meters(20),
+        );
+
+        self::assertSame('1', (string) $result->value());
+    }
+
+    public function testMinReturnsSmallestWithMixedOrder(): void
+    {
+        $result = Length::meters(10)->min(
+            Length::meters(2),
+            Length::meters(5),
+            Length::meters(1),
+        );
+
+        self::assertSame('1', (string) $result->value());
+    }
+
+    // ---------------------------------------------------------------
+    // scaleTo() identity match arm (same-unit conversion)
+    // ---------------------------------------------------------------
+
+    public function testScaleToSameUnitPreservesExactValue(): void
+    {
+        $m = Length::meters(100);
+        $same = $m->scaleTo(Meters::make());
+
+        self::assertTrue(
+            $same->value()->isEqualTo(BigDecimal::of('100')),
+        );
+        self::assertInstanceOf(Meters::class, $same->uom());
+    }
+
+    public function testScaleToSameUnitPreservesScale(): void
+    {
+        $m = Length::meters('123.456');
+        $same = $m->scaleTo(Meters::make());
+
+        self::assertSame('123.456', (string) $same->value());
+    }
 }

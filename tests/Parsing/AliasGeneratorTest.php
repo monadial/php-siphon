@@ -7,6 +7,7 @@ namespace Monadial\Siphon\Tests\Parsing;
 use Monadial\Siphon\Parsing\AliasGenerator;
 use Monadial\Siphon\Unit\Dimensionless\Dimensionless\Score;
 use Monadial\Siphon\Unit\Mechanics\Energy\KilowattHours;
+use Monadial\Siphon\Unit\Mechanics\Power\BtusPerHour;
 use Monadial\Siphon\Unit\Mechanics\Pressure\MillimetersOfMercury;
 use Monadial\Siphon\Unit\Motion\Velocity\KilometersPerHour;
 use Monadial\Siphon\Unit\Space\Area\SquareMeters;
@@ -34,6 +35,7 @@ use ReflectionMethod;
 #[UsesClass(Score::class)]
 #[UsesClass(SquareMeters::class)]
 #[UsesClass(Feet::class)]
+#[UsesClass(BtusPerHour::class)]
 #[UsesClass(UnitOfMeasure::class)]
 final class AliasGeneratorTest extends TestCase
 {
@@ -180,6 +182,93 @@ final class AliasGeneratorTest extends TestCase
         $result = $method->invoke(null, 'millifoo', 'milli', 'm');
 
         self::assertNull($result);
+    }
+
+    public function testAllAliasesAreLowercase(): void
+    {
+        $aliases = AliasGenerator::generate(BtusPerHour::make());
+
+        foreach ($aliases as $alias) {
+            self::assertSame(
+                strtolower($alias),
+                $alias,
+                sprintf('Alias "%s" is not lowercase', $alias),
+            );
+        }
+    }
+
+    public function testSingularAndPluralFormsArePresent(): void
+    {
+        $aliases = AliasGenerator::generate(Meters::make());
+
+        self::assertContains('meter', $aliases);
+        self::assertContains('meters', $aliases);
+    }
+
+    public function testCacheReturnMatchesFreshGeneration(): void
+    {
+        $unit = Meters::make();
+
+        $first = AliasGenerator::generate($unit);
+        $cached = AliasGenerator::generate($unit);
+        self::assertSame($first, $cached);
+
+        AliasGenerator::clearCache();
+        $fresh = AliasGenerator::generate($unit);
+        self::assertEquals($first, $fresh);
+    }
+
+    public function testMicroPrefixNormalizesToU(): void
+    {
+        $aliases = AliasGenerator::generate(Micrometers::make());
+
+        self::assertContains('um', $aliases);
+        self::assertNotContains(
+            "\xC2\xB5m",
+            $aliases,
+            'Raw µ character should be normalized to u',
+        );
+    }
+
+    public function testPerWordProducesBothTextAndSlashForms(): void
+    {
+        $aliases = AliasGenerator::generate(KilometersPerHour::make());
+
+        self::assertContains(
+            'kilometers per hour',
+            $aliases,
+            'Aliases must include "per" text form',
+        );
+        self::assertContains(
+            'km/h',
+            $aliases,
+            'Aliases must include "/" slash form',
+        );
+    }
+
+    public function testAllAliasesAreLowercaseForMultipleUnits(): void
+    {
+        $units = [
+            KilometersPerHour::make(),
+            Micrometers::make(),
+            MillimetersOfMercury::make(),
+            Celsius::make(),
+        ];
+
+        foreach ($units as $unit) {
+            $aliases = AliasGenerator::generate($unit);
+            foreach ($aliases as $alias) {
+                self::assertSame(
+                    strtolower($alias),
+                    $alias,
+                    sprintf(
+                        'Alias "%s" for %s is not lowercase',
+                        $alias,
+                        $unit::class,
+                    ),
+                );
+            }
+        }
     }
 
     protected function setUp(): void

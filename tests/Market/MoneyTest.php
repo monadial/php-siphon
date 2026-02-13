@@ -60,9 +60,27 @@ final class MoneyTest extends TestCase
         self::assertSame('12.34', (string) $money->amount());
     }
 
+    public function testOfMinorWithCurrencyObject(): void
+    {
+        $currency = Currency::of('USD');
+        $money = Money::ofMinor(1234, $currency);
+
+        self::assertSame('12.34', (string) $money->amount());
+        self::assertSame('USD', $money->currencyCode());
+    }
+
     public function testZero(): void
     {
         $money = Money::zero('EUR');
+
+        self::assertTrue($money->isZero());
+        self::assertSame('EUR', $money->currencyCode());
+    }
+
+    public function testZeroWithCurrencyObject(): void
+    {
+        $currency = Currency::of('EUR');
+        $money = Money::zero($currency);
 
         self::assertTrue($money->isZero());
         self::assertSame('EUR', $money->currencyCode());
@@ -87,6 +105,42 @@ final class MoneyTest extends TestCase
         $this->expectExceptionMessage('Unable to parse money from');
 
         Money::parse('not money');
+    }
+
+    /** @throws ParseFailure */
+    public function testParseRejectsTrailingGarbage(): void
+    {
+        $this->expectException(ParseFailure::class);
+        $this->expectExceptionMessage('Unable to parse money from');
+
+        Money::parse('50.00 USD extra');
+    }
+
+    /** @throws ParseFailure */
+    public function testParseRejectsLeadingGarbage(): void
+    {
+        $this->expectException(ParseFailure::class);
+        $this->expectExceptionMessage('Unable to parse money from');
+
+        Money::parse('garbage 50.00 USD');
+    }
+
+    /** @throws ParseFailure */
+    public function testParseRejectsTrailingGarbageCurrencyFirst(): void
+    {
+        $this->expectException(ParseFailure::class);
+        $this->expectExceptionMessage('Unable to parse money from');
+
+        Money::parse('EUR 10.50 extra');
+    }
+
+    /** @throws ParseFailure */
+    public function testParseRejectsLeadingGarbageCurrencyFirst(): void
+    {
+        $this->expectException(ParseFailure::class);
+        $this->expectExceptionMessage('Unable to parse money from');
+
+        Money::parse('garbage EUR 10.50');
     }
 
     // ---------------------------------------------------------------
@@ -303,6 +357,7 @@ final class MoneyTest extends TestCase
         $parts = $money->split(3);
 
         self::assertCount(3, $parts);
+        self::assertSame([0, 1, 2], array_keys($parts));
 
         $total = Money::usd(0);
         foreach ($parts as $part) {
@@ -317,6 +372,7 @@ final class MoneyTest extends TestCase
         $parts = $money->allocate(1, 1, 2);
 
         self::assertCount(3, $parts);
+        self::assertSame([0, 1, 2], array_keys($parts));
 
         $total = Money::usd(0);
         foreach ($parts as $part) {
