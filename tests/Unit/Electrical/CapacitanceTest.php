@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Tests\Unit\Electrical;
 
 use Brick\Math\BigDecimal;
+use Monadial\Siphon\Quantity;
+use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Electrical\Capacitance;
 use Monadial\Siphon\Unit\Electrical\Capacitance\Farads;
 use Monadial\Siphon\Unit\Electrical\Capacitance\Kilofarads;
@@ -12,8 +14,6 @@ use Monadial\Siphon\Unit\Electrical\Capacitance\Microfarads;
 use Monadial\Siphon\Unit\Electrical\Capacitance\Millifarads;
 use Monadial\Siphon\Unit\Electrical\Capacitance\Nanofarads;
 use Monadial\Siphon\Unit\Electrical\Capacitance\Picofarads;
-use Monadial\Siphon\Quantity;
-use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;

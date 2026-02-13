@@ -10,7 +10,13 @@ use Monadial\Siphon\Unit\Temperature\TemperatureUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The SI base unit of thermodynamic temperature.
+ *
+ * Symbol: K. Conversion factor: 1 (base unit).
+ * The kelvin is defined by fixing the Boltzmann constant at 1.380649 x 10^-23 J/K.
+ * Zero kelvins is absolute zero, the lowest possible temperature.
+ *
+ * @see Kelvins::make()
  */
 final readonly class Kelvins extends TemperatureUnit
 {
@@ -18,5 +24,11 @@ final readonly class Kelvins extends TemperatureUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::BASE->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'K';
     }
 }

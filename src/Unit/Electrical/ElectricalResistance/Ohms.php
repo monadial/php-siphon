@@ -10,7 +10,13 @@ use Monadial\Siphon\Unit\Electrical\ElectricalResistanceUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The ohm (Ohm) — SI derived unit of electrical resistance.
+ *
+ * One ohm is the resistance that produces a potential difference of one volt
+ * when a current of one ampere flows through it.
+ * Factor: 1 (base unit). 1 Ohm = 1 V/A = 1 kg*m^2/(A^2*s^3).
+ *
+ * @see ElectricalResistance::ohms()
  */
 final readonly class Ohms extends ElectricalResistanceUnit
 {
@@ -18,5 +24,11 @@ final readonly class Ohms extends ElectricalResistanceUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::BASE->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'Ohm';
     }
 }

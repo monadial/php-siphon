@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Substance\AmountOfSubstanceUnit;
 use Override;
 
 /**
- * @psalm-api
+ * One thousandth of a mole.
+ *
+ * Symbol: mmol. Conversion factor: 10^-3 (1 mmol = 0.001 mol).
+ * Widely used in clinical chemistry and blood test results (e.g., blood glucose in mmol/L).
+ *
+ * @see Millimoles::make()
  */
 final readonly class Millimoles extends AmountOfSubstanceUnit
 {
@@ -18,5 +23,11 @@ final readonly class Millimoles extends AmountOfSubstanceUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::MILLI->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'mmol';
     }
 }

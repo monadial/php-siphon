@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Electrical;
 
 use Brick\Math\BigDecimal;
-
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\Unit\Electrical\Capacitance\Farads;
 use Monadial\Siphon\Unit\Electrical\Capacitance\Kilofarads;
@@ -15,12 +14,27 @@ use Monadial\Siphon\Unit\Electrical\Capacitance\Nanofarads;
 use Monadial\Siphon\Unit\Electrical\Capacitance\Picofarads;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Electrical capacitance — the ability of a system to store electric charge per unit voltage.
+ *
+ * SI base unit: farad (F). Dimension: A^2 * s^4 * kg^-1 * m^-2.
+ *
+ * One farad is the capacitance of a capacitor that stores one coulomb of charge
+ * at one volt. Typical values: ceramic capacitors 1 pF-100 nF, electrolytic
+ * capacitors 1 uF-10000 uF, supercapacitors up to thousands of farads.
+ *
+ * Available units: {@see Picofarads}, {@see Nanofarads}, {@see Microfarads},
+ * {@see Millifarads}, {@see Farads}, {@see Kilofarads}.
+ *
+ * Usage:
+ *
+ *     $c = Capacitance::microfarads(100);
+ *     $inNano = $c->toNanofarads(); // 100000 nF
+ *
  * @template-extends Quantity<CapacitanceUnit>
  */
 final readonly class Capacitance extends Quantity
 {
+    /** Static factory methods for creating Capacitance in any supported unit. */
     // BEGIN_TYPED_FACTORIES
     public static function farads(BigDecimal|int|float|string $value): self
     {
@@ -83,6 +97,8 @@ final readonly class Capacitance extends Quantity
     }
 
     // END_TYPED_FACTORIES
+
+    /** Convert this capacitance to the specified unit via {@see scaleTo()}. */
     public function toPicofarads(): self
     {
         return $this->scaleTo(Picofarads::make());
@@ -111,5 +127,18 @@ final readonly class Capacitance extends Quantity
     public function toKilofarads(): self
     {
         return $this->scaleTo(Kilofarads::make());
+    }
+
+    /**
+     * Compute electric charge: Q = C * V (capacitance times voltage).
+     *
+     * @param ElectricPotential $potential the voltage across the capacitor
+     * @return ElectricCharge the stored charge in coulombs
+     */
+    public function timesPotential(ElectricPotential $potential): ElectricCharge
+    {
+        $base = $this->toBaseValue()->multipliedBy($potential->toBaseValue());
+
+        return ElectricCharge::coulombs($base);
     }
 }

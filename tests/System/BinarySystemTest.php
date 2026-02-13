@@ -20,12 +20,12 @@ final class BinarySystemTest extends TestCase
     {
         return [
             'BYTE' => [BinarySystem::BYTE, '1'],
+            'EXBI' => [BinarySystem::EXBI, '1152921504606846976'],
+            'GIBI' => [BinarySystem::GIBI, '1073741824'],
             'KIBI' => [BinarySystem::KIBI, '1024'],
             'MEBI' => [BinarySystem::MEBI, '1048576'],
-            'GIBI' => [BinarySystem::GIBI, '1073741824'],
-            'TEBI' => [BinarySystem::TEBI, '1099511627776'],
             'PEBI' => [BinarySystem::PEBI, '1125899906842624'],
-            'EXBI' => [BinarySystem::EXBI, '1152921504606846976'],
+            'TEBI' => [BinarySystem::TEBI, '1099511627776'],
         ];
     }
 

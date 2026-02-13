@@ -10,7 +10,13 @@ use Monadial\Siphon\Unit\Electrical\ElectricPotentialUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The microvolt (uV) — one millionth of a volt.
+ *
+ * Used in sensitive signal processing, EEG brain-wave measurements,
+ * and precision voltage references.
+ * Factor: 10^-6. 1 uV = 0.000001 V.
+ *
+ * @see ElectricPotential::microvolts()
  */
 final readonly class Microvolts extends ElectricPotentialUnit
 {
@@ -18,5 +24,11 @@ final readonly class Microvolts extends ElectricPotentialUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::MICRO->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'uV';
     }
 }

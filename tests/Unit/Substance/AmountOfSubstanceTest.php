@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Tests\Unit\Substance;
 
 use Brick\Math\BigDecimal;
+use Monadial\Siphon\Quantity;
+use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Substance\AmountOfSubstance;
 use Monadial\Siphon\Unit\Substance\AmountOfSubstance\Kilomoles;
 use Monadial\Siphon\Unit\Substance\AmountOfSubstance\Micromoles;
 use Monadial\Siphon\Unit\Substance\AmountOfSubstance\Millimoles;
 use Monadial\Siphon\Unit\Substance\AmountOfSubstance\Moles;
-use Monadial\Siphon\Quantity;
-use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;

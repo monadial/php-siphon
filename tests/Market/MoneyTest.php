@@ -6,9 +6,12 @@ namespace Monadial\Siphon\Tests\Market;
 
 use Brick\Math\BigDecimal;
 use Brick\Money\Currency;
+use Monadial\Siphon\Exception\InvalidArgument;
+use Monadial\Siphon\Exception\ParseFailure;
 use Monadial\Siphon\Market\ExchangeRate;
 use Monadial\Siphon\Market\Money;
 use Monadial\Siphon\Market\Price;
+use Monadial\Siphon\Unit\Mass\Mass;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -53,6 +56,7 @@ final class MoneyTest extends TestCase
         self::assertSame('EUR', $money->currencyCode());
     }
 
+    /** @throws ParseFailure */
     public function testParse(): void
     {
         $a = Money::parse('50.00 USD');
@@ -245,6 +249,7 @@ final class MoneyTest extends TestCase
     // Conversion
     // ---------------------------------------------------------------
 
+    /** @throws InvalidArgument */
     public function testConvertTo(): void
     {
         $usd = Money::usd('100.00');
@@ -253,6 +258,18 @@ final class MoneyTest extends TestCase
 
         self::assertSame('EUR', $eur->currencyCode());
         self::assertSame('91.00', (string) $eur->amount());
+    }
+
+    /** @throws InvalidArgument */
+    public function testConvertToWithMismatchedCurrencyThrows(): void
+    {
+        $usd = Money::usd('100.00');
+        $rate = new ExchangeRate('USD', 'EUR', '0.91');
+
+        $this->expectException(InvalidArgument::class);
+        $this->expectExceptionMessage('Currency GBP does not match exchange rate target EUR');
+
+        $usd->convertTo('GBP', $rate);
     }
 
     // ---------------------------------------------------------------
@@ -318,7 +335,7 @@ final class MoneyTest extends TestCase
     public function testPerCreatesPrice(): void
     {
         $money = Money::usd('5.00');
-        $quantity = \Monadial\Siphon\Unit\Mass\Mass::kilograms(1);
+        $quantity = Mass::kilograms(1);
         $price = $money->per($quantity);
 
         self::assertInstanceOf(Price::class, $price);

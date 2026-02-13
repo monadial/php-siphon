@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Substance\AmountOfSubstanceUnit;
 use Override;
 
 /**
- * @psalm-api
+ * One millionth of a mole.
+ *
+ * Symbol: umol. Conversion factor: 10^-6 (1 umol = 0.000001 mol).
+ * Used in biochemistry for trace concentrations and enzymatic assays.
+ *
+ * @see Micromoles::make()
  */
 final readonly class Micromoles extends AmountOfSubstanceUnit
 {
@@ -18,5 +23,11 @@ final readonly class Micromoles extends AmountOfSubstanceUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::MICRO->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'umol';
     }
 }

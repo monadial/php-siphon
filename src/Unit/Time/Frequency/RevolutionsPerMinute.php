@@ -8,14 +8,19 @@ use Brick\Math\BigDecimal;
 use Monadial\Siphon\Unit\Time\FrequencyUnit;
 use Override;
 
-/**
- * @psalm-api
- */
 final readonly class RevolutionsPerMinute extends FrequencyUnit
 {
+    private const string FACTOR = '0.01666666666666666667';
+
     #[Override]
     public function factor(): BigDecimal
     {
-        return BigDecimal::of('0.01666666666666666667');
+        return BigDecimal::of(self::FACTOR);
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'rpm';
     }
 }

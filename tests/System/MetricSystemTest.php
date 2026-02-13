@@ -20,17 +20,31 @@ final class MetricSystemTest extends TestCase
     {
         return [
             'BASE' => [MetricSystem::BASE, '1'],
-            'KILO' => [MetricSystem::KILO, '1000'],
-            'MILLI' => [MetricSystem::MILLI, '0.001'],
-            'MICRO' => [MetricSystem::MICRO, '0.000001'],
-            'NANO' => [MetricSystem::NANO, '0.000000001'],
             'CENTI' => [MetricSystem::CENTI, '0.01'],
-            'DECI' => [MetricSystem::DECI, '0.1'],
             'DECA' => [MetricSystem::DECA, '10'],
-            'HECTO' => [MetricSystem::HECTO, '100'],
-            'MEGA' => [MetricSystem::MEGA, '1000000'],
+            'DECI' => [MetricSystem::DECI, '0.1'],
             'GIGA' => [MetricSystem::GIGA, '1000000000'],
+            'HECTO' => [MetricSystem::HECTO, '100'],
+            'KILO' => [MetricSystem::KILO, '1000'],
+            'MEGA' => [MetricSystem::MEGA, '1000000'],
+            'MICRO' => [MetricSystem::MICRO, '0.000001'],
+            'MILLI' => [MetricSystem::MILLI, '0.001'],
+            'NANO' => [MetricSystem::NANO, '0.000000001'],
             'TERA' => [MetricSystem::TERA, '1000000000000'],
+        ];
+    }
+
+    /**
+     * @return array<string, array{MetricSystem, string}>
+     */
+    public static function extendedPrefixFactorProvider(): array
+    {
+        return [
+            'ATTO' => [MetricSystem::ATTO, '0.000000000000000001'],
+            'EXA' => [MetricSystem::EXA, '1000000000000000000'],
+            'FEMTO' => [MetricSystem::FEMTO, '0.000000000000001'],
+            'PETA' => [MetricSystem::PETA, '1000000000000000'],
+            'PICO' => [MetricSystem::PICO, '0.000000000001'],
         ];
     }
 
@@ -50,20 +64,6 @@ final class MetricSystemTest extends TestCase
         foreach (MetricSystem::cases() as $case) {
             self::assertInstanceOf(BigDecimal::class, $case->factor());
         }
-    }
-
-    /**
-     * @return array<string, array{MetricSystem, string}>
-     */
-    public static function extendedPrefixFactorProvider(): array
-    {
-        return [
-            'PICO' => [MetricSystem::PICO, '0.000000000001'],
-            'FEMTO' => [MetricSystem::FEMTO, '0.000000000000001'],
-            'ATTO' => [MetricSystem::ATTO, '0.000000000000000001'],
-            'PETA' => [MetricSystem::PETA, '1000000000000000'],
-            'EXA' => [MetricSystem::EXA, '1000000000000000000'],
-        ];
     }
 
     #[DataProvider('extendedPrefixFactorProvider')]

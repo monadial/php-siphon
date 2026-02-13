@@ -5,16 +5,23 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Tests;
 
 use Brick\Math\BigDecimal;
+use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\RoundingMode;
+use Monadial\Siphon\Exception\ParseFailure;
+use Monadial\Siphon\Exception\UnitNotFound;
+use Monadial\Siphon\Parsing\QuantityParser;
+use Monadial\Siphon\Parsing\UnitRegistry;
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\System\MetricSystem;
-use Monadial\Siphon\UnitOfMeasure;
 use Monadial\Siphon\Unit\Space\Length;
-use Monadial\Siphon\Unit\Space\LengthUnit;
 use Monadial\Siphon\Unit\Space\Length\Centimeters;
 use Monadial\Siphon\Unit\Space\Length\Kilometers;
 use Monadial\Siphon\Unit\Space\Length\Meters;
 use Monadial\Siphon\Unit\Space\Length\Millimeters;
+use Monadial\Siphon\Unit\Space\LengthUnit;
+use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
@@ -27,6 +34,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Kilometers::class)]
 #[UsesClass(Centimeters::class)]
 #[UsesClass(Millimeters::class)]
+#[UsesClass(QuantityParser::class)]
+#[UsesClass(UnitRegistry::class)]
 final class QuantityArithmeticTest extends TestCase
 {
     // ---------------------------------------------------------------
@@ -361,5 +370,199 @@ final class QuantityArithmeticTest extends TestCase
             ->in(Kilometers::make());
 
         self::assertEqualsWithDelta(0.045, (float) (string) $result->value(), 0.0001);
+    }
+
+    // ---------------------------------------------------------------
+    // Edge cases
+    // ---------------------------------------------------------------
+
+    public function testDividedByZeroThrowsException(): void
+    {
+        $this->expectException(DivisionByZeroException::class);
+
+        Length::meters(100)->dividedBy(0);
+    }
+
+    /**
+     * @throws ParseFailure
+     * @throws UnitNotFound
+     */
+    public function testParseInvalidInputThrowsException(): void
+    {
+        $this->expectException(ParseFailure::class);
+
+        Length::parse('not a valid quantity');
+    }
+
+    /**
+     * @throws ParseFailure
+     * @throws UnitNotFound
+     */
+    public function testParseUnknownUnitThrowsException(): void
+    {
+        $this->expectException(ParseFailure::class);
+
+        Length::parse('100 unknownunit');
+    }
+
+    public function testMinWithNoArguments(): void
+    {
+        $length = Length::meters(100);
+        $result = $length->min();
+
+        self::assertTrue($result->value()->isEqualTo(BigDecimal::of('100')));
+        self::assertInstanceOf(Meters::class, $result->uom());
+    }
+
+    public function testMaxWithNoArguments(): void
+    {
+        $length = Length::meters(100);
+        $result = $length->max();
+
+        self::assertTrue($result->value()->isEqualTo(BigDecimal::of('100')));
+        self::assertInstanceOf(Meters::class, $result->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Functor laws
+    // ---------------------------------------------------------------
+
+    #[Group('functor')]
+    public function testMapIdentity(): void
+    {
+        $q = Length::meters(42);
+
+        self::assertTrue($q->map(static fn (BigDecimal $v): BigDecimal => $v)->isEqualTo($q));
+    }
+
+    #[Group('functor')]
+    public function testMapComposition(): void
+    {
+        $q = Length::meters(10);
+        $f = static fn (BigDecimal $v): BigDecimal => $v->multipliedBy(2);
+        $g = static fn (BigDecimal $v): BigDecimal => $v->plus(5);
+
+        $left = $q->map($f)->map($g);
+        $right = $q->map(static fn (BigDecimal $v): BigDecimal => $g($f($v)));
+
+        self::assertTrue($left->isEqualTo($right));
+    }
+
+    // ---------------------------------------------------------------
+    // Monad laws
+    // ---------------------------------------------------------------
+
+    #[Group('monad')]
+    public function testFlatMapLeftIdentity(): void
+    {
+        $v = BigDecimal::of(42);
+        $uom = Meters::make();
+        $f = static fn (BigDecimal $v, LengthUnit $u): Length => Length::from($v->multipliedBy(2), $u);
+
+        $left = Length::pure($v, $uom)->flatMap($f);
+        $right = $f($v, $uom);
+
+        self::assertTrue($left->isEqualTo($right));
+    }
+
+    #[Group('monad')]
+    public function testFlatMapRightIdentity(): void
+    {
+        $q = Length::meters(42);
+
+        $result = $q->flatMap(static fn (BigDecimal $v, LengthUnit $u): Length => Length::pure($v, $u));
+
+        self::assertTrue($result->isEqualTo($q));
+    }
+
+    #[Group('monad')]
+    public function testFlatMapAssociativity(): void
+    {
+        $q = Length::meters(10);
+        $f = static fn (BigDecimal $v, LengthUnit $u): Length => Length::from($v->multipliedBy(2), $u);
+        $g = static fn (BigDecimal $v, LengthUnit $u): Length => Length::from($v->plus(5), $u);
+
+        $left = $q->flatMap($f)->flatMap($g);
+        $right = $q->flatMap(static fn (BigDecimal $v, LengthUnit $u): Length => $f($v, $u)->flatMap($g));
+
+        self::assertTrue($left->isEqualTo($right));
+    }
+
+    // ---------------------------------------------------------------
+    // Applicative
+    // ---------------------------------------------------------------
+
+    #[Group('applicative')]
+    public function testPureConstructsQuantity(): void
+    {
+        $q = Length::pure(42, Meters::make());
+
+        self::assertTrue($q->value()->isEqualTo(BigDecimal::of('42')));
+        self::assertInstanceOf(Meters::class, $q->uom());
+        self::assertInstanceOf(Length::class, $q);
+    }
+
+    #[Group('applicative')]
+    public function testMap2CombinesValues(): void
+    {
+        $a = Length::meters(10);
+        $b = Length::meters(20);
+
+        $result = Length::map2(
+            $a,
+            $b,
+            static fn (BigDecimal $x, BigDecimal $y): BigDecimal => $x->plus($y),
+        );
+
+        self::assertTrue($result->value()->isEqualTo(BigDecimal::of('30')));
+        self::assertInstanceOf(Meters::class, $result->uom());
+    }
+
+    #[Group('applicative')]
+    public function testMap2ConvertsCrossUnit(): void
+    {
+        $a = Length::kilometers(1);
+        $b = Length::meters(500);
+
+        $result = Length::map2(
+            $a,
+            $b,
+            static fn (BigDecimal $x, BigDecimal $y): BigDecimal => $x->plus($y),
+        );
+
+        self::assertEqualsWithDelta(1.5, (float) (string) $result->value(), 0.0001);
+        self::assertInstanceOf(Kilometers::class, $result->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Catamorphism
+    // ---------------------------------------------------------------
+
+    public function testFoldExtractsValue(): void
+    {
+        $q = Length::meters(42);
+
+        $result = $q->fold(static fn (BigDecimal $v, LengthUnit $u): string => $v . ' in ' . $u->symbol());
+
+        self::assertSame('42 in m', $result);
+    }
+
+    // ---------------------------------------------------------------
+    // Practical flatMap
+    // ---------------------------------------------------------------
+
+    public function testFlatMapChainsComputation(): void
+    {
+        $q = Length::meters(1000);
+
+        $result = $q->flatMap(
+            static fn (BigDecimal $v, LengthUnit $u): Length => Length::from(
+                $v->dividedBy($u->factor()->multipliedBy(1000), 10, RoundingMode::HALF_UP),
+                Kilometers::make(),
+            ),
+        );
+
+        self::assertTrue($result->value()->isEqualTo(BigDecimal::of('1')));
+        self::assertInstanceOf(Kilometers::class, $result->uom());
     }
 }

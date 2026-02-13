@@ -10,7 +10,13 @@ use Monadial\Siphon\Unit\Electrical\ElectricalResistanceUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The milliohm (mOhm) — one thousandth of an ohm.
+ *
+ * Used in current sensing, battery internal resistance, and PCB trace
+ * resistance measurements.
+ * Factor: 10^-3. 1 mOhm = 0.001 Ohm.
+ *
+ * @see ElectricalResistance::milliohms()
  */
 final readonly class Milliohms extends ElectricalResistanceUnit
 {
@@ -18,5 +24,11 @@ final readonly class Milliohms extends ElectricalResistanceUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::MILLI->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'mOhm';
     }
 }

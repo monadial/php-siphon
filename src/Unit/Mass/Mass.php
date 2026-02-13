@@ -6,16 +6,7 @@ namespace Monadial\Siphon\Unit\Mass;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
-
 use Monadial\Siphon\Quantity;
-use Monadial\Siphon\Unit\Mechanics\Density;
-use Monadial\Siphon\Unit\Mechanics\Force;
-use Monadial\Siphon\Unit\Mechanics\MassFlow;
-use Monadial\Siphon\Unit\Mechanics\Momentum;
-use Monadial\Siphon\Unit\Motion\Acceleration;
-use Monadial\Siphon\Unit\Motion\Velocity;
-use Monadial\Siphon\Unit\Space\Volume;
-use Monadial\Siphon\Unit\Time\Time;
 use Monadial\Siphon\Unit\Mass\Mass\Grams;
 use Monadial\Siphon\Unit\Mass\Mass\Kilograms;
 use Monadial\Siphon\Unit\Mass\Mass\Micrograms;
@@ -24,10 +15,35 @@ use Monadial\Siphon\Unit\Mass\Mass\Ounces;
 use Monadial\Siphon\Unit\Mass\Mass\Pounds;
 use Monadial\Siphon\Unit\Mass\Mass\Stones;
 use Monadial\Siphon\Unit\Mass\Mass\Tonnes;
+use Monadial\Siphon\Unit\Mechanics\Density;
+use Monadial\Siphon\Unit\Mechanics\Force;
+use Monadial\Siphon\Unit\Mechanics\MassFlow;
+use Monadial\Siphon\Unit\Mechanics\Momentum;
+use Monadial\Siphon\Unit\Motion\Acceleration;
+use Monadial\Siphon\Unit\Motion\Velocity;
+use Monadial\Siphon\Unit\Space\Volume;
+use Monadial\Siphon\Unit\Time\Time;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Mass quantity measuring the amount of matter in a body.
+ *
+ * Mass is one of the seven SI base quantities with dimension formula M.
+ * The SI base unit is the kilogram (kg), which serves as the base unit internally
+ * (factor 1). The gram has factor 10^-3 relative to the kilogram.
+ *
+ * Available units: Micrograms (10^-9 kg), Milligrams (10^-6 kg), Grams (10^-3 kg),
+ * Kilograms (1), Tonnes (10^3 kg), Ounces (0.028349523125 kg),
+ * Pounds (0.45359237 kg), Stones (6.35029318 kg).
+ *
+ * Cross-dimensional: Mass * Acceleration = Force, Mass * Velocity = Momentum,
+ * Mass / Volume = Density, Mass / Time = MassFlow, Mass / Density = Volume.
+ *
+ * ```php
+ * $mass = Mass::kilograms(75);
+ * $lbs = $mass->toPounds();
+ * $force = $mass->timesAcceleration(Acceleration::standardGravity(1)); // ~735.5 N
+ * ```
+ *
  * @template-extends Quantity<MassUnit>
  */
 final readonly class Mass extends Quantity
@@ -158,39 +174,38 @@ final readonly class Mass extends Quantity
     // Cross-dimensional operations
     // ---------------------------------------------------------------
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
     public function timesAcceleration(Acceleration $acceleration): Force
     {
         $base = $this->toBaseValue()->multipliedBy($acceleration->toBaseValue());
+
         return Force::newtons($base);
     }
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
     public function timesVelocity(Velocity $velocity): Momentum
     {
         $base = $this->toBaseValue()->multipliedBy($velocity->toBaseValue());
+
         return Momentum::kilogramMetersPerSecond($base);
     }
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
     public function dividedByVolume(Volume $volume): Density
     {
         $base = $this->toBaseValue()->dividedBy($volume->toBaseValue(), 20, RoundingMode::HALF_UP);
+
         return Density::kilogramsPerCubicMeter($base);
     }
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
     public function dividedByTime(Time $time): MassFlow
     {
         $base = $this->toBaseValue()->dividedBy($time->toBaseValue(), 20, RoundingMode::HALF_UP);
+
         return MassFlow::kilogramsPerSecond($base);
+    }
+
+    public function dividedByDensity(Density $density): Volume
+    {
+        $base = $this->toBaseValue()->dividedBy($density->toBaseValue(), 20, RoundingMode::HALF_UP);
+
+        return Volume::cubicMeters($base);
     }
 }

@@ -4,26 +4,32 @@ declare(strict_types=1);
 
 namespace Monadial\Siphon\Tests\Unit\CrossDimensional;
 
-use Brick\Math\BigDecimal;
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\System\MetricSystem;
-use Monadial\Siphon\UnitOfMeasure;
+use Monadial\Siphon\Unit\Mechanics\VolumeFlow;
+use Monadial\Siphon\Unit\Mechanics\VolumeFlow\CubicMetersPerSecond;
+use Monadial\Siphon\Unit\Mechanics\VolumeFlowUnit;
 use Monadial\Siphon\Unit\Space\Area;
-use Monadial\Siphon\Unit\Space\AreaUnit;
 use Monadial\Siphon\Unit\Space\Area\SquareMeters;
+use Monadial\Siphon\Unit\Space\AreaUnit;
 use Monadial\Siphon\Unit\Space\Length;
-use Monadial\Siphon\Unit\Space\LengthUnit;
 use Monadial\Siphon\Unit\Space\Length\Kilometers;
 use Monadial\Siphon\Unit\Space\Length\Meters;
+use Monadial\Siphon\Unit\Space\LengthUnit;
 use Monadial\Siphon\Unit\Space\Volume;
-use Monadial\Siphon\Unit\Space\VolumeUnit;
 use Monadial\Siphon\Unit\Space\Volume\CubicMeters;
+use Monadial\Siphon\Unit\Space\VolumeUnit;
+use Monadial\Siphon\Unit\Time\Time;
+use Monadial\Siphon\Unit\Time\Time\Seconds;
+use Monadial\Siphon\Unit\Time\TimeUnit;
+use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Length::class)]
 #[CoversClass(Area::class)]
+#[CoversClass(Volume::class)]
 #[CoversClass(Quantity::class)]
 #[UsesClass(UnitOfMeasure::class)]
 #[UsesClass(MetricSystem::class)]
@@ -34,7 +40,13 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Kilometers::class)]
 #[UsesClass(SquareMeters::class)]
 #[UsesClass(CubicMeters::class)]
+#[UsesClass(CubicMetersPerSecond::class)]
+#[UsesClass(Seconds::class)]
 #[UsesClass(Volume::class)]
+#[UsesClass(VolumeFlow::class)]
+#[UsesClass(VolumeFlowUnit::class)]
+#[UsesClass(TimeUnit::class)]
+#[UsesClass(Time::class)]
 final class SpaceTest extends TestCase
 {
     public function testLengthTimesLengthGivesArea(): void
@@ -91,5 +103,21 @@ final class SpaceTest extends TestCase
 
         self::assertInstanceOf(Volume::class, $volume);
         self::assertEqualsWithDelta(24.0, (float) (string) $volume->value(), 0.0001);
+    }
+
+    // ---------------------------------------------------------------
+    // t = V / Q̇ (Volume / VolumeFlow = Time)
+    // ---------------------------------------------------------------
+
+    public function testVolumeDividedByVolumeFlowGivesTime(): void
+    {
+        // 10 m³ / 2 m³/s = 5 s
+        $volume = Volume::cubicMeters(10);
+        $flow = VolumeFlow::cubicMetersPerSecond(2);
+        $time = $volume->dividedByVolumeFlow($flow);
+
+        self::assertInstanceOf(Time::class, $time);
+        self::assertInstanceOf(Seconds::class, $time->uom());
+        self::assertEqualsWithDelta(5.0, (float) (string) $time->value(), 0.0001);
     }
 }

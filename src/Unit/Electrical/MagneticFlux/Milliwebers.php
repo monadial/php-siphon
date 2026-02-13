@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Electrical\MagneticFluxUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The milliweber (mWb) — one thousandth of a weber.
+ *
+ * Used in transformer design and small electromagnetic device measurements.
+ * Factor: 10^-3. 1 mWb = 0.001 Wb.
+ *
+ * @see MagneticFlux::milliwebers()
  */
 final readonly class Milliwebers extends MagneticFluxUnit
 {
@@ -18,5 +23,11 @@ final readonly class Milliwebers extends MagneticFluxUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::MILLI->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'mWb';
     }
 }

@@ -10,7 +10,13 @@ use Monadial\Siphon\Unit\Electrical\ElectricalResistanceUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The megohm (MOhm) — one million ohms.
+ *
+ * Used in insulation resistance testing, high-impedance circuits, and
+ * electrostatic discharge (ESD) protection measurements.
+ * Factor: 10^6. 1 MOhm = 1000000 Ohm.
+ *
+ * @see ElectricalResistance::megohms()
  */
 final readonly class Megohms extends ElectricalResistanceUnit
 {
@@ -18,5 +24,11 @@ final readonly class Megohms extends ElectricalResistanceUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::MEGA->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'MOhm';
     }
 }

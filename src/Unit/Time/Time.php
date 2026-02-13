@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Time;
 
 use Brick\Math\BigDecimal;
-
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\Unit\Time\Time\Days;
 use Monadial\Siphon\Unit\Time\Time\Hours;
@@ -19,8 +18,20 @@ use Monadial\Siphon\Unit\Time\Time\Weeks;
 use Monadial\Siphon\Unit\Time\Time\Years;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Time quantity measuring the duration of events and intervals.
+ *
+ * Time is one of the seven SI base quantities with dimension formula T.
+ * The SI base unit is the second (s). Available units span from sub-second
+ * precision to calendar durations: Nanoseconds (10^-9), Microseconds (10^-6),
+ * Milliseconds (10^-3), Seconds (1), Minutes (60), Hours (3,600), Days (86,400),
+ * Weeks (604,800), Months (2,629,746, average Gregorian), Years (31,556,952, average Gregorian).
+ *
+ * ```php
+ * $duration = Time::hours(2);
+ * $seconds = $duration->toSeconds(); // 7200 s
+ * $minutes = $duration->toMinutes(); // 120 min
+ * ```
+ *
  * @template-extends Quantity<TimeUnit>
  */
 final readonly class Time extends Quantity

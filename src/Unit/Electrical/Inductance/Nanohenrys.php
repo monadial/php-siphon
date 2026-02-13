@@ -10,7 +10,13 @@ use Monadial\Siphon\Unit\Electrical\InductanceUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The nanohenry (nH) — one billionth of a henry.
+ *
+ * Used in high-frequency RF circuits, PCB trace inductance, and
+ * chip-scale inductors.
+ * Factor: 10^-9. 1 nH = 0.000000001 H.
+ *
+ * @see Inductance::nanohenrys()
  */
 final readonly class Nanohenrys extends InductanceUnit
 {
@@ -18,5 +24,11 @@ final readonly class Nanohenrys extends InductanceUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::NANO->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'nH';
     }
 }

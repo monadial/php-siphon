@@ -10,7 +10,13 @@ use Monadial\Siphon\Unit\Electrical\MagneticFluxDensityUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The millitesla (mT) — one thousandth of a tesla.
+ *
+ * Used in permanent magnet characterization and industrial magnetic
+ * field measurements.
+ * Factor: 10^-3. 1 mT = 0.001 T.
+ *
+ * @see MagneticFluxDensity::milliteslas()
  */
 final readonly class Milliteslas extends MagneticFluxDensityUnit
 {
@@ -18,5 +24,11 @@ final readonly class Milliteslas extends MagneticFluxDensityUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::MILLI->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'mT';
     }
 }

@@ -15,8 +15,8 @@ composer phpunit
 # Run single test file
 vendor/bin/phpunit tests/Path/To/TestFile.php
 
-# Static analysis (Psalm level 1, strictest)
-composer psalm
+# Static analysis (PHPStan max level + ShipMonk rules)
+composer phpstan
 
 # Code style check / auto-fix
 composer phpcs
@@ -56,14 +56,13 @@ This pattern repeats for every physical dimension.
 
 ### Design principles
 
-- All value objects are `readonly` and immutable (`@psalm-immutable`)
-- Heavy Psalm generics: `@template-covariant TUoM of UnitOfMeasure` on Quantity
-- `@psalm-pure` on side-effect-free methods
+- All value objects are `readonly` and immutable
+- PHPStan generics: `@template-covariant TUoM of UnitOfMeasure` on Quantity
 - PSR-4 autoloading under `Monadial\Siphon` namespace
 
 ## Quality gates
 
-- Psalm: level 1, `findUnusedCode` enabled, fp4php psalm plugin active
+- PHPStan: max level, ShipMonk rules with checked exceptions, zero suppressions/baseline
 - PHPUnit: strict mode, `failOnWarning`, `failOnRisky`, `requireCoverageMetadata`
 - PHPCS: `pixelfederation/coding-standards` ruleset, PHP 8.4
 - EditorConfig: 4-space indent for PHP, LF line endings

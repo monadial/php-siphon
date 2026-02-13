@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Mechanics;
 
 use Brick\Math\BigDecimal;
+use Brick\Math\RoundingMode;
 use Monadial\Siphon\Quantity;
+use Monadial\Siphon\Unit\Electrical\ElectricCurrent;
+use Monadial\Siphon\Unit\Electrical\ElectricPotential;
 use Monadial\Siphon\Unit\Mechanics\Energy\WattHours;
-use Monadial\Siphon\Unit\Time\Time;
 use Monadial\Siphon\Unit\Mechanics\Power\BtusPerHour;
 use Monadial\Siphon\Unit\Mechanics\Power\Gigawatts;
 use Monadial\Siphon\Unit\Mechanics\Power\Horsepower;
@@ -15,10 +17,34 @@ use Monadial\Siphon\Unit\Mechanics\Power\Kilowatts;
 use Monadial\Siphon\Unit\Mechanics\Power\Megawatts;
 use Monadial\Siphon\Unit\Mechanics\Power\Milliwatts;
 use Monadial\Siphon\Unit\Mechanics\Power\Watts;
+use Monadial\Siphon\Unit\Motion\Velocity;
+use Monadial\Siphon\Unit\Time\Time;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Power measures the rate at which energy is transferred or converted.
+ *
+ * The SI unit of power is the watt (W). Power is a derived quantity with dimension
+ * M*L^2*T^-3, equivalent to J/s or kg*m^2/s^3. Power quantifies how quickly work
+ * is performed, from electrical circuits to mechanical engines.
+ *
+ * Available units: Milliwatts (10^-3), Watts (base, factor 1), Kilowatts (10^3),
+ * Megawatts (10^6), Gigawatts (10^9), Horsepower (745.69987), BtusPerHour (0.29307107).
+ *
+ * Cross-dimensional operations:
+ * - Power * Time = Energy (E = P*t)
+ * - Power / Current = ElectricPotential (V = P/I)
+ * - Power / Potential = ElectricCurrent (I = P/V)
+ * - Power / Force = Velocity (v = P/F)
+ * - Power / Velocity = Force (F = P/v)
+ *
+ * Example usage:
+ * ```
+ * $power = Power::kilowatts(5);
+ * $energy = $power->timesTime(Time::hours(3));
+ * $wattHours = $power->toWattHours();
+ * ```
+ *
+ * @see PowerUnit for the abstract unit base class
  * @template-extends Quantity<PowerUnit>
  */
 final readonly class Power extends Quantity
@@ -85,15 +111,11 @@ final readonly class Power extends Quantity
     }
 
     // END_TYPED_FACTORIES
-    /**
-     * @param BigDecimal|int|float|string $hours
-     */
-    public function toWattHours(BigDecimal|int|float|string $hours = 1): Energy
+    public function toWattHours(?Time $duration = null): Energy
     {
-        return new Energy(
-            $this->toWatts()->value()->multipliedBy(BigDecimal::of($hours)),
-            WattHours::make(),
-        );
+        $duration ??= Time::hours(1);
+
+        return $this->timesTime($duration)->scaleTo(WattHours::make());
     }
 
     public function toWatts(): self
@@ -131,12 +153,38 @@ final readonly class Power extends Quantity
         return $this->scaleTo(BtusPerHour::make());
     }
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
     public function timesTime(Time $time): Energy
     {
         $base = $this->toBaseValue()->multipliedBy($time->toBaseValue());
+
         return Energy::joules($base);
+    }
+
+    public function dividedByCurrent(ElectricCurrent $current): ElectricPotential
+    {
+        $base = $this->toBaseValue()->dividedBy($current->toBaseValue(), 20, RoundingMode::HALF_UP);
+
+        return ElectricPotential::volts($base);
+    }
+
+    public function dividedByPotential(ElectricPotential $potential): ElectricCurrent
+    {
+        $base = $this->toBaseValue()->dividedBy($potential->toBaseValue(), 20, RoundingMode::HALF_UP);
+
+        return ElectricCurrent::amperes($base);
+    }
+
+    public function dividedByForce(Force $force): Velocity
+    {
+        $base = $this->toBaseValue()->dividedBy($force->toBaseValue(), 20, RoundingMode::HALF_UP);
+
+        return Velocity::metersPerSecond($base);
+    }
+
+    public function dividedByVelocity(Velocity $velocity): Force
+    {
+        $base = $this->toBaseValue()->dividedBy($velocity->toBaseValue(), 20, RoundingMode::HALF_UP);
+
+        return Force::newtons($base);
     }
 }

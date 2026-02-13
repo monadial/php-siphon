@@ -5,15 +5,22 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Light;
 
 use Brick\Math\BigDecimal;
-
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\Unit\Light\LuminousFlux\Kilolumens;
 use Monadial\Siphon\Unit\Light\LuminousFlux\Lumens;
 use Monadial\Siphon\Unit\Light\LuminousFlux\Millilumens;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Luminous flux quantity measuring the total amount of visible light emitted by a source.
+ *
+ * Dimension formula: cd * sr (luminous intensity times solid angle). The SI derived unit
+ * is the lumen (lm). Available units: Millilumens (10^-3), Lumens (1), Kilolumens (10^3).
+ *
+ * ```php
+ * $flux = LuminousFlux::lumens(800); // typical 60W-equivalent LED bulb
+ * $kilo = $flux->toKilolumens(); // 0.8 klm
+ * ```
+ *
  * @template-extends Quantity<LuminousFluxUnit>
  */
 final readonly class LuminousFlux extends Quantity

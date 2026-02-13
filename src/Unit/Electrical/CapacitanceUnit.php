@@ -7,7 +7,12 @@ namespace Monadial\Siphon\Unit\Electrical;
 use Monadial\Siphon\UnitOfMeasure;
 
 /**
- * @template-extends UnitOfMeasure<Capacitance>
+ * Abstract base for all capacitance units.
+ *
+ * Each concrete subclass defines its conversion {@see factor()} relative
+ * to the SI base unit (farad) and its display {@see symbol()}.
+ *
+ * @see Capacitance
  */
 abstract readonly class CapacitanceUnit extends UnitOfMeasure
 {

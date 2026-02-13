@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Electrical\ElectricPotentialUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The kilovolt (kV) — one thousand volts.
+ *
+ * Used in power distribution, X-ray tube voltages, and high-voltage testing.
+ * Factor: 10^3. 1 kV = 1000 V.
+ *
+ * @see ElectricPotential::kilovolts()
  */
 final readonly class Kilovolts extends ElectricPotentialUnit
 {
@@ -18,5 +23,11 @@ final readonly class Kilovolts extends ElectricPotentialUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::KILO->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'kV';
     }
 }

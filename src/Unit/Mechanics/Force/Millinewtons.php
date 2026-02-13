@@ -10,7 +10,13 @@ use Monadial\Siphon\Unit\Mechanics\ForceUnit;
 use Override;
 
 /**
- * @psalm-api
+ * Millinewton (mN) -- one thousandth of a newton.
+ *
+ * Symbol: mN. Conversion factor: 10^-3 (1 mN = 0.001 N).
+ * Used in precision engineering, microelectromechanical systems (MEMS),
+ * and small-scale force measurements such as surface tension experiments.
+ *
+ * @see Force::millinewtons() for the factory method
  */
 final readonly class Millinewtons extends ForceUnit
 {
@@ -18,5 +24,11 @@ final readonly class Millinewtons extends ForceUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::MILLI->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'mN';
     }
 }

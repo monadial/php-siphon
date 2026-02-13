@@ -9,14 +9,17 @@ use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Time\FrequencyUnit;
 use Override;
 
-/**
- * @psalm-api
- */
 final readonly class Terahertz extends FrequencyUnit
 {
     #[Override]
     public function factor(): BigDecimal
     {
         return MetricSystem::TERA->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'THz';
     }
 }

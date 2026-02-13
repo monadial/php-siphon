@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Tests\Unit\Electrical;
 
 use Brick\Math\BigDecimal;
+use Monadial\Siphon\Quantity;
+use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Electrical\Inductance;
 use Monadial\Siphon\Unit\Electrical\Inductance\Henrys;
 use Monadial\Siphon\Unit\Electrical\Inductance\Microhenrys;
 use Monadial\Siphon\Unit\Electrical\Inductance\Millihenrys;
 use Monadial\Siphon\Unit\Electrical\Inductance\Nanohenrys;
-use Monadial\Siphon\Quantity;
-use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;

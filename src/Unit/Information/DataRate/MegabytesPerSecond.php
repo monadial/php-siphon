@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Information\DataRateUnit;
 use Override;
 
 /**
- * @psalm-api
+ * Data rate unit representing 10^6 bytes transferred per second.
+ *
+ * Symbol: MB/s. Conversion factor: 10^6 (1 MB/s = 1,000,000 B/s).
+ * Common for SSD read/write speeds and USB transfer rate specifications.
+ *
+ * @see MegabytesPerSecond::make()
  */
 final readonly class MegabytesPerSecond extends DataRateUnit
 {
@@ -18,5 +23,11 @@ final readonly class MegabytesPerSecond extends DataRateUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::MEGA->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'MB/s';
     }
 }

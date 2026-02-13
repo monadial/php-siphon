@@ -9,14 +9,21 @@ use Monadial\Siphon\Unit\Motion\VelocityUnit;
 use Override;
 
 /**
- * @psalm-api
+ * Nautical velocity unit equal to one nautical mile per hour.
+ *
+ * Symbol: kn. Conversion factor: 0.514444 (1 kn = 0.514444 m/s).
+ * The standard unit of speed in maritime and aviation navigation.
+ *
+ * @see Knots::make()
  */
 final readonly class Knots extends VelocityUnit
 {
+    private const string FACTOR = '0.51444444444444444444';
+
     #[Override]
     public function factor(): BigDecimal
     {
-        return BigDecimal::of('0.51444444444444444444');
+        return BigDecimal::of(self::FACTOR);
     }
 
     #[Override]

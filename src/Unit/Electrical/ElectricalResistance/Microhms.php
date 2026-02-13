@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Electrical\ElectricalResistanceUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The microhm (uOhm) — one millionth of an ohm.
+ *
+ * Used in precision resistance standards and contact resistance measurements.
+ * Factor: 10^-6. 1 uOhm = 0.000001 Ohm.
+ *
+ * @see ElectricalResistance::microhms()
  */
 final readonly class Microhms extends ElectricalResistanceUnit
 {
@@ -18,5 +23,11 @@ final readonly class Microhms extends ElectricalResistanceUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::MICRO->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'uOhm';
     }
 }

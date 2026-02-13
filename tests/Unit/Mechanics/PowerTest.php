@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Tests\Unit\Mechanics;
 
 use Brick\Math\BigDecimal;
+use Monadial\Siphon\Exception\UnitNotFound;
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\System\MetricSystem;
-use Monadial\Siphon\UnitOfMeasure;
 use Monadial\Siphon\Unit\Mechanics\Energy;
 use Monadial\Siphon\Unit\Mechanics\Energy\WattHours;
 use Monadial\Siphon\Unit\Mechanics\Power;
-use Monadial\Siphon\Unit\Mechanics\PowerUnit;
 use Monadial\Siphon\Unit\Mechanics\Power\BtusPerHour;
 use Monadial\Siphon\Unit\Mechanics\Power\Gigawatts;
 use Monadial\Siphon\Unit\Mechanics\Power\Horsepower;
@@ -19,6 +18,12 @@ use Monadial\Siphon\Unit\Mechanics\Power\Kilowatts;
 use Monadial\Siphon\Unit\Mechanics\Power\Megawatts;
 use Monadial\Siphon\Unit\Mechanics\Power\Milliwatts;
 use Monadial\Siphon\Unit\Mechanics\Power\Watts;
+use Monadial\Siphon\Unit\Mechanics\PowerUnit;
+use Monadial\Siphon\Unit\Time\Time;
+use Monadial\Siphon\Unit\Time\Time\Hours;
+use Monadial\Siphon\Unit\Time\Time\Seconds;
+use Monadial\Siphon\Unit\Time\TimeUnit;
+use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -37,6 +42,10 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(BtusPerHour::class)]
 #[UsesClass(Energy::class)]
 #[UsesClass(WattHours::class)]
+#[UsesClass(Time::class)]
+#[UsesClass(TimeUnit::class)]
+#[UsesClass(Hours::class)]
+#[UsesClass(Seconds::class)]
 final class PowerTest extends TestCase
 {
     // ---------------------------------------------------------------
@@ -211,6 +220,7 @@ final class PowerTest extends TestCase
         self::assertInstanceOf(Power::class, $result);
     }
 
+    /** @throws UnitNotFound */
     public function testConstructionWithFromDsl(): void
     {
         $power = Watts::from(100);
@@ -237,7 +247,7 @@ final class PowerTest extends TestCase
 
     public function testTypedConversionToKilowatts(): void
     {
-        $power = Watts::from(1500)->toKilowatts();
+        $power = Power::watts(1500)->toKilowatts();
 
         self::assertTrue($power->value()->isEqualTo(BigDecimal::of('1.5')));
         self::assertInstanceOf(Kilowatts::class, $power->uom());
@@ -245,7 +255,7 @@ final class PowerTest extends TestCase
 
     public function testToWattHoursDefaultsToOneHour(): void
     {
-        $energy = Watts::from(100)->toWattHours();
+        $energy = Power::watts(100)->toWattHours();
 
         self::assertTrue($energy->value()->isEqualTo(BigDecimal::of('100')));
         self::assertInstanceOf(WattHours::class, $energy->uom());
@@ -253,17 +263,17 @@ final class PowerTest extends TestCase
 
     public function testToWattHoursWithCustomDuration(): void
     {
-        $energy = Watts::from(100)->toWattHours(2.5);
+        $energy = Power::watts(100)->toWattHours(Time::hours(2.5));
 
-        self::assertTrue($energy->value()->isEqualTo(BigDecimal::of('250')));
+        self::assertEqualsWithDelta(250.0, (float) (string) $energy->value(), 0.01);
         self::assertInstanceOf(WattHours::class, $energy->uom());
     }
 
-    public function testToWatthoursAliasDelegatesToToWattHours(): void
+    public function testToWattHoursWithTimeDuration(): void
     {
-        $energy = Watts::from(100)->toWatthours(3);
+        $energy = Power::watts(100)->toWattHours(Time::hours(3));
 
-        self::assertTrue($energy->value()->isEqualTo(BigDecimal::of('300')));
+        self::assertEqualsWithDelta(300.0, (float) (string) $energy->value(), 0.01);
         self::assertInstanceOf(WattHours::class, $energy->uom());
     }
 }

@@ -10,7 +10,13 @@ use Monadial\Siphon\Unit\Electrical\InductanceUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The henry (H) — SI derived unit of inductance.
+ *
+ * One henry is the inductance that induces one volt of EMF when the current
+ * changes at one ampere per second.
+ * Factor: 1 (base unit). 1 H = 1 V*s/A = 1 kg*m^2/(A^2*s^2).
+ *
+ * @see Inductance::henrys()
  */
 final readonly class Henrys extends InductanceUnit
 {
@@ -18,5 +24,11 @@ final readonly class Henrys extends InductanceUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::BASE->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'H';
     }
 }

@@ -6,6 +6,7 @@ namespace Monadial\Siphon\Tests\Unit\Space;
 
 use Brick\Math\BigDecimal;
 use Monadial\Siphon\Quantity;
+use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Space\Volume;
 use Monadial\Siphon\Unit\Space\Volume\Centilitres;
 use Monadial\Siphon\Unit\Space\Volume\CubicCentimeters;
@@ -25,9 +26,8 @@ use Monadial\Siphon\Unit\Space\Volume\UsCups;
 use Monadial\Siphon\Unit\Space\Volume\UsGallons;
 use Monadial\Siphon\Unit\Space\Volume\UsPints;
 use Monadial\Siphon\Unit\Space\Volume\UsQuarts;
-use Monadial\Siphon\System\MetricSystem;
-use Monadial\Siphon\UnitOfMeasure;
 use Monadial\Siphon\Unit\Space\VolumeUnit;
+use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -61,6 +61,28 @@ final class VolumeTest extends TestCase
     // ---------------------------------------------------------------
     // Construction and basic accessors
     // ---------------------------------------------------------------
+
+    /**
+     * @return array<string, array{string, VolumeUnit, VolumeUnit, string}>
+     */
+    public static function conversionProvider(): array
+    {
+        return [
+            '1 cL = 10 mL' => ['1', Centilitres::make(), Millilitres::make(), '10'],
+            '1 dL = 100 mL' => ['1', Decilitres::make(), Millilitres::make(), '100'],
+            '1 hL = 100 L' => ['1', Hectolitres::make(), Litres::make(), '100'],
+            '1 L = 1000 mL' => ['1', Litres::make(), Millilitres::make(), '1000'],
+            '1 m3 = 10 hL' => ['1', CubicMeters::make(), Hectolitres::make(), '10'],
+            '1 m3 = 1000 L' => ['1', CubicMeters::make(), Litres::make(), '1000'],
+            '1 m3 = 1000000 cm3' => ['1', CubicMeters::make(), CubicCentimeters::make(), '1000000'],
+            '1 m3 = 1000000 mL' => ['1', CubicMeters::make(), Millilitres::make(), '1000000'],
+            '1 mL = 1 cm3' => ['1', Millilitres::make(), CubicCentimeters::make(), '1'],
+            '2.5 L identity' => ['2.5', Litres::make(), Litres::make(), '2.5'],
+            '330 mL = 33 cL' => ['330', Millilitres::make(), Centilitres::make(), '33'],
+            '500 mL = 0.5 L' => ['500', Millilitres::make(), Litres::make(), '0.5'],
+            '750 mL = 75 cL' => ['750', Millilitres::make(), Centilitres::make(), '75'],
+        ];
+    }
 
     public function testConstructionAndValueAccess(): void
     {
@@ -301,27 +323,6 @@ final class VolumeTest extends TestCase
     // Data-provider-based systematic conversion tests
     // ---------------------------------------------------------------
 
-    /**
-     * @return array<string, array{string, VolumeUnit, VolumeUnit, string}>
-     */
-    public static function conversionProvider(): array
-    {
-        return [
-            '1 m3 = 1000 L' => ['1', CubicMeters::make(), Litres::make(), '1000'],
-            '1 L = 1000 mL' => ['1', Litres::make(), Millilitres::make(), '1000'],
-            '1 mL = 1 cm3' => ['1', Millilitres::make(), CubicCentimeters::make(), '1'],
-            '1 hL = 100 L' => ['1', Hectolitres::make(), Litres::make(), '100'],
-            '1 cL = 10 mL' => ['1', Centilitres::make(), Millilitres::make(), '10'],
-            '1 dL = 100 mL' => ['1', Decilitres::make(), Millilitres::make(), '100'],
-            '1 m3 = 1000000 mL' => ['1', CubicMeters::make(), Millilitres::make(), '1000000'],
-            '1 m3 = 1000000 cm3' => ['1', CubicMeters::make(), CubicCentimeters::make(), '1000000'],
-            '1 m3 = 10 hL' => ['1', CubicMeters::make(), Hectolitres::make(), '10'],
-            '500 mL = 0.5 L' => ['500', Millilitres::make(), Litres::make(), '0.5'],
-            '2.5 L identity' => ['2.5', Litres::make(), Litres::make(), '2.5'],
-            '750 mL = 75 cL' => ['750', Millilitres::make(), Centilitres::make(), '75'],
-            '330 mL = 33 cL' => ['330', Millilitres::make(), Centilitres::make(), '33'],
-        ];
-    }
 
     #[DataProvider('conversionProvider')]
     public function testConversion(string $inputValue, VolumeUnit $from, VolumeUnit $to, string $expected): void
@@ -438,7 +439,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), Litres::make());
         $result = $volume->toCubicInches();
 
-        self::assertEqualsWithDelta(61.0237, (float)(string)$result->value(), 0.01);
+        self::assertEqualsWithDelta(61.0237, (float) (string) $result->value(), 0.01);
         self::assertInstanceOf(CubicInches::class, $result->uom());
     }
 
@@ -447,7 +448,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('61.0237'), CubicInches::make());
         $result = $volume->toLitres();
 
-        self::assertEqualsWithDelta(1.0, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(1.0, (float) (string) $result->value(), 0.001);
     }
 
     public function testCubicMetersToCubicFeet(): void
@@ -455,7 +456,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), CubicMeters::make());
         $result = $volume->toCubicFeet();
 
-        self::assertEqualsWithDelta(35.3147, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(35.3147, (float) (string) $result->value(), 0.001);
         self::assertInstanceOf(CubicFeet::class, $result->uom());
     }
 
@@ -472,7 +473,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), CubicFeet::make());
         $result = $volume->toCubicInches();
 
-        self::assertEqualsWithDelta(1728.0, (float)(string)$result->value(), 0.01);
+        self::assertEqualsWithDelta(1728.0, (float) (string) $result->value(), 0.01);
     }
 
     public function testCubicMetersToCubicYards(): void
@@ -480,7 +481,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), CubicMeters::make());
         $result = $volume->toCubicYards();
 
-        self::assertEqualsWithDelta(1.30795, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(1.30795, (float) (string) $result->value(), 0.001);
         self::assertInstanceOf(CubicYards::class, $result->uom());
     }
 
@@ -489,7 +490,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), CubicYards::make());
         $result = $volume->toCubicFeet();
 
-        self::assertEqualsWithDelta(27.0, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(27.0, (float) (string) $result->value(), 0.001);
     }
 
     public function testLitresToUsGallons(): void
@@ -497,7 +498,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), Litres::make());
         $result = $volume->toUsGallons();
 
-        self::assertEqualsWithDelta(0.264172, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(0.264172, (float) (string) $result->value(), 0.001);
         self::assertInstanceOf(UsGallons::class, $result->uom());
     }
 
@@ -506,7 +507,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), UsGallons::make());
         $result = $volume->toLitres();
 
-        self::assertEqualsWithDelta(3.78541, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(3.78541, (float) (string) $result->value(), 0.001);
     }
 
     public function testUsGallonsToUsPints(): void
@@ -514,7 +515,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), UsGallons::make());
         $result = $volume->toUsPints();
 
-        self::assertEqualsWithDelta(8.0, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(8.0, (float) (string) $result->value(), 0.001);
     }
 
     public function testUsGallonsToUsQuarts(): void
@@ -522,7 +523,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), UsGallons::make());
         $result = $volume->toUsQuarts();
 
-        self::assertEqualsWithDelta(4.0, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(4.0, (float) (string) $result->value(), 0.001);
     }
 
     public function testUsGallonsToUsCups(): void
@@ -530,7 +531,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), UsGallons::make());
         $result = $volume->toUsCups();
 
-        self::assertEqualsWithDelta(16.0, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(16.0, (float) (string) $result->value(), 0.001);
     }
 
     public function testUsGallonsToFluidOunces(): void
@@ -538,7 +539,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), UsGallons::make());
         $result = $volume->toFluidOunces();
 
-        self::assertEqualsWithDelta(128.0, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(128.0, (float) (string) $result->value(), 0.001);
     }
 
     public function testLitresToUsPints(): void
@@ -546,7 +547,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), Litres::make());
         $result = $volume->toUsPints();
 
-        self::assertEqualsWithDelta(2.11338, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(2.11338, (float) (string) $result->value(), 0.001);
         self::assertInstanceOf(UsPints::class, $result->uom());
     }
 
@@ -555,7 +556,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), Litres::make());
         $result = $volume->toUsQuarts();
 
-        self::assertEqualsWithDelta(1.05669, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(1.05669, (float) (string) $result->value(), 0.001);
         self::assertInstanceOf(UsQuarts::class, $result->uom());
     }
 
@@ -564,7 +565,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), Litres::make());
         $result = $volume->toUsCups();
 
-        self::assertEqualsWithDelta(4.22675, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(4.22675, (float) (string) $result->value(), 0.001);
         self::assertInstanceOf(UsCups::class, $result->uom());
     }
 
@@ -573,7 +574,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), Litres::make());
         $result = $volume->toFluidOunces();
 
-        self::assertEqualsWithDelta(33.814, (float)(string)$result->value(), 0.01);
+        self::assertEqualsWithDelta(33.814, (float) (string) $result->value(), 0.01);
         self::assertInstanceOf(FluidOunces::class, $result->uom());
     }
 
@@ -582,7 +583,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), Tablespoons::make());
         $result = $volume->toTeaspoons();
 
-        self::assertEqualsWithDelta(3.0, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(3.0, (float) (string) $result->value(), 0.001);
     }
 
     public function testFluidOuncesToTablespoons(): void
@@ -590,7 +591,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), FluidOunces::make());
         $result = $volume->toTablespoons();
 
-        self::assertEqualsWithDelta(2.0, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(2.0, (float) (string) $result->value(), 0.001);
         self::assertInstanceOf(Tablespoons::class, $result->uom());
     }
 
@@ -599,7 +600,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), Litres::make());
         $result = $volume->toTablespoons();
 
-        self::assertEqualsWithDelta(67.628, (float)(string)$result->value(), 0.01);
+        self::assertEqualsWithDelta(67.628, (float) (string) $result->value(), 0.01);
     }
 
     public function testLitresToTeaspoons(): void
@@ -607,7 +608,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), Litres::make());
         $result = $volume->toTeaspoons();
 
-        self::assertEqualsWithDelta(202.884, (float)(string)$result->value(), 0.01);
+        self::assertEqualsWithDelta(202.884, (float) (string) $result->value(), 0.01);
         self::assertInstanceOf(Teaspoons::class, $result->uom());
     }
 
@@ -616,7 +617,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), Litres::make());
         $result = $volume->toImperialGallons();
 
-        self::assertEqualsWithDelta(0.219969, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(0.219969, (float) (string) $result->value(), 0.001);
         self::assertInstanceOf(ImperialGallons::class, $result->uom());
     }
 
@@ -625,7 +626,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), ImperialGallons::make());
         $result = $volume->toLitres();
 
-        self::assertEqualsWithDelta(4.54609, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(4.54609, (float) (string) $result->value(), 0.001);
     }
 
     public function testImperialGallonsToUsGallons(): void
@@ -633,7 +634,7 @@ final class VolumeTest extends TestCase
         $volume = new Volume(BigDecimal::of('1'), ImperialGallons::make());
         $result = $volume->toUsGallons();
 
-        self::assertEqualsWithDelta(1.20095, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(1.20095, (float) (string) $result->value(), 0.001);
     }
 
     // ---------------------------------------------------------------
@@ -659,7 +660,7 @@ final class VolumeTest extends TestCase
         $converted = $original->toUsGallons();
         $roundTrip = $converted->toLitres();
 
-        self::assertEqualsWithDelta(10.0, (float)(string)$roundTrip->value(), 0.0001);
+        self::assertEqualsWithDelta(10.0, (float) (string) $roundTrip->value(), 0.0001);
     }
 
     public function testRoundTripCubicMetersToCubicFeetAndBack(): void
@@ -668,7 +669,7 @@ final class VolumeTest extends TestCase
         $converted = $original->toCubicFeet();
         $roundTrip = $converted->toCubicMeters();
 
-        self::assertEqualsWithDelta(5.0, (float)(string)$roundTrip->value(), 0.0001);
+        self::assertEqualsWithDelta(5.0, (float) (string) $roundTrip->value(), 0.0001);
     }
 
     // ---------------------------------------------------------------

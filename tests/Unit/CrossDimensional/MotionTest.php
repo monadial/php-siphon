@@ -4,35 +4,34 @@ declare(strict_types=1);
 
 namespace Monadial\Siphon\Tests\Unit\CrossDimensional;
 
-use Brick\Math\BigDecimal;
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\System\MetricSystem;
-use Monadial\Siphon\UnitOfMeasure;
 use Monadial\Siphon\Unit\Mass\Mass;
-use Monadial\Siphon\Unit\Mass\MassUnit;
 use Monadial\Siphon\Unit\Mass\Mass\Kilograms;
+use Monadial\Siphon\Unit\Mass\MassUnit;
 use Monadial\Siphon\Unit\Mechanics\Momentum;
-use Monadial\Siphon\Unit\Mechanics\MomentumUnit;
 use Monadial\Siphon\Unit\Mechanics\Momentum\KilogramMetersPerSecond;
+use Monadial\Siphon\Unit\Mechanics\MomentumUnit;
 use Monadial\Siphon\Unit\Mechanics\VolumeFlow;
-use Monadial\Siphon\Unit\Mechanics\VolumeFlowUnit;
 use Monadial\Siphon\Unit\Mechanics\VolumeFlow\CubicMetersPerSecond;
+use Monadial\Siphon\Unit\Mechanics\VolumeFlowUnit;
 use Monadial\Siphon\Unit\Motion\Acceleration;
-use Monadial\Siphon\Unit\Motion\AccelerationUnit;
 use Monadial\Siphon\Unit\Motion\Acceleration\MetersPerSecondSquared;
+use Monadial\Siphon\Unit\Motion\AccelerationUnit;
 use Monadial\Siphon\Unit\Motion\Velocity;
-use Monadial\Siphon\Unit\Motion\VelocityUnit;
 use Monadial\Siphon\Unit\Motion\Velocity\KilometersPerHour;
 use Monadial\Siphon\Unit\Motion\Velocity\MetersPerSecond;
+use Monadial\Siphon\Unit\Motion\VelocityUnit;
 use Monadial\Siphon\Unit\Space\Length;
-use Monadial\Siphon\Unit\Space\LengthUnit;
 use Monadial\Siphon\Unit\Space\Length\Meters;
+use Monadial\Siphon\Unit\Space\LengthUnit;
 use Monadial\Siphon\Unit\Space\Volume;
-use Monadial\Siphon\Unit\Space\VolumeUnit;
 use Monadial\Siphon\Unit\Space\Volume\CubicMeters;
+use Monadial\Siphon\Unit\Space\VolumeUnit;
 use Monadial\Siphon\Unit\Time\Time;
-use Monadial\Siphon\Unit\Time\TimeUnit;
 use Monadial\Siphon\Unit\Time\Time\Seconds;
+use Monadial\Siphon\Unit\Time\TimeUnit;
+use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -188,7 +187,7 @@ final class MotionTest extends TestCase
         $accel = Acceleration::metersPerSecondSquared('9.81');
         $time = Time::seconds(5);
 
-        $velocity = $accel->timesTime($time);        // 49.05 m/s
+        $velocity = $accel->timesTime($time); // 49.05 m/s
         $accelBack = $velocity->dividedByTime($time); // 9.81 m/s²
 
         self::assertEqualsWithDelta(9.81, (float) (string) $accelBack->value(), 0.001);

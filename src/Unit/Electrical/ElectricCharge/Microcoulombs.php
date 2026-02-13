@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Electrical\ElectricChargeUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The microcoulomb (uC) — one millionth of a coulomb.
+ *
+ * Used in electrostatics and piezoelectric sensor measurements.
+ * Factor: 10^-6. 1 uC = 0.000001 C.
+ *
+ * @see ElectricCharge::microcoulombs()
  */
 final readonly class Microcoulombs extends ElectricChargeUnit
 {
@@ -18,5 +23,11 @@ final readonly class Microcoulombs extends ElectricChargeUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::MICRO->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'uC';
     }
 }

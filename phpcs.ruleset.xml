@@ -3,5 +3,6 @@
   <description>Monadial Si</description>
   <rule ref="vendor/pixelfederation/coding-standards/phpcs.ruleset.84.xml">
     <exclude name="PixelFederationCodingStandard.ControlStructures.DisallowSwitchStatement"/>
+    <exclude name="PHPCompatibility.FunctionUse.RemovedFunctions.eachDeprecated"/>
   </rule>
 </ruleset>

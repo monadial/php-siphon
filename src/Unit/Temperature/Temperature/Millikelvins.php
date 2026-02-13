@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Temperature\TemperatureUnit;
 use Override;
 
 /**
- * @psalm-api
+ * One thousandth of a kelvin.
+ *
+ * Symbol: mK. Conversion factor: 10^-3 (1 mK = 0.001 K).
+ * Used in cryogenics and precision temperature measurements near absolute zero.
+ *
+ * @see Millikelvins::make()
  */
 final readonly class Millikelvins extends TemperatureUnit
 {
@@ -18,5 +23,11 @@ final readonly class Millikelvins extends TemperatureUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::MILLI->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'mK';
     }
 }

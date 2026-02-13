@@ -6,11 +6,8 @@ namespace Monadial\Siphon\Unit\Mechanics;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
-
 use Monadial\Siphon\Quantity;
-use Monadial\Siphon\Unit\Motion\Velocity;
-use Monadial\Siphon\Unit\Space\Area;
-use Monadial\Siphon\Unit\Space\Length;
+use Monadial\Siphon\Unit\Mass\Mass;
 use Monadial\Siphon\Unit\Mechanics\Force\Dynes;
 use Monadial\Siphon\Unit\Mechanics\Force\KilogramForce;
 use Monadial\Siphon\Unit\Mechanics\Force\Kilonewtons;
@@ -18,10 +15,36 @@ use Monadial\Siphon\Unit\Mechanics\Force\Meganewtons;
 use Monadial\Siphon\Unit\Mechanics\Force\Millinewtons;
 use Monadial\Siphon\Unit\Mechanics\Force\Newtons;
 use Monadial\Siphon\Unit\Mechanics\Force\PoundForce;
+use Monadial\Siphon\Unit\Motion\Acceleration;
+use Monadial\Siphon\Unit\Motion\Velocity;
+use Monadial\Siphon\Unit\Space\Area;
+use Monadial\Siphon\Unit\Space\Length;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Force measures an interaction that changes the motion of an object.
+ *
+ * The SI unit of force is the newton (N). Force is a derived quantity with dimension
+ * M*L*T^-2, equivalent to kg*m/s^2. Newton's second law defines force as the product
+ * of mass and acceleration (F = m*a).
+ *
+ * Available units: Millinewtons (10^-3), Newtons (base, factor 1), Kilonewtons (10^3),
+ * Meganewtons (10^6), Dynes (10^-5), KilogramForce (9.80665), PoundForce (4.448222).
+ *
+ * Cross-dimensional operations:
+ * - Force * Length = Energy (W = F*d)
+ * - Force * Velocity = Power (P = F*v)
+ * - Force / Area = Pressure (P = F/A)
+ * - Force / Mass = Acceleration (a = F/m)
+ * - Force / Acceleration = Mass (m = F/a)
+ *
+ * Example usage:
+ * ```
+ * $force = Force::newtons(100);
+ * $kn = $force->toKilonewtons();
+ * $accel = $force->dividedByMass(Mass::kilograms(10));
+ * ```
+ *
+ * @see ForceUnit for the abstract unit base class
  * @template-extends Quantity<ForceUnit>
  */
 final readonly class Force extends Quantity
@@ -123,30 +146,38 @@ final readonly class Force extends Quantity
         return $this->scaleTo(KilogramForce::make());
     }
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
     public function timesLength(Length $length): Energy
     {
         $base = $this->toBaseValue()->multipliedBy($length->toBaseValue());
+
         return Energy::joules($base);
     }
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
     public function timesVelocity(Velocity $velocity): Power
     {
         $base = $this->toBaseValue()->multipliedBy($velocity->toBaseValue());
+
         return Power::watts($base);
     }
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
     public function dividedByArea(Area $area): Pressure
     {
         $base = $this->toBaseValue()->dividedBy($area->toBaseValue(), 20, RoundingMode::HALF_UP);
+
         return Pressure::pascals($base);
+    }
+
+    public function dividedByMass(Mass $mass): Acceleration
+    {
+        $base = $this->toBaseValue()->dividedBy($mass->toBaseValue(), 20, RoundingMode::HALF_UP);
+
+        return Acceleration::metersPerSecondSquared($base);
+    }
+
+    public function dividedByAcceleration(Acceleration $acceleration): Mass
+    {
+        $base = $this->toBaseValue()->dividedBy($acceleration->toBaseValue(), 20, RoundingMode::HALF_UP);
+
+        return Mass::kilograms($base);
     }
 }

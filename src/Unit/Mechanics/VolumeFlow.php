@@ -5,18 +5,35 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Mechanics;
 
 use Brick\Math\BigDecimal;
-
 use Monadial\Siphon\Quantity;
-use Monadial\Siphon\Unit\Space\Volume;
-use Monadial\Siphon\Unit\Time\Time;
 use Monadial\Siphon\Unit\Mechanics\VolumeFlow\CubicMetersPerSecond;
 use Monadial\Siphon\Unit\Mechanics\VolumeFlow\GallonsPerMinute;
 use Monadial\Siphon\Unit\Mechanics\VolumeFlow\LitresPerMinute;
 use Monadial\Siphon\Unit\Mechanics\VolumeFlow\LitresPerSecond;
+use Monadial\Siphon\Unit\Space\Volume;
+use Monadial\Siphon\Unit\Time\Time;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Volume flow rate measures the volume of fluid passing through a surface per unit time.
+ *
+ * The SI unit of volume flow rate is the cubic meter per second (m^3/s). Volume flow rate
+ * is a derived quantity with dimension L^3*T^-1. It is widely used in hydraulic engineering,
+ * HVAC systems, and process industries to quantify fluid transport through pipes and channels.
+ *
+ * Available units: CubicMetersPerSecond (base, factor 1), LitresPerSecond (10^-3),
+ * LitresPerMinute (1/60000), GallonsPerMinute (6.30902e-5).
+ *
+ * Cross-dimensional operations:
+ * - VolumeFlow * Time = Volume (V = Q * t)
+ *
+ * Example usage:
+ * ```
+ * $flow = VolumeFlow::litresPerMinute(120);
+ * $volume = $flow->timesTime(Time::hours(1));
+ * $si = $flow->toCubicMetersPerSecond();
+ * ```
+ *
+ * @see VolumeFlowUnit for the abstract unit base class
  * @template-extends Quantity<VolumeFlowUnit>
  */
 final readonly class VolumeFlow extends Quantity
@@ -63,12 +80,10 @@ final readonly class VolumeFlow extends Quantity
         return $this->scaleTo(LitresPerSecond::make());
     }
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
     public function timesTime(Time $time): Volume
     {
         $base = $this->toBaseValue()->multipliedBy($time->toBaseValue());
+
         return Volume::cubicMeters($base);
     }
 }

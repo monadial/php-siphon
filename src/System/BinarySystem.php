@@ -17,17 +17,25 @@ enum BinarySystem implements System
     case PEBI;
     case EXBI;
 
+    private const int BYTE_MULTIPLIER = 1;
+    private const int KIBI_MULTIPLIER = 1024;
+    private const int MEBI_MULTIPLIER = 1_048_576;
+    private const int GIBI_MULTIPLIER = 1_073_741_824;
+    private const int TEBI_MULTIPLIER = 1_099_511_627_776;
+    private const int PEBI_MULTIPLIER = 1_125_899_906_842_624;
+    private const int EXBI_MULTIPLIER = 1_152_921_504_606_846_976;
+
     #[Override]
     public function factor(): BigDecimal
     {
         return BigDecimal::of(match ($this) {
-            self::BYTE => '1',
-            self::KIBI => '1024',
-            self::MEBI => '1048576',
-            self::GIBI => '1073741824',
-            self::TEBI => '1099511627776',
-            self::PEBI => '1125899906842624',
-            self::EXBI => '1152921504606846976',
+            self::BYTE => self::BYTE_MULTIPLIER,
+            self::KIBI => self::KIBI_MULTIPLIER,
+            self::MEBI => self::MEBI_MULTIPLIER,
+            self::GIBI => self::GIBI_MULTIPLIER,
+            self::TEBI => self::TEBI_MULTIPLIER,
+            self::PEBI => self::PEBI_MULTIPLIER,
+            self::EXBI => self::EXBI_MULTIPLIER,
         });
     }
 }

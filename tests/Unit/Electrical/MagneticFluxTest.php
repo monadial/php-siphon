@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Tests\Unit\Electrical;
 
 use Brick\Math\BigDecimal;
+use Monadial\Siphon\Quantity;
+use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Electrical\MagneticFlux;
 use Monadial\Siphon\Unit\Electrical\MagneticFlux\Microwebers;
 use Monadial\Siphon\Unit\Electrical\MagneticFlux\Milliwebers;
 use Monadial\Siphon\Unit\Electrical\MagneticFlux\Webers;
-use Monadial\Siphon\Quantity;
-use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;

@@ -9,13 +9,27 @@ use Monadial\Siphon\Unit\Electrical\ElectricChargeUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The ampere-hour (Ah) — a practical unit of electric charge.
+ *
+ * Widely used for battery capacity ratings. One ampere-hour equals the
+ * charge transported by a steady current of one ampere flowing for one hour.
+ * Factor: 3600. 1 Ah = 3600 C.
+ *
+ * @see ElectricCharge::ampereHours()
  */
 final readonly class AmpereHours extends ElectricChargeUnit
 {
+    private const int FACTOR = 3600;
+
     #[Override]
     public function factor(): BigDecimal
     {
-        return BigDecimal::of('3600');
+        return BigDecimal::of(self::FACTOR);
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'Ah';
     }
 }

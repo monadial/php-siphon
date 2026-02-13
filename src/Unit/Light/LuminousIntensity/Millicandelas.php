@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Light\LuminousIntensityUnit;
 use Override;
 
 /**
- * @psalm-api
+ * One thousandth of a candela.
+ *
+ * Symbol: mcd. Conversion factor: 10^-3 (1 mcd = 0.001 cd).
+ * Commonly used to specify the brightness of individual LEDs and indicator lights.
+ *
+ * @see Millicandelas::make()
  */
 final readonly class Millicandelas extends LuminousIntensityUnit
 {
@@ -18,5 +23,11 @@ final readonly class Millicandelas extends LuminousIntensityUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::MILLI->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'mcd';
     }
 }

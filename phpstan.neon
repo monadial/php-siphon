@@ -1,0 +1,17 @@
+parameters:
+    level: max
+    paths:
+        - src
+    tmpDir: .phpstan.cache
+
+    exceptions:
+        check:
+            missingCheckedExceptionInThrows: true
+            tooWideThrowType: true
+        implicitThrows: false
+        checkedExceptionClasses:
+            - Monadial\Siphon\Exception\SiphonError
+
+    shipmonkRules:
+        classSuffixNaming:
+            superclassToSuffixMapping: []

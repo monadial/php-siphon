@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Information\InformationUnit;
 use Override;
 
 /**
- * @psalm-api
+ * SI decimal unit of information equal to 1,000 bytes.
+ *
+ * Symbol: kB. Conversion factor: 10^3 (1 kB = 1,000 B).
+ * Used in telecommunications and storage specifications following SI conventions.
+ *
+ * @see Kilobytes::make()
  */
 final readonly class Kilobytes extends InformationUnit
 {
@@ -18,5 +23,11 @@ final readonly class Kilobytes extends InformationUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::KILO->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'kB';
     }
 }

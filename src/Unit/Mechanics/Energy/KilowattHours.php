@@ -9,14 +9,22 @@ use Monadial\Siphon\Unit\Mechanics\EnergyUnit;
 use Override;
 
 /**
- * @psalm-api
+ * Kilowatt-hour (kWh) -- the energy delivered by one kilowatt of power sustained for one hour.
+ *
+ * Symbol: kWh. Conversion factor: 3,600,000 (1 kWh = 3.6 MJ).
+ * The standard billing unit for residential and commercial electricity.
+ * An average US household consumes approximately 900 kWh per month.
+ *
+ * @see Energy::kilowattHours() for the factory method
  */
 final readonly class KilowattHours extends EnergyUnit
 {
+    private const int FACTOR = 3_600_000;
+
     #[Override]
     public function factor(): BigDecimal
     {
-        return BigDecimal::of('3600000');
+        return BigDecimal::of(self::FACTOR);
     }
 
     #[Override]

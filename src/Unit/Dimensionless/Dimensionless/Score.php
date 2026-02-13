@@ -9,13 +9,26 @@ use Monadial\Siphon\Unit\Dimensionless\DimensionlessUnit;
 use Override;
 
 /**
- * @psalm-api
+ * A counting unit representing twenty items.
+ *
+ * Symbol: score. Conversion factor: 20 (1 score = 20 each).
+ * A traditional English counting unit, as in "four score and seven years ago."
+ *
+ * @see Score::make()
  */
 final readonly class Score extends DimensionlessUnit
 {
+    private const int FACTOR = 20;
+
     #[Override]
     public function factor(): BigDecimal
     {
-        return BigDecimal::of('20');
+        return BigDecimal::of(self::FACTOR);
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'score';
     }
 }

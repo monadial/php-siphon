@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Tests\Unit\Electrical;
 
 use Brick\Math\BigDecimal;
+use Monadial\Siphon\Quantity;
+use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Electrical\MagneticFluxDensity;
 use Monadial\Siphon\Unit\Electrical\MagneticFluxDensity\Gauss;
 use Monadial\Siphon\Unit\Electrical\MagneticFluxDensity\Microteslas;
 use Monadial\Siphon\Unit\Electrical\MagneticFluxDensity\Milliteslas;
 use Monadial\Siphon\Unit\Electrical\MagneticFluxDensity\Teslas;
-use Monadial\Siphon\Quantity;
-use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;

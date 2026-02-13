@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Tests\Unit\Light;
 
 use Brick\Math\BigDecimal;
+use Monadial\Siphon\Quantity;
+use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Light\LuminousFlux;
 use Monadial\Siphon\Unit\Light\LuminousFlux\Kilolumens;
 use Monadial\Siphon\Unit\Light\LuminousFlux\Lumens;
 use Monadial\Siphon\Unit\Light\LuminousFlux\Millilumens;
-use Monadial\Siphon\Quantity;
-use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;

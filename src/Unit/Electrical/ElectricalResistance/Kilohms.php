@@ -10,7 +10,13 @@ use Monadial\Siphon\Unit\Electrical\ElectricalResistanceUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The kilohm (kOhm) — one thousand ohms.
+ *
+ * Common resistor values in electronics, used for pull-up/pull-down resistors,
+ * voltage dividers, and signal conditioning.
+ * Factor: 10^3. 1 kOhm = 1000 Ohm.
+ *
+ * @see ElectricalResistance::kilohms()
  */
 final readonly class Kilohms extends ElectricalResistanceUnit
 {
@@ -18,5 +24,11 @@ final readonly class Kilohms extends ElectricalResistanceUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::KILO->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'kOhm';
     }
 }

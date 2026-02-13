@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Information;
 
 use Brick\Math\BigDecimal;
-
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\Unit\Information\DataRate\BitsPerSecond;
 use Monadial\Siphon\Unit\Information\DataRate\BytesPerSecond;
@@ -16,10 +15,23 @@ use Monadial\Siphon\Unit\Information\DataRate\KilobytesPerSecond;
 use Monadial\Siphon\Unit\Information\DataRate\MegabitsPerSecond;
 use Monadial\Siphon\Unit\Information\DataRate\MegabytesPerSecond;
 use Monadial\Siphon\Unit\Information\DataRate\TerabytesPerSecond;
+use Monadial\Siphon\Unit\Time\Time;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Data transfer rate quantity measuring information throughput per unit time.
+ *
+ * Dimension formula: information / time (bit/s). The base unit is bytes per second (B/s).
+ * Supports both bit-based rates (b/s, kb/s, Mb/s, Gb/s) and byte-based rates
+ * (B/s, kB/s, MB/s, GB/s, TB/s).
+ *
+ * Cross-dimensional: DataRate * Time = Information.
+ *
+ * ```php
+ * $rate = DataRate::megabitsPerSecond(100);
+ * $bytesPerSec = $rate->toBytesPerSecond(); // 12,500,000 B/s
+ * $downloaded = $rate->timesTime(Time::seconds(60)); // 750 MB
+ * ```
+ *
  * @template-extends Quantity<DataRateUnit>
  */
 final readonly class DataRate extends Quantity
@@ -114,5 +126,12 @@ final readonly class DataRate extends Quantity
     public function toGigabitsPerSecond(): self
     {
         return $this->scaleTo(GigabitsPerSecond::make());
+    }
+
+    public function timesTime(Time $time): Information
+    {
+        $base = $this->toBaseValue()->multipliedBy($time->toBaseValue());
+
+        return Information::bytes($base);
     }
 }

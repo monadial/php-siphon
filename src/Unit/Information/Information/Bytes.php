@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Information\InformationUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The base unit of digital information, composed of eight bits.
+ *
+ * Symbol: B. Conversion factor: 1 (base unit).
+ * The byte is the fundamental addressable unit of computer memory and storage.
+ *
+ * @see Bytes::make()
  */
 final readonly class Bytes extends InformationUnit
 {
@@ -18,5 +23,11 @@ final readonly class Bytes extends InformationUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::BASE->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'B';
     }
 }

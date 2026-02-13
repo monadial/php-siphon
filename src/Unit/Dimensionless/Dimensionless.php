@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Dimensionless;
 
 use Brick\Math\BigDecimal;
-
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\Unit\Dimensionless\Dimensionless\Dozen;
 use Monadial\Siphon\Unit\Dimensionless\Dimensionless\Each;
@@ -14,8 +13,18 @@ use Monadial\Siphon\Unit\Dimensionless\Dimensionless\Percent;
 use Monadial\Siphon\Unit\Dimensionless\Dimensionless\Score;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Dimensionless quantity representing pure numbers without physical dimension.
+ *
+ * Dimensionless quantities have a dimension formula of 1 (no physical dimensions).
+ * The base unit is Each (factor 1). Conversions between counting units are supported:
+ * Dozen (12), Score (20), Gross (144), and Percent (0.01).
+ *
+ * ```php
+ * $items = Dimensionless::dozen(3); // 3 dozen
+ * $each = $items->toEach(); // 36 each
+ * $pct = Dimensionless::percent(50); // 50% = 0.5 each
+ * ```
+ *
  * @template-extends Quantity<DimensionlessUnit>
  */
 final readonly class Dimensionless extends Quantity
@@ -54,7 +63,6 @@ final readonly class Dimensionless extends Quantity
     // END_TYPED_FACTORIES
     public function toEach(): self
     {
-        // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.eachDeprecated
         return $this->scaleTo(Each::make());
     }
 

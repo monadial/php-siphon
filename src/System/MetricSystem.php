@@ -58,8 +58,8 @@ enum MetricSystem implements System
     private const float TERA_MULTIPLIER = 1e12;
     private const float PETA_MULTIPLIER = 1e15;
     private const float EXA_MULTIPLIER = 1e18;
-    private const float ZETTA_MULTIPLIER = 1e21;
-    private const float YOTTA_MULTIPLIER = 1e24;
+    private const string ZETTA_MULTIPLIER = '1e21';
+    private const string YOTTA_MULTIPLIER = '1e24';
     private const string RONNA_MULTIPLIER = '1e27';
     private const string QUETTA_MULTIPLIER = '1e30';
 

@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Space\LengthUnit;
 use Override;
 
 /**
- * @psalm-api
+ * Decimeter (dm) -- a unit of length equal to 10^-1 meters.
+ *
+ * Rarely used in everyday life but important because a cubic decimeter
+ * equals exactly one litre. 1 dm = 10 cm.
+ *
+ * @see Length::decimeters() to create a Length quantity in decimeters.
  */
 final readonly class Decimeters extends LengthUnit
 {
@@ -18,5 +23,11 @@ final readonly class Decimeters extends LengthUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::DECI->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'dm';
     }
 }

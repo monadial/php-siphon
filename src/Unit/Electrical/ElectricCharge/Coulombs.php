@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Electrical\ElectricChargeUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The coulomb (C) — SI base unit of electric charge.
+ *
+ * One coulomb is the charge transported by one ampere of current in one second.
+ * Factor: 1 (base unit). 1 C = 1 A*s.
+ *
+ * @see ElectricCharge::coulombs()
  */
 final readonly class Coulombs extends ElectricChargeUnit
 {
@@ -18,5 +23,11 @@ final readonly class Coulombs extends ElectricChargeUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::BASE->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'C';
     }
 }

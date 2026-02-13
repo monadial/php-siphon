@@ -10,7 +10,13 @@ use Monadial\Siphon\Unit\Mechanics\MassFlowUnit;
 use Override;
 
 /**
- * @psalm-api
+ * Kilograms per second (kg/s) -- the SI unit of mass flow rate.
+ *
+ * Symbol: kg/s. Conversion factor: 1 (base unit).
+ * Used in fluid dynamics and process engineering. A typical garden hose delivers
+ * approximately 0.2 kg/s of water.
+ *
+ * @see MassFlow::kilogramsPerSecond() for the factory method
  */
 final readonly class KilogramsPerSecond extends MassFlowUnit
 {
@@ -18,5 +24,11 @@ final readonly class KilogramsPerSecond extends MassFlowUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::BASE->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'kg/s';
     }
 }

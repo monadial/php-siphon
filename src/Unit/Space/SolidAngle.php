@@ -5,14 +5,24 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Space;
 
 use Brick\Math\BigDecimal;
-
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\Unit\Space\SolidAngle\SquareDegrees;
 use Monadial\Siphon\Unit\Space\SolidAngle\Steradians;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * SolidAngle represents the two-dimensional angle subtended at a point in three-dimensional space.
+ *
+ * The SI unit of solid angle is the steradian (sr), defined as the solid angle that,
+ * having its vertex at the centre of a sphere, cuts off an area on the surface equal
+ * to the square of the radius. A full sphere subtends 4*pi steradians.
+ *
+ * Available units: Steradians (sr), SquareDegrees (deg^2).
+ *
+ * Usage:
+ *     $solidAngle = SolidAngle::steradians(1);
+ *     $inSquareDeg = $solidAngle->toSquareDegrees(); // ~3282.8 deg^2
+ *
+ * @see SolidAngleUnit for the abstract unit base class.
  * @template-extends Quantity<SolidAngleUnit>
  */
 final readonly class SolidAngle extends Quantity

@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Electrical\ElectricChargeUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The nanocoulomb (nC) — one billionth of a coulomb.
+ *
+ * Used in semiconductor physics and small electrostatic charge measurements.
+ * Factor: 10^-9. 1 nC = 0.000000001 C.
+ *
+ * @see ElectricCharge::nanocoulombs()
  */
 final readonly class Nanocoulombs extends ElectricChargeUnit
 {
@@ -18,5 +23,11 @@ final readonly class Nanocoulombs extends ElectricChargeUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::NANO->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'nC';
     }
 }

@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Light\LuminousIntensityUnit;
 use Override;
 
 /**
- * @psalm-api
+ * One thousand candelas.
+ *
+ * Symbol: kcd. Conversion factor: 10^3 (1 kcd = 1,000 cd).
+ * Used for high-intensity light sources such as searchlights and automotive headlamps.
+ *
+ * @see Kilocandelas::make()
  */
 final readonly class Kilocandelas extends LuminousIntensityUnit
 {
@@ -18,5 +23,11 @@ final readonly class Kilocandelas extends LuminousIntensityUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::KILO->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'kcd';
     }
 }

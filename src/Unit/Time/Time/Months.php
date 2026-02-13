@@ -8,14 +8,19 @@ use Brick\Math\BigDecimal;
 use Monadial\Siphon\Unit\Time\TimeUnit;
 use Override;
 
-/**
- * @psalm-api
- */
 final readonly class Months extends TimeUnit
 {
+    private const int FACTOR = 2_629_746;
+
     #[Override]
     public function factor(): BigDecimal
     {
-        return BigDecimal::of('2629746');
+        return BigDecimal::of(self::FACTOR);
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'mo';
     }
 }

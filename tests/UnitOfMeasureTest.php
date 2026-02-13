@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Tests;
 
 use Brick\Math\BigDecimal;
+use Monadial\Siphon\Exception\UnitNotFound;
 use Monadial\Siphon\System\MetricSystem;
-use Monadial\Siphon\UnitOfMeasure;
 use Monadial\Siphon\Unit\Mechanics\Power;
 use Monadial\Siphon\Unit\Mechanics\Power\Watts;
+use Monadial\Siphon\Unit\Space\Area\SquareMeters;
 use Monadial\Siphon\Unit\Space\Length;
 use Monadial\Siphon\Unit\Space\Length\Centimeters;
 use Monadial\Siphon\Unit\Space\Length\Kilometers;
 use Monadial\Siphon\Unit\Space\Length\Meters;
 use Monadial\Siphon\Unit\Space\Length\Millimeters;
-use Monadial\Siphon\Unit\Space\Area\SquareMeters;
+use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -123,6 +124,7 @@ final class UnitOfMeasureTest extends TestCase
         self::assertTrue(Millimeters::make()->factor()->isEqualTo(BigDecimal::of('0.001')));
     }
 
+    /** @throws UnitNotFound */
     public function testFromCreatesLengthQuantityFromUnit(): void
     {
         $length = Meters::from(12);
@@ -132,6 +134,7 @@ final class UnitOfMeasureTest extends TestCase
         self::assertInstanceOf(Meters::class, $length->uom());
     }
 
+    /** @throws UnitNotFound */
     public function testFromCreatesPowerQuantityFromUnit(): void
     {
         $power = Watts::from('100.5');

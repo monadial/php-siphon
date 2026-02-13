@@ -10,7 +10,13 @@ use Monadial\Siphon\Unit\Light\LuminousFluxUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The SI derived unit of luminous flux.
+ *
+ * Symbol: lm. Conversion factor: 1 (base unit).
+ * One lumen equals the luminous flux emitted by a source of one candela
+ * intensity through a solid angle of one steradian.
+ *
+ * @see Lumens::make()
  */
 final readonly class Lumens extends LuminousFluxUnit
 {
@@ -18,5 +24,11 @@ final readonly class Lumens extends LuminousFluxUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::BASE->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'lm';
     }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Substance;
 
 use Brick\Math\BigDecimal;
-
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\Unit\Substance\AmountOfSubstance\Kilomoles;
 use Monadial\Siphon\Unit\Substance\AmountOfSubstance\Micromoles;
@@ -13,8 +12,18 @@ use Monadial\Siphon\Unit\Substance\AmountOfSubstance\Millimoles;
 use Monadial\Siphon\Unit\Substance\AmountOfSubstance\Moles;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Amount of substance quantity measuring the number of elementary entities.
+ *
+ * Amount of substance is one of the seven SI base quantities with dimension formula N.
+ * The SI base unit is the mole (mol), defined as exactly 6.02214076 x 10^23 elementary
+ * entities (Avogadro's number). Available units: Micromoles (10^-6), Millimoles (10^-3),
+ * Moles (1), Kilomoles (10^3).
+ *
+ * ```php
+ * $amount = AmountOfSubstance::moles(2.5);
+ * $mmol = $amount->toMillimoles(); // 2500 mmol
+ * ```
+ *
  * @template-extends Quantity<AmountOfSubstanceUnit>
  */
 final readonly class AmountOfSubstance extends Quantity

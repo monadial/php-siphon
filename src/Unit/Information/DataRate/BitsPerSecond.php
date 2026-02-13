@@ -9,13 +9,26 @@ use Monadial\Siphon\Unit\Information\DataRateUnit;
 use Override;
 
 /**
- * @psalm-api
+ * Data rate unit representing one bit transferred per second.
+ *
+ * Symbol: b/s. Conversion factor: 0.125 (1 b/s = 1/8 B/s).
+ * The fundamental unit of data transfer speed in telecommunications.
+ *
+ * @see BitsPerSecond::make()
  */
 final readonly class BitsPerSecond extends DataRateUnit
 {
+    private const float FACTOR = 0.125;
+
     #[Override]
     public function factor(): BigDecimal
     {
-        return BigDecimal::of('0.125');
+        return BigDecimal::of(self::FACTOR);
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'b/s';
     }
 }

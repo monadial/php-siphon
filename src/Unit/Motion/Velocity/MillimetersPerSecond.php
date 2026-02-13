@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Motion\VelocityUnit;
 use Override;
 
 /**
- * @psalm-api
+ * One thousandth of a meter per second.
+ *
+ * Symbol: mm/s. Conversion factor: 10^-3 (1 mm/s = 0.001 m/s).
+ * Used in precision engineering and slow-motion measurements.
+ *
+ * @see MillimetersPerSecond::make()
  */
 final readonly class MillimetersPerSecond extends VelocityUnit
 {

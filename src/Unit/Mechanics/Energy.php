@@ -6,9 +6,7 @@ namespace Monadial\Siphon\Unit\Mechanics;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
-
 use Monadial\Siphon\Quantity;
-use Monadial\Siphon\Unit\Time\Time;
 use Monadial\Siphon\Unit\Mechanics\Energy\BritishThermalUnits;
 use Monadial\Siphon\Unit\Mechanics\Energy\Calories;
 use Monadial\Siphon\Unit\Mechanics\Energy\Electronvolts;
@@ -22,10 +20,37 @@ use Monadial\Siphon\Unit\Mechanics\Energy\Megajoules;
 use Monadial\Siphon\Unit\Mechanics\Energy\MegawattHours;
 use Monadial\Siphon\Unit\Mechanics\Energy\Millijoules;
 use Monadial\Siphon\Unit\Mechanics\Energy\WattHours;
+use Monadial\Siphon\Unit\Space\Length;
+use Monadial\Siphon\Unit\Space\Volume;
+use Monadial\Siphon\Unit\Time\Time;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Energy measures the capacity to do work or transfer heat.
+ *
+ * The SI unit of energy is the joule (J). Energy is a derived quantity with dimension
+ * M*L^2*T^-2, equivalent to kg*m^2/s^2. Energy appears in every branch of physics and
+ * engineering, from mechanical work and heat transfer to electrical power and nuclear reactions.
+ *
+ * Available units: Millijoules (10^-3), Joules (base, factor 1), Kilojoules (10^3),
+ * Megajoules (10^6), Gigajoules (10^9), Calories (4.184), Kilocalories (4184),
+ * BritishThermalUnits (1055.06), Electronvolts (1.602176634e-19), WattHours (3600),
+ * KilowattHours (3600000), MegawattHours (3.6e9), GigawattHours (3.6e12).
+ *
+ * Cross-dimensional operations:
+ * - Energy / Time = Power (P = E/t)
+ * - Energy / Power = Time (t = E/P)
+ * - Energy / Length = Force (W = F*d, so F = W/d)
+ * - Energy / Force = Length (d = W/F)
+ * - Energy / Volume = Pressure (E = P*V, so P = E/V)
+ *
+ * Example usage:
+ * ```
+ * $energy = Energy::kilowattHours(100);
+ * $joules = $energy->toJoules();
+ * $power = $energy->dividedByTime(Time::hours(2));
+ * ```
+ *
+ * @see EnergyUnit for the abstract unit base class
  * @template-extends Quantity<EnergyUnit>
  */
 final readonly class Energy extends Quantity
@@ -227,21 +252,38 @@ final readonly class Energy extends Quantity
         return $this->scaleTo(Electronvolts::make());
     }
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
     public function dividedByTime(Time $time): Power
     {
         $base = $this->toBaseValue()->dividedBy($time->toBaseValue(), 20, RoundingMode::HALF_UP);
+
         return Power::watts($base);
     }
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
     public function dividedByPower(Power $power): Time
     {
         $base = $this->toBaseValue()->dividedBy($power->toBaseValue(), 20, RoundingMode::HALF_UP);
+
         return Time::seconds($base);
+    }
+
+    public function dividedByLength(Length $length): Force
+    {
+        $base = $this->toBaseValue()->dividedBy($length->toBaseValue(), 20, RoundingMode::HALF_UP);
+
+        return Force::newtons($base);
+    }
+
+    public function dividedByForce(Force $force): Length
+    {
+        $base = $this->toBaseValue()->dividedBy($force->toBaseValue(), 20, RoundingMode::HALF_UP);
+
+        return Length::meters($base);
+    }
+
+    public function dividedByVolume(Volume $volume): Pressure
+    {
+        $base = $this->toBaseValue()->dividedBy($volume->toBaseValue(), 20, RoundingMode::HALF_UP);
+
+        return Pressure::pascals($base);
     }
 }

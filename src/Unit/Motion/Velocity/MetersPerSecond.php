@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Motion\VelocityUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The SI derived unit of velocity.
+ *
+ * Symbol: m/s. Conversion factor: 1 (base unit).
+ * Represents a displacement of one meter per second.
+ *
+ * @see MetersPerSecond::make()
  */
 final readonly class MetersPerSecond extends VelocityUnit
 {

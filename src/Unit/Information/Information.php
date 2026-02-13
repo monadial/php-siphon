@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Information;
 
 use Brick\Math\BigDecimal;
-
+use Brick\Math\RoundingMode;
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\Unit\Information\Information\Bits;
 use Monadial\Siphon\Unit\Information\Information\Bytes;
@@ -21,10 +21,24 @@ use Monadial\Siphon\Unit\Information\Information\Pebibytes;
 use Monadial\Siphon\Unit\Information\Information\Petabytes;
 use Monadial\Siphon\Unit\Information\Information\Tebibytes;
 use Monadial\Siphon\Unit\Information\Information\Terabytes;
+use Monadial\Siphon\Unit\Time\Time;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Digital information quantity measuring data size.
+ *
+ * The base unit is the byte (B), with the bit as the smallest addressable unit
+ * (1 bit = 0.125 bytes). Supports both SI decimal prefixes (kilo, mega, giga,
+ * tera, peta, exa) and IEC binary prefixes (kibi, mebi, gibi, tebi, pebi, exbi).
+ *
+ * Cross-dimensional: Information / Time = DataRate, Information / DataRate = Time.
+ *
+ * ```php
+ * $size = Information::gigabytes(50);
+ * $bits = $size->toBits();
+ * $binary = $size->toGibibytes();
+ * $rate = $size->dividedByTime(Time::seconds(10)); // 5 GB/s
+ * ```
+ *
  * @template-extends Quantity<InformationUnit>
  */
 final readonly class Information extends Quantity
@@ -239,5 +253,19 @@ final readonly class Information extends Quantity
     public function toExbibytes(): self
     {
         return $this->scaleTo(Exbibytes::make());
+    }
+
+    public function dividedByTime(Time $time): DataRate
+    {
+        $base = $this->toBaseValue()->dividedBy($time->toBaseValue(), 20, RoundingMode::HALF_UP);
+
+        return DataRate::bytesPerSecond($base);
+    }
+
+    public function dividedByDataRate(DataRate $rate): Time
+    {
+        $base = $this->toBaseValue()->dividedBy($rate->toBaseValue(), 20, RoundingMode::HALF_UP);
+
+        return Time::seconds($base);
     }
 }

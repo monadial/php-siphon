@@ -7,7 +7,12 @@ namespace Monadial\Siphon\Unit\Electrical;
 use Monadial\Siphon\UnitOfMeasure;
 
 /**
- * @template-extends UnitOfMeasure<ElectricCharge>
+ * Abstract base for all electric charge units.
+ *
+ * Each concrete subclass defines its conversion {@see factor()} relative
+ * to the SI base unit (coulomb) and its display {@see symbol()}.
+ *
+ * @see ElectricCharge
  */
 abstract readonly class ElectricChargeUnit extends UnitOfMeasure
 {

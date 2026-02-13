@@ -9,14 +9,17 @@ use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Time\FrequencyUnit;
 use Override;
 
-/**
- * @psalm-api
- */
 final readonly class Megahertz extends FrequencyUnit
 {
     #[Override]
     public function factor(): BigDecimal
     {
         return MetricSystem::MEGA->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'MHz';
     }
 }

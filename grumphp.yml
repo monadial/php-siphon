@@ -7,9 +7,7 @@ grumphp:
       encoding: utf-8
       triggered_by: [ 'php' ]
     phpunit: ~
-    psalm:
-      config: psalm.xml
-      no_cache: true
-      report: ~
+    phpstan:
+      configuration: phpstan.neon
       triggered_by: [ 'php' ]
-      show_info: true
+      memory_limit: '-1'

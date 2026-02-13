@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Tests\Unit\Motion;
 
 use Brick\Math\BigDecimal;
+use Monadial\Siphon\Exception\ParseFailure;
+use Monadial\Siphon\Exception\UnitNotFound;
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\System\MetricSystem;
-use Monadial\Siphon\UnitOfMeasure;
 use Monadial\Siphon\Unit\Motion\Velocity;
-use Monadial\Siphon\Unit\Motion\VelocityUnit;
 use Monadial\Siphon\Unit\Motion\Velocity\FeetPerSecond;
 use Monadial\Siphon\Unit\Motion\Velocity\KilometersPerHour;
 use Monadial\Siphon\Unit\Motion\Velocity\KilometersPerSecond;
@@ -17,6 +17,8 @@ use Monadial\Siphon\Unit\Motion\Velocity\Knots;
 use Monadial\Siphon\Unit\Motion\Velocity\MetersPerSecond;
 use Monadial\Siphon\Unit\Motion\Velocity\MilesPerHour;
 use Monadial\Siphon\Unit\Motion\Velocity\MillimetersPerSecond;
+use Monadial\Siphon\Unit\Motion\VelocityUnit;
+use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -246,6 +248,10 @@ final class VelocityTest extends TestCase
         self::assertEqualsWithDelta(36.0, (float) (string) $converted->value(), 0.0001);
     }
 
+    /**
+     * @throws ParseFailure
+     * @throws UnitNotFound
+     */
     public function testParseFromStringWithSlashNotation(): void
     {
         $parsed = Velocity::parse('100 km/h');

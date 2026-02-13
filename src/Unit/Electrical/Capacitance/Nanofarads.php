@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Electrical\CapacitanceUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The nanofarad (nF) — one billionth of a farad.
+ *
+ * Common in ceramic and film capacitors used for filtering and decoupling.
+ * Factor: 10^-9. 1 nF = 0.000000001 F.
+ *
+ * @see Capacitance::nanofarads()
  */
 final readonly class Nanofarads extends CapacitanceUnit
 {
@@ -18,5 +23,11 @@ final readonly class Nanofarads extends CapacitanceUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::NANO->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'nF';
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Monadial\Siphon\Tests\Market;
 
-use LogicException;
+use Monadial\Siphon\Exception\InvalidArgument;
 use Monadial\Siphon\Market\ExchangeRate;
 use Monadial\Siphon\Market\Money;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Money::class)]
 final class ExchangeRateTest extends TestCase
 {
+    /** @throws InvalidArgument */
     public function testConvert(): void
     {
         $rate = new ExchangeRate('USD', 'EUR', '0.91');
@@ -25,6 +26,7 @@ final class ExchangeRateTest extends TestCase
         self::assertSame('91.00', (string) $eur->amount());
     }
 
+    /** @throws InvalidArgument */
     public function testConvertWithDecimalRate(): void
     {
         $rate = new ExchangeRate('EUR', 'GBP', '0.856');
@@ -35,15 +37,17 @@ final class ExchangeRateTest extends TestCase
         self::assertSame('42.80', (string) $gbp->amount());
     }
 
+    /** @throws InvalidArgument */
     public function testConvertCurrencyMismatchThrows(): void
     {
         $rate = new ExchangeRate('USD', 'EUR', '0.91');
         $gbp = Money::gbp('100.00');
 
-        $this->expectException(LogicException::class);
+        $this->expectException(InvalidArgument::class);
         $rate->convert($gbp);
     }
 
+    /** @throws InvalidArgument */
     public function testInverse(): void
     {
         $rate = new ExchangeRate('USD', 'EUR', '0.91');
@@ -60,6 +64,7 @@ final class ExchangeRateTest extends TestCase
         );
     }
 
+    /** @throws InvalidArgument */
     public function testRoundTrip(): void
     {
         $rate = new ExchangeRate('USD', 'EUR', '0.91');
@@ -74,5 +79,23 @@ final class ExchangeRateTest extends TestCase
             (float) (string) $usdBack->amount(),
             0.02,
         );
+    }
+
+    /** @throws InvalidArgument */
+    public function testExchangeRateRejectsZeroRate(): void
+    {
+        $this->expectException(InvalidArgument::class);
+        $this->expectExceptionMessage('Exchange rate must be positive');
+
+        new ExchangeRate('USD', 'EUR', 0);
+    }
+
+    /** @throws InvalidArgument */
+    public function testExchangeRateRejectsNegativeRate(): void
+    {
+        $this->expectException(InvalidArgument::class);
+        $this->expectExceptionMessage('Exchange rate must be positive');
+
+        new ExchangeRate('USD', 'EUR', '-0.5');
     }
 }

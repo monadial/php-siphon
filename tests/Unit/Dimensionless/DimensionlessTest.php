@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Tests\Unit\Dimensionless;
 
 use Brick\Math\BigDecimal;
+use Monadial\Siphon\Quantity;
 use Monadial\Siphon\Unit\Dimensionless\Dimensionless;
 use Monadial\Siphon\Unit\Dimensionless\Dimensionless\Dozen;
 use Monadial\Siphon\Unit\Dimensionless\Dimensionless\Each;
 use Monadial\Siphon\Unit\Dimensionless\Dimensionless\Gross;
 use Monadial\Siphon\Unit\Dimensionless\Dimensionless\Percent;
 use Monadial\Siphon\Unit\Dimensionless\Dimensionless\Score;
-use Monadial\Siphon\Quantity;
 use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;

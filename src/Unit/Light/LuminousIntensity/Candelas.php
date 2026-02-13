@@ -10,7 +10,13 @@ use Monadial\Siphon\Unit\Light\LuminousIntensityUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The SI base unit of luminous intensity.
+ *
+ * Symbol: cd. Conversion factor: 1 (base unit).
+ * Defined as the luminous power per unit solid angle emitted by a light source
+ * in a particular direction, approximately the light of one common candle.
+ *
+ * @see Candelas::make()
  */
 final readonly class Candelas extends LuminousIntensityUnit
 {
@@ -18,5 +24,11 @@ final readonly class Candelas extends LuminousIntensityUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::BASE->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'cd';
     }
 }

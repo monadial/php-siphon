@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Electrical\CapacitanceUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The kilofarad (kF) — one thousand farads.
+ *
+ * Used for extremely large capacitances such as supercapacitor banks.
+ * Factor: 10^3. 1 kF = 1000 F.
+ *
+ * @see Capacitance::kilofarads()
  */
 final readonly class Kilofarads extends CapacitanceUnit
 {
@@ -18,5 +23,11 @@ final readonly class Kilofarads extends CapacitanceUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::KILO->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'kF';
     }
 }

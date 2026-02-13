@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Electrical\ElectricalResistanceUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The nanohm (nOhm) — one billionth of an ohm.
+ *
+ * Used in superconductor research and ultra-low resistance measurements.
+ * Factor: 10^-9. 1 nOhm = 0.000000001 Ohm.
+ *
+ * @see ElectricalResistance::nanohms()
  */
 final readonly class Nanohms extends ElectricalResistanceUnit
 {
@@ -18,5 +23,11 @@ final readonly class Nanohms extends ElectricalResistanceUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::NANO->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'nOhm';
     }
 }

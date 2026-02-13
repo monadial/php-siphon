@@ -10,7 +10,13 @@ use Monadial\Siphon\Unit\Mechanics\PowerUnit;
 use Override;
 
 /**
- * @psalm-api
+ * Milliwatt (mW) -- one thousandth of a watt.
+ *
+ * Symbol: mW. Conversion factor: 10^-3 (1 mW = 0.001 W).
+ * Used in electronics, telecommunications, and signal processing.
+ * A typical laser pointer emits 1-5 mW of optical power.
+ *
+ * @see Power::milliwatts() for the factory method
  */
 final readonly class Milliwatts extends PowerUnit
 {
@@ -18,5 +24,11 @@ final readonly class Milliwatts extends PowerUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::MILLI->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'mW';
     }
 }

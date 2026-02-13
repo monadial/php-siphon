@@ -4,51 +4,56 @@ declare(strict_types=1);
 
 namespace Monadial\Siphon\Tests\Unit\CrossDimensional;
 
-use Brick\Math\BigDecimal;
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\System\MetricSystem;
-use Monadial\Siphon\UnitOfMeasure;
 use Monadial\Siphon\Unit\Mass\Mass;
-use Monadial\Siphon\Unit\Mass\MassUnit;
 use Monadial\Siphon\Unit\Mass\Mass\Kilograms;
+use Monadial\Siphon\Unit\Mass\MassUnit;
 use Monadial\Siphon\Unit\Mechanics\Density;
-use Monadial\Siphon\Unit\Mechanics\DensityUnit;
 use Monadial\Siphon\Unit\Mechanics\Density\KilogramsPerCubicMeter;
+use Monadial\Siphon\Unit\Mechanics\DensityUnit;
 use Monadial\Siphon\Unit\Mechanics\Energy;
-use Monadial\Siphon\Unit\Mechanics\EnergyUnit;
 use Monadial\Siphon\Unit\Mechanics\Energy\Joules;
+use Monadial\Siphon\Unit\Mechanics\EnergyUnit;
 use Monadial\Siphon\Unit\Mechanics\Force;
-use Monadial\Siphon\Unit\Mechanics\ForceUnit;
 use Monadial\Siphon\Unit\Mechanics\Force\Newtons;
+use Monadial\Siphon\Unit\Mechanics\ForceUnit;
 use Monadial\Siphon\Unit\Mechanics\MassFlow;
-use Monadial\Siphon\Unit\Mechanics\MassFlowUnit;
 use Monadial\Siphon\Unit\Mechanics\MassFlow\KilogramsPerSecond;
+use Monadial\Siphon\Unit\Mechanics\MassFlowUnit;
+use Monadial\Siphon\Unit\Mechanics\Momentum;
+use Monadial\Siphon\Unit\Mechanics\Momentum\KilogramMetersPerSecond;
+use Monadial\Siphon\Unit\Mechanics\MomentumUnit;
 use Monadial\Siphon\Unit\Mechanics\Power;
-use Monadial\Siphon\Unit\Mechanics\PowerUnit;
-use Monadial\Siphon\Unit\Mechanics\Power\Watts;
 use Monadial\Siphon\Unit\Mechanics\Power\Kilowatts;
+use Monadial\Siphon\Unit\Mechanics\Power\Watts;
+use Monadial\Siphon\Unit\Mechanics\PowerUnit;
 use Monadial\Siphon\Unit\Mechanics\Pressure;
-use Monadial\Siphon\Unit\Mechanics\PressureUnit;
 use Monadial\Siphon\Unit\Mechanics\Pressure\Pascals;
+use Monadial\Siphon\Unit\Mechanics\PressureUnit;
+use Monadial\Siphon\Unit\Mechanics\Torque;
+use Monadial\Siphon\Unit\Mechanics\Torque\NewtonMeters;
+use Monadial\Siphon\Unit\Mechanics\TorqueUnit;
 use Monadial\Siphon\Unit\Motion\Acceleration;
-use Monadial\Siphon\Unit\Motion\AccelerationUnit;
 use Monadial\Siphon\Unit\Motion\Acceleration\MetersPerSecondSquared;
+use Monadial\Siphon\Unit\Motion\AccelerationUnit;
 use Monadial\Siphon\Unit\Motion\Velocity;
-use Monadial\Siphon\Unit\Motion\VelocityUnit;
 use Monadial\Siphon\Unit\Motion\Velocity\MetersPerSecond;
+use Monadial\Siphon\Unit\Motion\VelocityUnit;
 use Monadial\Siphon\Unit\Space\Area;
-use Monadial\Siphon\Unit\Space\AreaUnit;
 use Monadial\Siphon\Unit\Space\Area\SquareMeters;
+use Monadial\Siphon\Unit\Space\AreaUnit;
 use Monadial\Siphon\Unit\Space\Length;
-use Monadial\Siphon\Unit\Space\LengthUnit;
 use Monadial\Siphon\Unit\Space\Length\Meters;
+use Monadial\Siphon\Unit\Space\LengthUnit;
 use Monadial\Siphon\Unit\Space\Volume;
-use Monadial\Siphon\Unit\Space\VolumeUnit;
 use Monadial\Siphon\Unit\Space\Volume\CubicMeters;
+use Monadial\Siphon\Unit\Space\VolumeUnit;
 use Monadial\Siphon\Unit\Time\Time;
-use Monadial\Siphon\Unit\Time\TimeUnit;
 use Monadial\Siphon\Unit\Time\Time\Hours;
 use Monadial\Siphon\Unit\Time\Time\Seconds;
+use Monadial\Siphon\Unit\Time\TimeUnit;
+use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -60,6 +65,8 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Pressure::class)]
 #[CoversClass(Density::class)]
 #[CoversClass(MassFlow::class)]
+#[CoversClass(Momentum::class)]
+#[CoversClass(Torque::class)]
 #[CoversClass(Quantity::class)]
 #[UsesClass(UnitOfMeasure::class)]
 #[UsesClass(MetricSystem::class)]
@@ -70,6 +77,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(PressureUnit::class)]
 #[UsesClass(DensityUnit::class)]
 #[UsesClass(MassFlowUnit::class)]
+#[UsesClass(MomentumUnit::class)]
+#[UsesClass(TorqueUnit::class)]
 #[UsesClass(AccelerationUnit::class)]
 #[UsesClass(VelocityUnit::class)]
 #[UsesClass(LengthUnit::class)]
@@ -84,6 +93,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Pascals::class)]
 #[UsesClass(KilogramsPerCubicMeter::class)]
 #[UsesClass(KilogramsPerSecond::class)]
+#[UsesClass(KilogramMetersPerSecond::class)]
+#[UsesClass(NewtonMeters::class)]
 #[UsesClass(MetersPerSecondSquared::class)]
 #[UsesClass(MetersPerSecond::class)]
 #[UsesClass(Meters::class)]
@@ -94,6 +105,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Acceleration::class)]
 #[UsesClass(Velocity::class)]
 #[UsesClass(Length::class)]
+#[UsesClass(Momentum::class)]
+#[UsesClass(Torque::class)]
 #[UsesClass(Area::class)]
 #[UsesClass(Volume::class)]
 #[UsesClass(Time::class)]
@@ -313,12 +326,236 @@ final class MechanicsTest extends TestCase
         $distance = Length::meters(100);
         $time = Time::seconds(10);
 
-        $force = $mass->timesAcceleration($accel);       // 98.1 N
-        $energy = $force->timesLength($distance);         // 9810 J
-        $power = $energy->dividedByTime($time);           // 981 W
+        $force = $mass->timesAcceleration($accel); // 98.1 N
+        $energy = $force->timesLength($distance); // 9810 J
+        $power = $energy->dividedByTime($time); // 981 W
 
         self::assertEqualsWithDelta(98.1, (float) (string) $force->value(), 0.01);
         self::assertEqualsWithDelta(9810.0, (float) (string) $energy->value(), 0.1);
         self::assertEqualsWithDelta(981.0, (float) (string) $power->value(), 0.1);
+    }
+
+    // ---------------------------------------------------------------
+    // a = F / m (Force / Mass = Acceleration)
+    // ---------------------------------------------------------------
+
+    public function testForceDividedByMassGivesAcceleration(): void
+    {
+        // 100 N / 10 kg = 10 m/s²
+        $force = Force::newtons(100);
+        $mass = Mass::kilograms(10);
+        $accel = $force->dividedByMass($mass);
+
+        self::assertInstanceOf(Acceleration::class, $accel);
+        self::assertInstanceOf(MetersPerSecondSquared::class, $accel->uom());
+        self::assertEqualsWithDelta(10.0, (float) (string) $accel->value(), 0.0001);
+    }
+
+    // ---------------------------------------------------------------
+    // m = F / a (Force / Acceleration = Mass)
+    // ---------------------------------------------------------------
+
+    public function testForceDividedByAccelerationGivesMass(): void
+    {
+        // 98.1 N / 9.81 m/s² = 10 kg
+        $force = Force::newtons('98.1');
+        $accel = Acceleration::metersPerSecondSquared('9.81');
+        $mass = $force->dividedByAcceleration($accel);
+
+        self::assertInstanceOf(Mass::class, $mass);
+        self::assertInstanceOf(Kilograms::class, $mass->uom());
+        self::assertEqualsWithDelta(10.0, (float) (string) $mass->value(), 0.0001);
+    }
+
+    // ---------------------------------------------------------------
+    // F = W / d (Energy / Length = Force)
+    // ---------------------------------------------------------------
+
+    public function testEnergyDividedByLengthGivesForce(): void
+    {
+        // 500 J / 5 m = 100 N
+        $energy = Energy::joules(500);
+        $distance = Length::meters(5);
+        $force = $energy->dividedByLength($distance);
+
+        self::assertInstanceOf(Force::class, $force);
+        self::assertInstanceOf(Newtons::class, $force->uom());
+        self::assertEqualsWithDelta(100.0, (float) (string) $force->value(), 0.0001);
+    }
+
+    // ---------------------------------------------------------------
+    // d = W / F (Energy / Force = Length)
+    // ---------------------------------------------------------------
+
+    public function testEnergyDividedByForceGivesLength(): void
+    {
+        // 500 J / 100 N = 5 m
+        $energy = Energy::joules(500);
+        $force = Force::newtons(100);
+        $distance = $energy->dividedByForce($force);
+
+        self::assertInstanceOf(Length::class, $distance);
+        self::assertInstanceOf(Meters::class, $distance->uom());
+        self::assertEqualsWithDelta(5.0, (float) (string) $distance->value(), 0.0001);
+    }
+
+    // ---------------------------------------------------------------
+    // P = E / V (Energy / Volume = Pressure)
+    // ---------------------------------------------------------------
+
+    public function testEnergyDividedByVolumeGivesPressure(): void
+    {
+        // 101325 J / 1 m³ = 101325 Pa
+        $energy = Energy::joules(101325);
+        $volume = Volume::cubicMeters(1);
+        $pressure = $energy->dividedByVolume($volume);
+
+        self::assertInstanceOf(Pressure::class, $pressure);
+        self::assertInstanceOf(Pascals::class, $pressure->uom());
+        self::assertEqualsWithDelta(101325.0, (float) (string) $pressure->value(), 0.01);
+    }
+
+    // ---------------------------------------------------------------
+    // v = P / F (Power / Force = Velocity)
+    // ---------------------------------------------------------------
+
+    public function testPowerDividedByForceGivesVelocity(): void
+    {
+        // 500 W / 50 N = 10 m/s
+        $power = Power::watts(500);
+        $force = Force::newtons(50);
+        $velocity = $power->dividedByForce($force);
+
+        self::assertInstanceOf(Velocity::class, $velocity);
+        self::assertInstanceOf(MetersPerSecond::class, $velocity->uom());
+        self::assertEqualsWithDelta(10.0, (float) (string) $velocity->value(), 0.0001);
+    }
+
+    // ---------------------------------------------------------------
+    // F = P / v (Power / Velocity = Force)
+    // ---------------------------------------------------------------
+
+    public function testPowerDividedByVelocityGivesForce(): void
+    {
+        // 500 W / 10 m/s = 50 N
+        $power = Power::watts(500);
+        $velocity = Velocity::metersPerSecond(10);
+        $force = $power->dividedByVelocity($velocity);
+
+        self::assertInstanceOf(Force::class, $force);
+        self::assertInstanceOf(Newtons::class, $force->uom());
+        self::assertEqualsWithDelta(50.0, (float) (string) $force->value(), 0.0001);
+    }
+
+    // ---------------------------------------------------------------
+    // E = P × V (Pressure × Volume = Energy)
+    // ---------------------------------------------------------------
+
+    public function testPressureTimesVolumeGivesEnergy(): void
+    {
+        // 101325 Pa × 1 m³ = 101325 J
+        $pressure = Pressure::pascals(101325);
+        $volume = Volume::cubicMeters(1);
+        $energy = $pressure->timesVolume($volume);
+
+        self::assertInstanceOf(Energy::class, $energy);
+        self::assertInstanceOf(Joules::class, $energy->uom());
+        self::assertEqualsWithDelta(101325.0, (float) (string) $energy->value(), 0.01);
+    }
+
+    // ---------------------------------------------------------------
+    // v = p / m (Momentum / Mass = Velocity)
+    // ---------------------------------------------------------------
+
+    public function testMomentumDividedByMassGivesVelocity(): void
+    {
+        // 100 kg⋅m/s / 5 kg = 20 m/s
+        $momentum = Momentum::kilogramMetersPerSecond(100);
+        $mass = Mass::kilograms(5);
+        $velocity = $momentum->dividedByMass($mass);
+
+        self::assertInstanceOf(Velocity::class, $velocity);
+        self::assertInstanceOf(MetersPerSecond::class, $velocity->uom());
+        self::assertEqualsWithDelta(20.0, (float) (string) $velocity->value(), 0.0001);
+    }
+
+    // ---------------------------------------------------------------
+    // m = p / v (Momentum / Velocity = Mass)
+    // ---------------------------------------------------------------
+
+    public function testMomentumDividedByVelocityGivesMass(): void
+    {
+        // 100 kg⋅m/s / 20 m/s = 5 kg
+        $momentum = Momentum::kilogramMetersPerSecond(100);
+        $velocity = Velocity::metersPerSecond(20);
+        $mass = $momentum->dividedByVelocity($velocity);
+
+        self::assertInstanceOf(Mass::class, $mass);
+        self::assertInstanceOf(Kilograms::class, $mass->uom());
+        self::assertEqualsWithDelta(5.0, (float) (string) $mass->value(), 0.0001);
+    }
+
+    // ---------------------------------------------------------------
+    // F = Δp / Δt (Momentum / Time = Force)
+    // ---------------------------------------------------------------
+
+    public function testMomentumDividedByTimeGivesForce(): void
+    {
+        // 100 kg⋅m/s / 10 s = 10 N
+        $momentum = Momentum::kilogramMetersPerSecond(100);
+        $time = Time::seconds(10);
+        $force = $momentum->dividedByTime($time);
+
+        self::assertInstanceOf(Force::class, $force);
+        self::assertInstanceOf(Newtons::class, $force->uom());
+        self::assertEqualsWithDelta(10.0, (float) (string) $force->value(), 0.0001);
+    }
+
+    // ---------------------------------------------------------------
+    // d = τ / F (Torque / Force = Length)
+    // ---------------------------------------------------------------
+
+    public function testTorqueDividedByForceGivesLength(): void
+    {
+        // 50 N⋅m / 10 N = 5 m
+        $torque = Torque::newtonMeters(50);
+        $force = Force::newtons(10);
+        $length = $torque->dividedByForce($force);
+
+        self::assertInstanceOf(Length::class, $length);
+        self::assertInstanceOf(Meters::class, $length->uom());
+        self::assertEqualsWithDelta(5.0, (float) (string) $length->value(), 0.0001);
+    }
+
+    // ---------------------------------------------------------------
+    // F = τ / d (Torque / Length = Force)
+    // ---------------------------------------------------------------
+
+    public function testTorqueDividedByLengthGivesForce(): void
+    {
+        // 50 N⋅m / 5 m = 10 N
+        $torque = Torque::newtonMeters(50);
+        $length = Length::meters(5);
+        $force = $torque->dividedByLength($length);
+
+        self::assertInstanceOf(Force::class, $force);
+        self::assertInstanceOf(Newtons::class, $force->uom());
+        self::assertEqualsWithDelta(10.0, (float) (string) $force->value(), 0.0001);
+    }
+
+    // ---------------------------------------------------------------
+    // V = m / ρ (Mass / Density = Volume)
+    // ---------------------------------------------------------------
+
+    public function testMassDividedByDensityGivesVolume(): void
+    {
+        // 1000 kg / 1000 kg/m³ = 1 m³
+        $mass = Mass::kilograms(1000);
+        $density = Density::kilogramsPerCubicMeter(1000);
+        $volume = $mass->dividedByDensity($density);
+
+        self::assertInstanceOf(Volume::class, $volume);
+        self::assertInstanceOf(CubicMeters::class, $volume->uom());
+        self::assertEqualsWithDelta(1.0, (float) (string) $volume->value(), 0.0001);
     }
 }

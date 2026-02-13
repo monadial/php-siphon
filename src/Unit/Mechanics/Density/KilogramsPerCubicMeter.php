@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Mechanics\DensityUnit;
 use Override;
 
 /**
- * @psalm-api
+ * Kilograms per cubic meter (kg/m^3) -- the SI unit of density.
+ *
+ * Symbol: kg/m3. Conversion factor: 1 (base unit).
+ * Water at 4 degrees C has a density of approximately 1000 kg/m^3.
+ *
+ * @see Density::kilogramsPerCubicMeter() for the factory method
  */
 final readonly class KilogramsPerCubicMeter extends DensityUnit
 {
@@ -18,5 +23,11 @@ final readonly class KilogramsPerCubicMeter extends DensityUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::BASE->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'kg/m3';
     }
 }

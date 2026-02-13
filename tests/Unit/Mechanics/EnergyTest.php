@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Tests\Unit\Mechanics;
 
 use Brick\Math\BigDecimal;
+use Monadial\Siphon\Exception\ParseFailure;
+use Monadial\Siphon\Exception\UnitNotFound;
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\System\MetricSystem;
-use Monadial\Siphon\UnitOfMeasure;
 use Monadial\Siphon\Unit\Mechanics\Energy;
-use Monadial\Siphon\Unit\Mechanics\EnergyUnit;
 use Monadial\Siphon\Unit\Mechanics\Energy\BritishThermalUnits;
 use Monadial\Siphon\Unit\Mechanics\Energy\Calories;
 use Monadial\Siphon\Unit\Mechanics\Energy\Electronvolts;
@@ -23,6 +23,8 @@ use Monadial\Siphon\Unit\Mechanics\Energy\Megajoules;
 use Monadial\Siphon\Unit\Mechanics\Energy\MegawattHours;
 use Monadial\Siphon\Unit\Mechanics\Energy\Millijoules;
 use Monadial\Siphon\Unit\Mechanics\Energy\WattHours;
+use Monadial\Siphon\Unit\Mechanics\EnergyUnit;
+use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -298,6 +300,10 @@ final class EnergyTest extends TestCase
         self::assertSame('1 Btu', (string) Energy::britishThermalUnits(1));
     }
 
+    /**
+     * @throws ParseFailure
+     * @throws UnitNotFound
+     */
     public function testParseEnergyFromSymbolString(): void
     {
         $energy = Energy::parse('100kWh');
@@ -308,6 +314,10 @@ final class EnergyTest extends TestCase
         self::assertTrue($joules->value()->isEqualTo(BigDecimal::of('360000000')));
     }
 
+    /**
+     * @throws ParseFailure
+     * @throws UnitNotFound
+     */
     public function testParseEnergyFromNameString(): void
     {
         $energy = Energy::parse('2.5 mega joules');

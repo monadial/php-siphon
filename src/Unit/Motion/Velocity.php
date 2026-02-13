@@ -6,10 +6,7 @@ namespace Monadial\Siphon\Unit\Motion;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
-
 use Monadial\Siphon\Quantity;
-use Monadial\Siphon\Unit\Space\Length;
-use Monadial\Siphon\Unit\Time\Time;
 use Monadial\Siphon\Unit\Motion\Velocity\FeetPerSecond;
 use Monadial\Siphon\Unit\Motion\Velocity\KilometersPerHour;
 use Monadial\Siphon\Unit\Motion\Velocity\KilometersPerSecond;
@@ -17,10 +14,25 @@ use Monadial\Siphon\Unit\Motion\Velocity\Knots;
 use Monadial\Siphon\Unit\Motion\Velocity\MetersPerSecond;
 use Monadial\Siphon\Unit\Motion\Velocity\MilesPerHour;
 use Monadial\Siphon\Unit\Motion\Velocity\MillimetersPerSecond;
+use Monadial\Siphon\Unit\Space\Length;
+use Monadial\Siphon\Unit\Time\Time;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Velocity quantity measuring the rate of change of position.
+ *
+ * Dimension formula: L * T^-1 (length per time). The SI derived unit is
+ * meters per second (m/s). Available units: MillimetersPerSecond (10^-3),
+ * MetersPerSecond (1), KilometersPerSecond (10^3), KilometersPerHour (1/3.6),
+ * MilesPerHour (0.44704), Knots (0.514444), FeetPerSecond (0.3048).
+ *
+ * Cross-dimensional: Velocity * Time = Length, Velocity / Time = Acceleration.
+ *
+ * ```php
+ * $speed = Velocity::kilometersPerHour(100);
+ * $mps = $speed->toMetersPerSecond(); // ~27.78 m/s
+ * $distance = $speed->timesTime(Time::hours(2)); // 200 km as Length
+ * ```
+ *
  * @template-extends Quantity<VelocityUnit>
  */
 final readonly class Velocity extends Quantity
@@ -106,21 +118,17 @@ final readonly class Velocity extends Quantity
     // Cross-dimensional operations
     // ---------------------------------------------------------------
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
     public function timesTime(Time $time): Length
     {
         $base = $this->toBaseValue()->multipliedBy($time->toBaseValue());
+
         return Length::meters($base);
     }
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
     public function dividedByTime(Time $time): Acceleration
     {
         $base = $this->toBaseValue()->dividedBy($time->toBaseValue(), 20, RoundingMode::HALF_UP);
+
         return Acceleration::metersPerSecondSquared($base);
     }
 }

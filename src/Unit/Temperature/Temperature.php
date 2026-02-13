@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Temperature;
 
 use Brick\Math\BigDecimal;
-
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\Unit\Temperature\Temperature\Celsius;
 use Monadial\Siphon\Unit\Temperature\Temperature\Fahrenheit;
@@ -15,8 +14,22 @@ use Monadial\Siphon\Unit\Temperature\Temperature\Millikelvins;
 use Monadial\Siphon\Unit\Temperature\Temperature\Rankine;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Temperature quantity measuring thermal energy.
+ *
+ * Temperature is one of the seven SI base quantities with dimension formula Theta.
+ * The SI base unit is the kelvin (K). Temperature conversions involve both scaling
+ * factors and offsets for non-absolute scales.
+ *
+ * Available units: Millikelvins (10^-3), Kelvins (1), Kilokelvins (10^3),
+ * Celsius (factor 1, offset 273.15), Fahrenheit (factor 5/9, offset 459.67),
+ * Rankine (factor 5/9, no offset).
+ *
+ * ```php
+ * $temp = Temperature::celsius(100); // boiling point of water
+ * $kelvin = $temp->toKelvins(); // 373.15 K
+ * $fahr = $temp->toFahrenheit(); // 212 degF
+ * ```
+ *
  * @template-extends Quantity<TemperatureUnit>
  */
 final readonly class Temperature extends Quantity

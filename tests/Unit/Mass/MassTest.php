@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Tests\Unit\Mass;
 
 use Brick\Math\BigDecimal;
+use Monadial\Siphon\Quantity;
+use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Mass\Mass;
 use Monadial\Siphon\Unit\Mass\Mass\Grams;
 use Monadial\Siphon\Unit\Mass\Mass\Kilograms;
@@ -14,8 +16,6 @@ use Monadial\Siphon\Unit\Mass\Mass\Ounces;
 use Monadial\Siphon\Unit\Mass\Mass\Pounds;
 use Monadial\Siphon\Unit\Mass\Mass\Stones;
 use Monadial\Siphon\Unit\Mass\Mass\Tonnes;
-use Monadial\Siphon\Quantity;
-use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -124,7 +124,7 @@ final class MassTest extends TestCase
         $mass = new Mass(BigDecimal::of('1'), Kilograms::make());
         $result = $mass->toPounds();
 
-        self::assertEqualsWithDelta(2.20462, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(2.20462, (float) (string) $result->value(), 0.001);
         self::assertInstanceOf(Pounds::class, $result->uom());
     }
 
@@ -141,7 +141,7 @@ final class MassTest extends TestCase
         $mass = new Mass(BigDecimal::of('1'), Kilograms::make());
         $result = $mass->toOunces();
 
-        self::assertEqualsWithDelta(35.274, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(35.274, (float) (string) $result->value(), 0.001);
         self::assertInstanceOf(Ounces::class, $result->uom());
     }
 
@@ -158,7 +158,7 @@ final class MassTest extends TestCase
         $mass = new Mass(BigDecimal::of('1'), Pounds::make());
         $result = $mass->toOunces();
 
-        self::assertEqualsWithDelta(16.0, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(16.0, (float) (string) $result->value(), 0.001);
     }
 
     public function testKilogramsToStones(): void
@@ -166,7 +166,7 @@ final class MassTest extends TestCase
         $mass = new Mass(BigDecimal::of('1'), Kilograms::make());
         $result = $mass->toStones();
 
-        self::assertEqualsWithDelta(0.157473, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(0.157473, (float) (string) $result->value(), 0.001);
         self::assertInstanceOf(Stones::class, $result->uom());
     }
 
@@ -183,7 +183,7 @@ final class MassTest extends TestCase
         $mass = new Mass(BigDecimal::of('1'), Stones::make());
         $result = $mass->toPounds();
 
-        self::assertEqualsWithDelta(14.0, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(14.0, (float) (string) $result->value(), 0.001);
     }
 
     // ---------------------------------------------------------------
@@ -209,7 +209,7 @@ final class MassTest extends TestCase
         $converted = $original->toPounds();
         $roundTrip = $converted->toKilograms();
 
-        self::assertEqualsWithDelta(75.0, (float)(string)$roundTrip->value(), 0.0001);
+        self::assertEqualsWithDelta(75.0, (float) (string) $roundTrip->value(), 0.0001);
     }
 
     public function testRoundTripKilogramsToStonesAndBack(): void
@@ -218,6 +218,6 @@ final class MassTest extends TestCase
         $converted = $original->toStones();
         $roundTrip = $converted->toKilograms();
 
-        self::assertEqualsWithDelta(100.0, (float)(string)$roundTrip->value(), 0.0001);
+        self::assertEqualsWithDelta(100.0, (float) (string) $roundTrip->value(), 0.0001);
     }
 }

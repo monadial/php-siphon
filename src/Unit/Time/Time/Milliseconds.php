@@ -9,14 +9,17 @@ use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Time\TimeUnit;
 use Override;
 
-/**
- * @psalm-api
- */
 final readonly class Milliseconds extends TimeUnit
 {
     #[Override]
     public function factor(): BigDecimal
     {
         return MetricSystem::MILLI->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'ms';
     }
 }

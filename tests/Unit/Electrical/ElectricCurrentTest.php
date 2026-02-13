@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Tests\Unit\Electrical;
 
 use Brick\Math\BigDecimal;
+use Monadial\Siphon\Quantity;
+use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Electrical\ElectricCurrent;
 use Monadial\Siphon\Unit\Electrical\ElectricCurrent\Amperes;
 use Monadial\Siphon\Unit\Electrical\ElectricCurrent\Kiloamperes;
 use Monadial\Siphon\Unit\Electrical\ElectricCurrent\Microamperes;
 use Monadial\Siphon\Unit\Electrical\ElectricCurrent\Milliamperes;
-use Monadial\Siphon\Quantity;
-use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;

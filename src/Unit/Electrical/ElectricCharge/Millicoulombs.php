@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Electrical\ElectricChargeUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The millicoulomb (mC) — one thousandth of a coulomb.
+ *
+ * Used in electrochemistry and small-charge measurements.
+ * Factor: 10^-3. 1 mC = 0.001 C.
+ *
+ * @see ElectricCharge::millicoulombs()
  */
 final readonly class Millicoulombs extends ElectricChargeUnit
 {
@@ -18,5 +23,11 @@ final readonly class Millicoulombs extends ElectricChargeUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::MILLI->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'mC';
     }
 }

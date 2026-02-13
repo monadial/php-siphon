@@ -9,13 +9,26 @@ use Monadial\Siphon\Unit\Information\InformationUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The smallest unit of digital information, representing a single binary digit.
+ *
+ * Symbol: b. Conversion factor: 0.125 (1 bit = 1/8 byte).
+ * A bit can hold one of two values: 0 or 1. Eight bits compose one byte.
+ *
+ * @see Bits::make()
  */
 final readonly class Bits extends InformationUnit
 {
+    private const float FACTOR = 0.125;
+
     #[Override]
     public function factor(): BigDecimal
     {
-        return BigDecimal::of('0.125');
+        return BigDecimal::of(self::FACTOR);
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'b';
     }
 }

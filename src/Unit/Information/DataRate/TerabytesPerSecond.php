@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Information\DataRateUnit;
 use Override;
 
 /**
- * @psalm-api
+ * Data rate unit representing 10^12 bytes transferred per second.
+ *
+ * Symbol: TB/s. Conversion factor: 10^12 (1 TB/s = 1,000,000,000,000 B/s).
+ * Used for aggregate data center bandwidth and high-performance computing interconnects.
+ *
+ * @see TerabytesPerSecond::make()
  */
 final readonly class TerabytesPerSecond extends DataRateUnit
 {
@@ -18,5 +23,11 @@ final readonly class TerabytesPerSecond extends DataRateUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::TERA->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'TB/s';
     }
 }

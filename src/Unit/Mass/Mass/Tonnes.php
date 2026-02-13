@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Mass\MassUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The metric tonne (megagram), equal to 1,000 kilograms.
+ *
+ * Symbol: t. Conversion factor: 10^3 (1 t = 1,000 kg).
+ * Used for large-scale mass measurements in industry, shipping, and agriculture.
+ *
+ * @see Tonnes::make()
  */
 final readonly class Tonnes extends MassUnit
 {
@@ -18,5 +23,11 @@ final readonly class Tonnes extends MassUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::KILO->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 't';
     }
 }

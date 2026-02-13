@@ -5,15 +5,23 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Light;
 
 use Brick\Math\BigDecimal;
-
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\Unit\Light\LuminousIntensity\Candelas;
 use Monadial\Siphon\Unit\Light\LuminousIntensity\Kilocandelas;
 use Monadial\Siphon\Unit\Light\LuminousIntensity\Millicandelas;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Luminous intensity quantity measuring visible light power emitted per unit solid angle.
+ *
+ * Luminous intensity is one of the seven SI base quantities with dimension formula J.
+ * The SI base unit is the candela (cd). Available units: Millicandelas (10^-3),
+ * Candelas (1), Kilocandelas (10^3).
+ *
+ * ```php
+ * $intensity = LuminousIntensity::candelas(1); // one candela
+ * $mcd = $intensity->toMillicandelas(); // 1000 mcd
+ * ```
+ *
  * @template-extends Quantity<LuminousIntensityUnit>
  */
 final readonly class LuminousIntensity extends Quantity

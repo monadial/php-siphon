@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Mass\MassUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The CGS base unit of mass, equal to one thousandth of a kilogram.
+ *
+ * Symbol: g. Conversion factor: 10^-3 (1 g = 0.001 kg).
+ * Widely used in chemistry, cooking, and everyday measurements.
+ *
+ * @see Grams::make()
  */
 final readonly class Grams extends MassUnit
 {
@@ -18,5 +23,11 @@ final readonly class Grams extends MassUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::MILLI->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'g';
     }
 }

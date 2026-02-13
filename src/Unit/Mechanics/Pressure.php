@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Mechanics;
 
 use Brick\Math\BigDecimal;
-
 use Monadial\Siphon\Quantity;
-use Monadial\Siphon\Unit\Space\Area;
 use Monadial\Siphon\Unit\Mechanics\Pressure\Atmospheres;
 use Monadial\Siphon\Unit\Mechanics\Pressure\Bars;
 use Monadial\Siphon\Unit\Mechanics\Pressure\Kilopascals;
@@ -17,10 +15,32 @@ use Monadial\Siphon\Unit\Mechanics\Pressure\MillimetersOfMercury;
 use Monadial\Siphon\Unit\Mechanics\Pressure\Pascals;
 use Monadial\Siphon\Unit\Mechanics\Pressure\PoundsPerSquareInch;
 use Monadial\Siphon\Unit\Mechanics\Pressure\Torr;
+use Monadial\Siphon\Unit\Space\Area;
+use Monadial\Siphon\Unit\Space\Volume;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Pressure measures force applied per unit area.
+ *
+ * The SI unit of pressure is the pascal (Pa). Pressure is a derived quantity with dimension
+ * M*L^-1*T^-2, equivalent to N/m^2 or kg/(m*s^2). Pressure is fundamental to fluid
+ * mechanics, meteorology, material science, and thermodynamics.
+ *
+ * Available units: Pascals (base, factor 1), Kilopascals (10^3), Megapascals (10^6),
+ * Bars (10^5), Millibars (100), Atmospheres (101325), Torr (133.322),
+ * MillimetersOfMercury (133.322), PoundsPerSquareInch (6894.757).
+ *
+ * Cross-dimensional operations:
+ * - Pressure * Area = Force (F = P*A)
+ * - Pressure * Volume = Energy (E = P*V)
+ *
+ * Example usage:
+ * ```
+ * $pressure = Pressure::atmospheres(1);
+ * $pascals = $pressure->toPascals();
+ * $force = $pressure->timesArea(Area::squareMeters(10));
+ * ```
+ *
+ * @see PressureUnit for the abstract unit base class
  * @template-extends Quantity<PressureUnit>
  */
 final readonly class Pressure extends Quantity
@@ -147,12 +167,17 @@ final readonly class Pressure extends Quantity
         return $this->scaleTo(MillimetersOfMercury::make());
     }
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
     public function timesArea(Area $area): Force
     {
         $base = $this->toBaseValue()->multipliedBy($area->toBaseValue());
+
         return Force::newtons($base);
+    }
+
+    public function timesVolume(Volume $volume): Energy
+    {
+        $base = $this->toBaseValue()->multipliedBy($volume->toBaseValue());
+
+        return Energy::joules($base);
     }
 }

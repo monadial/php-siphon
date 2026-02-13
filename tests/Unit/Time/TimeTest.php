@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Tests\Unit\Time;
 
 use Brick\Math\BigDecimal;
+use Monadial\Siphon\Quantity;
+use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Time\Time;
 use Monadial\Siphon\Unit\Time\Time\Days;
 use Monadial\Siphon\Unit\Time\Time\Hours;
@@ -16,8 +18,6 @@ use Monadial\Siphon\Unit\Time\Time\Nanoseconds;
 use Monadial\Siphon\Unit\Time\Time\Seconds;
 use Monadial\Siphon\Unit\Time\Time\Weeks;
 use Monadial\Siphon\Unit\Time\Time\Years;
-use Monadial\Siphon\Quantity;
-use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -178,7 +178,7 @@ final class TimeTest extends TestCase
         $time = new Time(BigDecimal::of('1'), Months::make());
         $result = $time->toDays();
 
-        self::assertEqualsWithDelta(30.4369, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(30.4369, (float) (string) $result->value(), 0.001);
     }
 
     public function testYearsToSeconds(): void
@@ -195,7 +195,7 @@ final class TimeTest extends TestCase
         $time = new Time(BigDecimal::of('1'), Years::make());
         $result = $time->toDays();
 
-        self::assertEqualsWithDelta(365.2425, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(365.2425, (float) (string) $result->value(), 0.001);
     }
 
     public function testYearsToMonths(): void
@@ -203,7 +203,7 @@ final class TimeTest extends TestCase
         $time = new Time(BigDecimal::of('1'), Years::make());
         $result = $time->toMonths();
 
-        self::assertEqualsWithDelta(12.0, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(12.0, (float) (string) $result->value(), 0.001);
     }
 
     public function testYearsToWeeks(): void
@@ -211,7 +211,7 @@ final class TimeTest extends TestCase
         $time = new Time(BigDecimal::of('1'), Years::make());
         $result = $time->toWeeks();
 
-        self::assertEqualsWithDelta(52.1775, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(52.1775, (float) (string) $result->value(), 0.001);
     }
 
     // ---------------------------------------------------------------
@@ -246,7 +246,7 @@ final class TimeTest extends TestCase
         $converted = $original->toWeeks();
         $roundTrip = $converted->toDays();
 
-        self::assertEqualsWithDelta(21.0, (float)(string)$roundTrip->value(), 0.0001);
+        self::assertEqualsWithDelta(21.0, (float) (string) $roundTrip->value(), 0.0001);
     }
 
     public function testRoundTripSecondsToYearsAndBack(): void
@@ -255,7 +255,7 @@ final class TimeTest extends TestCase
         $converted = $original->toYears();
         $roundTrip = $converted->toSeconds();
 
-        self::assertEqualsWithDelta(31556952.0, (float)(string)$roundTrip->value(), 0.01);
+        self::assertEqualsWithDelta(31556952.0, (float) (string) $roundTrip->value(), 0.01);
     }
 
     // ---------------------------------------------------------------

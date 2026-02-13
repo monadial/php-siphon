@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Space;
 
 use Brick\Math\BigDecimal;
-
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\Unit\Space\Angle\Arcminutes;
 use Monadial\Siphon\Unit\Space\Angle\Arcseconds;
@@ -15,8 +14,21 @@ use Monadial\Siphon\Unit\Space\Angle\Radians;
 use Monadial\Siphon\Unit\Space\Angle\Turns;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Angle represents the rotation between two rays sharing a common endpoint (vertex).
+ *
+ * The SI unit of plane angle is the radian (rad), defined as the angle subtended at
+ * the centre of a circle by an arc equal in length to the radius. A full rotation
+ * equals 2*pi radians (approximately 6.2832 rad) or 360 degrees.
+ *
+ * Available units: Radians (rad), Degrees (deg), Arcminutes (arcmin),
+ * Arcseconds (arcsec), Gradians (gon), Turns (turn).
+ *
+ * Usage:
+ *     $angle = Angle::degrees(180);
+ *     $inRadians = $angle->toRadians(); // ~3.14159 rad
+ *     $rightAngle = Angle::turns('0.25'); // 90 degrees
+ *
+ * @see AngleUnit for the abstract unit base class.
  * @template-extends Quantity<AngleUnit>
  */
 final readonly class Angle extends Quantity

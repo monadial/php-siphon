@@ -9,14 +9,22 @@ use Monadial\Siphon\Unit\Mechanics\EnergyUnit;
 use Override;
 
 /**
- * @psalm-api
+ * Megawatt-hour (MWh) -- one thousand kilowatt-hours.
+ *
+ * Symbol: MWh. Conversion factor: 3,600,000,000 (1 MWh = 3.6 GJ).
+ * Used in wholesale electricity markets and industrial energy accounting.
+ * A typical wind turbine can produce 6-7 MWh per day.
+ *
+ * @see Energy::megawattHours() for the factory method
  */
 final readonly class MegawattHours extends EnergyUnit
 {
+    private const int FACTOR = 3_600_000_000;
+
     #[Override]
     public function factor(): BigDecimal
     {
-        return BigDecimal::of('3600000000');
+        return BigDecimal::of(self::FACTOR);
     }
 
     #[Override]

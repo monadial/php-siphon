@@ -6,6 +6,7 @@ namespace Monadial\Siphon\Tests\Unit\Space;
 
 use Brick\Math\BigDecimal;
 use Monadial\Siphon\Quantity;
+use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Space\Area;
 use Monadial\Siphon\Unit\Space\Area\Acres;
 use Monadial\Siphon\Unit\Space\Area\Barns;
@@ -18,11 +19,13 @@ use Monadial\Siphon\Unit\Space\Area\SquareMeters;
 use Monadial\Siphon\Unit\Space\Area\SquareMiles;
 use Monadial\Siphon\Unit\Space\Area\SquareMillimeters;
 use Monadial\Siphon\Unit\Space\Area\SquareYards;
+use Monadial\Siphon\Unit\Space\AreaUnit;
+use Monadial\Siphon\Unit\Space\Length;
+use Monadial\Siphon\Unit\Space\Length\Meters;
+use Monadial\Siphon\Unit\Space\LengthUnit;
 use Monadial\Siphon\Unit\Space\Volume;
 use Monadial\Siphon\Unit\Space\Volume\CubicMeters;
-use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\UnitOfMeasure;
-use Monadial\Siphon\Unit\Space\AreaUnit;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -46,25 +49,53 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(AreaUnit::class)]
 #[UsesClass(Volume::class)]
 #[UsesClass(CubicMeters::class)]
+#[UsesClass(Length::class)]
+#[UsesClass(LengthUnit::class)]
+#[UsesClass(Meters::class)]
 final class AreaTest extends TestCase
 {
     // ---------------------------------------------------------------
     // Construction and basic accessors
     // ---------------------------------------------------------------
 
+    /**
+     * @return array<string, array{string, AreaUnit, AreaUnit, string}>
+     */
+    public static function conversionProvider(): array
+    {
+        return [
+            '0.5 km2 = 500000 m2' => ['0.5', SquareKilometers::make(), SquareMeters::make(), '500000'],
+            '1 ha = 10000 m2' => ['1', Hectares::make(), SquareMeters::make(), '10000'],
+            '1 km2 = 1000000 m2' => ['1', SquareKilometers::make(), SquareMeters::make(), '1000000'],
+            '1 m2 = 10000 cm2' => ['1', SquareMeters::make(), SquareCentimeters::make(), '10000'],
+            '1 m2 = 1000000 mm2' => ['1', SquareMeters::make(), SquareMillimeters::make(), '1000000'],
+            '2.5 m2 identity' => ['2.5', SquareMeters::make(), SquareMeters::make(), '2.5'],
+            '5 ha = 50000 m2' => ['5', Hectares::make(), SquareMeters::make(), '50000'],
+        ];
+    }
+
     public function testConstructionAndValueAccess(): void
     {
         $area = new Area(BigDecimal::of('100'), SquareMeters::make());
-        
+
         self::assertTrue($area->value()->isEqualTo(BigDecimal::of('100')));
         self::assertInstanceOf(SquareMeters::class, $area->uom());
     }
 
     public function testCubicFactoryCreatesVolumeInCubicMeters(): void
     {
-        $volume = Area::cubic(10, 20, 30);
+        $volume = Area::cubic(Length::meters(10), Length::meters(20), Length::meters(30));
 
-        self::assertTrue($volume->value()->isEqualTo(BigDecimal::of('6000')));
+        self::assertEqualsWithDelta(6000.0, (float) (string) $volume->value(), 0.01);
+        self::assertInstanceOf(CubicMeters::class, $volume->uom());
+    }
+
+    public function testCubicFromLengths(): void
+    {
+        $volume = Area::cubic(Length::meters(2), Length::meters(3), Length::meters(4));
+
+        self::assertEqualsWithDelta(24.0, (float) (string) $volume->value(), 0.01);
+        self::assertInstanceOf(Volume::class, $volume);
         self::assertInstanceOf(CubicMeters::class, $volume->uom());
     }
 
@@ -221,21 +252,6 @@ final class AreaTest extends TestCase
     // Data-provider-based systematic conversion tests
     // ---------------------------------------------------------------
 
-    /**
-     * @return array<string, array{string, AreaUnit, AreaUnit, string}>
-     */
-    public static function conversionProvider(): array
-    {
-        return [
-            '1 m2 = 10000 cm2' => ['1', SquareMeters::make(), SquareCentimeters::make(), '10000'],
-            '1 km2 = 1000000 m2' => ['1', SquareKilometers::make(), SquareMeters::make(), '1000000'],
-            '1 ha = 10000 m2' => ['1', Hectares::make(), SquareMeters::make(), '10000'],
-            '1 m2 = 1000000 mm2' => ['1', SquareMeters::make(), SquareMillimeters::make(), '1000000'],
-            '5 ha = 50000 m2' => ['5', Hectares::make(), SquareMeters::make(), '50000'],
-            '0.5 km2 = 500000 m2' => ['0.5', SquareKilometers::make(), SquareMeters::make(), '500000'],
-            '2.5 m2 identity' => ['2.5', SquareMeters::make(), SquareMeters::make(), '2.5'],
-        ];
-    }
 
     #[DataProvider('conversionProvider')]
     public function testConversion(string $inputValue, AreaUnit $from, AreaUnit $to, string $expected): void
@@ -341,7 +357,7 @@ final class AreaTest extends TestCase
         $area = new Area(BigDecimal::of('1'), SquareMeters::make());
         $result = $area->toSquareInches();
 
-        self::assertEqualsWithDelta(1550.0031, (float)(string)$result->value(), 0.01);
+        self::assertEqualsWithDelta(1550.0031, (float) (string) $result->value(), 0.01);
         self::assertInstanceOf(SquareInches::class, $result->uom());
     }
 
@@ -358,7 +374,7 @@ final class AreaTest extends TestCase
         $area = new Area(BigDecimal::of('1'), SquareMeters::make());
         $result = $area->toSquareFeet();
 
-        self::assertEqualsWithDelta(10.7639, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(10.7639, (float) (string) $result->value(), 0.001);
         self::assertInstanceOf(SquareFeet::class, $result->uom());
     }
 
@@ -375,7 +391,7 @@ final class AreaTest extends TestCase
         $area = new Area(BigDecimal::of('1'), SquareMeters::make());
         $result = $area->toSquareYards();
 
-        self::assertEqualsWithDelta(1.19599, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(1.19599, (float) (string) $result->value(), 0.001);
         self::assertInstanceOf(SquareYards::class, $result->uom());
     }
 
@@ -392,7 +408,7 @@ final class AreaTest extends TestCase
         $area = new Area(BigDecimal::of('1'), SquareFeet::make());
         $result = $area->toSquareInches();
 
-        self::assertEqualsWithDelta(144.0, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(144.0, (float) (string) $result->value(), 0.001);
     }
 
     public function testSquareYardsToSquareFeet(): void
@@ -400,7 +416,7 @@ final class AreaTest extends TestCase
         $area = new Area(BigDecimal::of('1'), SquareYards::make());
         $result = $area->toSquareFeet();
 
-        self::assertEqualsWithDelta(9.0, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(9.0, (float) (string) $result->value(), 0.001);
     }
 
     public function testSquareKilometersToSquareMiles(): void
@@ -408,7 +424,7 @@ final class AreaTest extends TestCase
         $area = new Area(BigDecimal::of('1'), SquareKilometers::make());
         $result = $area->toSquareMiles();
 
-        self::assertEqualsWithDelta(0.386102, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(0.386102, (float) (string) $result->value(), 0.001);
         self::assertInstanceOf(SquareMiles::class, $result->uom());
     }
 
@@ -417,7 +433,7 @@ final class AreaTest extends TestCase
         $area = new Area(BigDecimal::of('1'), SquareMiles::make());
         $result = $area->toSquareKilometers();
 
-        self::assertEqualsWithDelta(2.58999, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(2.58999, (float) (string) $result->value(), 0.001);
     }
 
     public function testSquareMetersToAcres(): void
@@ -425,7 +441,7 @@ final class AreaTest extends TestCase
         $area = new Area(BigDecimal::of('4046.8564224'), SquareMeters::make());
         $result = $area->toAcres();
 
-        self::assertEqualsWithDelta(1.0, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(1.0, (float) (string) $result->value(), 0.001);
         self::assertInstanceOf(Acres::class, $result->uom());
     }
 
@@ -442,7 +458,7 @@ final class AreaTest extends TestCase
         $area = new Area(BigDecimal::of('1'), Acres::make());
         $result = $area->toSquareFeet();
 
-        self::assertEqualsWithDelta(43560.0, (float)(string)$result->value(), 0.1);
+        self::assertEqualsWithDelta(43560.0, (float) (string) $result->value(), 0.1);
     }
 
     public function testSquareMilesToAcres(): void
@@ -450,7 +466,7 @@ final class AreaTest extends TestCase
         $area = new Area(BigDecimal::of('1'), SquareMiles::make());
         $result = $area->toAcres();
 
-        self::assertEqualsWithDelta(640.0, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(640.0, (float) (string) $result->value(), 0.001);
     }
 
     public function testSquareMetersToBarns(): void
@@ -458,7 +474,7 @@ final class AreaTest extends TestCase
         $area = new Area(BigDecimal::of('1'), SquareMeters::make());
         $result = $area->toBarns();
 
-        self::assertEqualsWithDelta(1e28, (float)(string)$result->value(), 1e23);
+        self::assertEqualsWithDelta(1e28, (float) (string) $result->value(), 1e23);
         self::assertInstanceOf(Barns::class, $result->uom());
     }
 
@@ -467,7 +483,7 @@ final class AreaTest extends TestCase
         $area = new Area(BigDecimal::of('1E28'), Barns::make());
         $result = $area->toSquareMeters();
 
-        self::assertEqualsWithDelta(1.0, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(1.0, (float) (string) $result->value(), 0.001);
     }
 
     // ---------------------------------------------------------------
@@ -493,7 +509,7 @@ final class AreaTest extends TestCase
         $converted = $original->toSquareFeet();
         $roundTrip = $converted->toSquareMeters();
 
-        self::assertEqualsWithDelta(100.0, (float)(string)$roundTrip->value(), 0.0001);
+        self::assertEqualsWithDelta(100.0, (float) (string) $roundTrip->value(), 0.0001);
     }
 
     public function testRoundTripSquareKilometersToAcresAndBack(): void
@@ -502,7 +518,7 @@ final class AreaTest extends TestCase
         $converted = $original->toAcres();
         $roundTrip = $converted->toSquareKilometers();
 
-        self::assertEqualsWithDelta(5.0, (float)(string)$roundTrip->value(), 0.0001);
+        self::assertEqualsWithDelta(5.0, (float) (string) $roundTrip->value(), 0.0001);
     }
 
     // ---------------------------------------------------------------

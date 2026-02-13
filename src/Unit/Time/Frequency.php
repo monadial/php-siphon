@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Time;
 
 use Brick\Math\BigDecimal;
-
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\Unit\Time\Frequency\Gigahertz;
 use Monadial\Siphon\Unit\Time\Frequency\Hertz;
@@ -15,8 +14,6 @@ use Monadial\Siphon\Unit\Time\Frequency\RevolutionsPerMinute;
 use Monadial\Siphon\Unit\Time\Frequency\Terahertz;
 
 /**
- * @psalm-api
- * @psalm-immutable
  * @template-extends Quantity<FrequencyUnit>
  */
 final readonly class Frequency extends Quantity

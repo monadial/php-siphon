@@ -10,7 +10,13 @@ use Monadial\Siphon\Unit\Electrical\ElectricPotentialUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The volt (V) — SI derived unit of electric potential.
+ *
+ * One volt is the potential difference that drives one ampere of current
+ * through one ohm of resistance.
+ * Factor: 1 (base unit). 1 V = 1 kg*m^2/(A*s^3).
+ *
+ * @see ElectricPotential::volts()
  */
 final readonly class Volts extends ElectricPotentialUnit
 {
@@ -18,5 +24,11 @@ final readonly class Volts extends ElectricPotentialUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::BASE->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'V';
     }
 }

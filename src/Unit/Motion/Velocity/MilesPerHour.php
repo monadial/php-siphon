@@ -9,14 +9,21 @@ use Monadial\Siphon\Unit\Motion\VelocityUnit;
 use Override;
 
 /**
- * @psalm-api
+ * Velocity in miles per hour, an imperial/US customary unit.
+ *
+ * Symbol: mph. Conversion factor: 0.44704 (1 mph = 0.44704 m/s exactly).
+ * Used for road vehicle speed in the United States, United Kingdom, and others.
+ *
+ * @see MilesPerHour::make()
  */
 final readonly class MilesPerHour extends VelocityUnit
 {
+    private const float FACTOR = 0.44704;
+
     #[Override]
     public function factor(): BigDecimal
     {
-        return BigDecimal::of('0.44704');
+        return BigDecimal::of(self::FACTOR);
     }
 
     #[Override]

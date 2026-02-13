@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Space\LengthUnit;
 use Override;
 
 /**
- * @psalm-api
+ * Hectometer (hm) -- a unit of length equal to 100 meters.
+ *
+ * Primarily used in meteorology and some European contexts for short distances.
+ * One hectometer is one tenth of a kilometer.
+ *
+ * @see Length::hectometers() to create a Length quantity in hectometers.
  */
 final readonly class Hectometers extends LengthUnit
 {
@@ -18,5 +23,11 @@ final readonly class Hectometers extends LengthUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::HECTO->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'hm';
     }
 }

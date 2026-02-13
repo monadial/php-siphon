@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Motion\AccelerationUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The SI derived unit of acceleration.
+ *
+ * Symbol: m/s2. Conversion factor: 1 (base unit).
+ * Represents the change in velocity of one meter per second every second.
+ *
+ * @see MetersPerSecondSquared::make()
  */
 final readonly class MetersPerSecondSquared extends AccelerationUnit
 {
@@ -18,5 +23,11 @@ final readonly class MetersPerSecondSquared extends AccelerationUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::BASE->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'm/s2';
     }
 }

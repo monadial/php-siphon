@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Electrical;
 
 use Brick\Math\BigDecimal;
-
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\Unit\Electrical\ElectricalResistance\Gigohms;
 use Monadial\Siphon\Unit\Electrical\ElectricalResistance\Kilohms;
@@ -16,12 +15,26 @@ use Monadial\Siphon\Unit\Electrical\ElectricalResistance\Nanohms;
 use Monadial\Siphon\Unit\Electrical\ElectricalResistance\Ohms;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Electrical resistance — the opposition to electric current flow in a conductor.
+ *
+ * SI base unit: ohm (Ohm). Dimension: kg * m^2 * s^-3 * A^-2.
+ *
+ * One ohm is the resistance between two points when a potential difference of
+ * one volt produces a current of one ampere. Ohm's law: R = V / I.
+ *
+ * Available units: {@see Nanohms}, {@see Microhms}, {@see Milliohms},
+ * {@see Ohms}, {@see Kilohms}, {@see Megohms}, {@see Gigohms}.
+ *
+ * Usage:
+ *
+ *     $r = ElectricalResistance::kilohms(4.7);
+ *     $inOhms = $r->toOhms(); // 4700 Ohm
+ *
  * @template-extends Quantity<ElectricalResistanceUnit>
  */
 final readonly class ElectricalResistance extends Quantity
 {
+    /** Static factory methods for creating ElectricalResistance in any supported unit. */
     // BEGIN_TYPED_FACTORIES
     public static function gigohms(BigDecimal|int|float|string $value): self
     {
@@ -94,6 +107,8 @@ final readonly class ElectricalResistance extends Quantity
     }
 
     // END_TYPED_FACTORIES
+
+    /** Convert this electrical resistance to the specified unit via {@see scaleTo()}. */
     public function toOhms(): self
     {
         return $this->scaleTo(Ohms::make());
@@ -127,5 +142,18 @@ final readonly class ElectricalResistance extends Quantity
     public function toGigohms(): self
     {
         return $this->scaleTo(Gigohms::make());
+    }
+
+    /**
+     * Compute voltage: V = R * I (Ohm's law, resistance times current).
+     *
+     * @param ElectricCurrent $current the electric current
+     * @return ElectricPotential the resulting voltage in volts
+     */
+    public function timesCurrent(ElectricCurrent $current): ElectricPotential
+    {
+        $base = $this->toBaseValue()->multipliedBy($current->toBaseValue());
+
+        return ElectricPotential::volts($base);
     }
 }

@@ -10,7 +10,13 @@ use Monadial\Siphon\Unit\Mechanics\EnergyUnit;
 use Override;
 
 /**
- * @psalm-api
+ * Gigajoule (GJ) -- one billion joules.
+ *
+ * Symbol: GJ. Conversion factor: 10^9 (1 GJ = 1,000,000,000 J).
+ * Used for large-scale energy accounting such as natural gas billing and
+ * industrial process energy consumption.
+ *
+ * @see Energy::gigajoules() for the factory method
  */
 final readonly class Gigajoules extends EnergyUnit
 {

@@ -8,14 +8,19 @@ use Brick\Math\BigDecimal;
 use Monadial\Siphon\Unit\Time\TimeUnit;
 use Override;
 
-/**
- * @psalm-api
- */
 final readonly class Days extends TimeUnit
 {
+    private const int FACTOR = 86_400;
+
     #[Override]
     public function factor(): BigDecimal
     {
-        return BigDecimal::of(86400);
+        return BigDecimal::of(self::FACTOR);
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'd';
     }
 }

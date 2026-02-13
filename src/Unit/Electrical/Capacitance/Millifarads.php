@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Electrical\CapacitanceUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The millifarad (mF) — one thousandth of a farad.
+ *
+ * Used for large electrolytic capacitors and supercapacitor modules.
+ * Factor: 10^-3. 1 mF = 0.001 F.
+ *
+ * @see Capacitance::millifarads()
  */
 final readonly class Millifarads extends CapacitanceUnit
 {
@@ -18,5 +23,11 @@ final readonly class Millifarads extends CapacitanceUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::MILLI->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'mF';
     }
 }

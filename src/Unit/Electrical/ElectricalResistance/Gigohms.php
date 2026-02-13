@@ -10,7 +10,13 @@ use Monadial\Siphon\Unit\Electrical\ElectricalResistanceUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The gigohm (GOhm) — one billion ohms.
+ *
+ * Used in ultra-high resistance measurements such as cable insulation
+ * testing and electrometer input impedance specifications.
+ * Factor: 10^9. 1 GOhm = 1000000000 Ohm.
+ *
+ * @see ElectricalResistance::gigohms()
  */
 final readonly class Gigohms extends ElectricalResistanceUnit
 {
@@ -18,5 +24,11 @@ final readonly class Gigohms extends ElectricalResistanceUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::GIGA->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'GOhm';
     }
 }

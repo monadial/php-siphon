@@ -5,16 +5,27 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Motion;
 
 use Brick\Math\BigDecimal;
-
 use Monadial\Siphon\Quantity;
-use Monadial\Siphon\Unit\Time\Time;
 use Monadial\Siphon\Unit\Motion\Acceleration\FeetPerSecondSquared;
 use Monadial\Siphon\Unit\Motion\Acceleration\MetersPerSecondSquared;
 use Monadial\Siphon\Unit\Motion\Acceleration\StandardGravity;
+use Monadial\Siphon\Unit\Time\Time;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Acceleration quantity measuring the rate of change of velocity.
+ *
+ * Dimension formula: L * T^-2 (length per time squared). The SI derived unit is
+ * meters per second squared (m/s^2). Available units: MetersPerSecondSquared (1),
+ * FeetPerSecondSquared (0.3048), StandardGravity (9.80665).
+ *
+ * Cross-dimensional: Acceleration * Time = Velocity.
+ *
+ * ```php
+ * $accel = Acceleration::standardGravity(1); // 1 g
+ * $mps2 = $accel->toMetersPerSecondSquared(); // 9.80665 m/s^2
+ * $velocity = $accel->timesTime(Time::seconds(10)); // 98.0665 m/s
+ * ```
+ *
  * @template-extends Quantity<AccelerationUnit>
  */
 final readonly class Acceleration extends Quantity
@@ -55,12 +66,10 @@ final readonly class Acceleration extends Quantity
     // Cross-dimensional operations
     // ---------------------------------------------------------------
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
     public function timesTime(Time $time): Velocity
     {
         $base = $this->toBaseValue()->multipliedBy($time->toBaseValue());
+
         return Velocity::metersPerSecond($base);
     }
 }

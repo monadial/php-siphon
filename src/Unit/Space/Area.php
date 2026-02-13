@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Unit\Space;
 
 use Brick\Math\BigDecimal;
-
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\Unit\Space\Area\Acres;
 use Monadial\Siphon\Unit\Space\Area\Barns;
@@ -18,11 +17,23 @@ use Monadial\Siphon\Unit\Space\Area\SquareMeters;
 use Monadial\Siphon\Unit\Space\Area\SquareMiles;
 use Monadial\Siphon\Unit\Space\Area\SquareMillimeters;
 use Monadial\Siphon\Unit\Space\Area\SquareYards;
-use Monadial\Siphon\Unit\Space\Volume\CubicMeters;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Area represents the extent of a two-dimensional surface.
+ *
+ * The SI derived unit is the square meter (m^2). Area is the product of two lengths
+ * and is used to quantify surfaces, land parcels, cross-sections, and more.
+ *
+ * Available units: SquareMillimeters (mm^2), SquareCentimeters (cm^2), SquareMeters (m^2),
+ * SquareKilometers (km^2), SquareInches (in^2), SquareFeet (ft^2), SquareYards (yd^2),
+ * SquareMiles (mi^2), Acres (ac), Hectares (ha), Barns (b).
+ *
+ * Usage:
+ *     $area = Area::squareMeters(100);
+ *     $inAcres = $area->toAcres();
+ *     $volume = $area->timesLength(Length::meters(3)); // 300 m^3
+ *
+ * @see AreaUnit for the abstract unit base class.
  * @template-extends Quantity<AreaUnit>
  */
 final readonly class Area extends Quantity
@@ -134,15 +145,9 @@ final readonly class Area extends Quantity
     }
 
     // END_TYPED_FACTORIES
-    public static function cubic(
-        BigDecimal|int|float|string $length,
-        BigDecimal|int|float|string $width,
-        BigDecimal|int|float|string $height,
-    ): Volume {
-        return new Volume(
-            BigDecimal::of($length)->multipliedBy(BigDecimal::of($width))->multipliedBy(BigDecimal::of($height)),
-            CubicMeters::make(),
-        );
+    public static function cubic(Length $length, Length $width, Length $height): Volume
+    {
+        return $length->timesLength($width)->timesLength($height);
     }
 
     public function toSquareMillimeters(): self
@@ -204,12 +209,10 @@ final readonly class Area extends Quantity
     // Cross-dimensional operations
     // ---------------------------------------------------------------
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
     public function timesLength(Length $length): Volume
     {
         $base = $this->toBaseValue()->multipliedBy($length->toBaseValue());
+
         return Volume::cubicMeters($base);
     }
 }

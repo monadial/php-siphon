@@ -6,7 +6,6 @@ namespace Monadial\Siphon\Unit\Space;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
-
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\Unit\Mechanics\VolumeFlow;
 use Monadial\Siphon\Unit\Space\Volume\Centilitres;
@@ -30,8 +29,24 @@ use Monadial\Siphon\Unit\Space\Volume\UsQuarts;
 use Monadial\Siphon\Unit\Time\Time;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Volume represents the extent of a three-dimensional space.
+ *
+ * The SI derived unit is the cubic meter (m^3). Volume quantifies the capacity of
+ * containers, the displacement of fluids, and the space occupied by solids. The litre
+ * (L), equal to 10^-3 m^3, is a widely used non-SI unit accepted for use with SI.
+ *
+ * Available units: Millilitres (mL), Centilitres (cL), Decilitres (dL), Litres (L),
+ * Hectolitres (hL), CubicCentimeters (cm^3), CubicMeters (m^3), CubicInches (in^3),
+ * CubicFeet (ft^3), CubicYards (yd^3), Teaspoons (tsp), Tablespoons (tbsp),
+ * FluidOunces (fl oz), UsCups (cup), UsPints (pt), UsQuarts (qt), UsGallons (gal),
+ * ImperialGallons (imp gal).
+ *
+ * Usage:
+ *     $volume = Volume::litres(2);
+ *     $inGallons = $volume->toUsGallons();
+ *     $flow = $volume->dividedByTime(Time::seconds(10)); // 0.0002 m^3/s
+ *
+ * @see VolumeUnit for the abstract unit base class.
  * @template-extends Quantity<VolumeUnit>
  */
 final readonly class Volume extends Quantity
@@ -307,12 +322,17 @@ final readonly class Volume extends Quantity
     // Cross-dimensional operations
     // ---------------------------------------------------------------
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
     public function dividedByTime(Time $time): VolumeFlow
     {
         $base = $this->toBaseValue()->dividedBy($time->toBaseValue(), 20, RoundingMode::HALF_UP);
+
         return VolumeFlow::cubicMetersPerSecond($base);
+    }
+
+    public function dividedByVolumeFlow(VolumeFlow $flow): Time
+    {
+        $base = $this->toBaseValue()->dividedBy($flow->toBaseValue(), 20, RoundingMode::HALF_UP);
+
+        return Time::seconds($base);
     }
 }

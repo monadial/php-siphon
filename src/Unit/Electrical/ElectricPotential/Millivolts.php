@@ -10,7 +10,13 @@ use Monadial\Siphon\Unit\Electrical\ElectricPotentialUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The millivolt (mV) — one thousandth of a volt.
+ *
+ * Used in thermocouple readings, biomedical signals (EEG, ECG), and
+ * low-level sensor outputs.
+ * Factor: 10^-3. 1 mV = 0.001 V.
+ *
+ * @see ElectricPotential::millivolts()
  */
 final readonly class Millivolts extends ElectricPotentialUnit
 {
@@ -18,5 +24,11 @@ final readonly class Millivolts extends ElectricPotentialUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::MILLI->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'mV';
     }
 }

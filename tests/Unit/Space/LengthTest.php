@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Monadial\Siphon\Tests\Unit\Space;
 
 use Brick\Math\BigDecimal;
+use Monadial\Siphon\Exception\UnitNotFound;
 use Monadial\Siphon\Quantity;
+use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Space\Length;
 use Monadial\Siphon\Unit\Space\Length\AstronomicalUnits;
 use Monadial\Siphon\Unit\Space\Length\Centimeters;
@@ -23,11 +25,10 @@ use Monadial\Siphon\Unit\Space\Length\Millimeters;
 use Monadial\Siphon\Unit\Space\Length\Nanometers;
 use Monadial\Siphon\Unit\Space\Length\NauticalMiles;
 use Monadial\Siphon\Unit\Space\Length\Yards;
+use Monadial\Siphon\Unit\Space\LengthUnit;
 use Monadial\Siphon\Unit\Space\Volume;
 use Monadial\Siphon\Unit\Space\Volume\CubicMeters;
-use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\UnitOfMeasure;
-use Monadial\Siphon\Unit\Space\LengthUnit;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -62,6 +63,28 @@ final class LengthTest extends TestCase
     // Construction and basic accessors
     // ---------------------------------------------------------------
 
+    /**
+     * @return array<string, array{string, LengthUnit, LengthUnit, string}>
+     */
+    public static function conversionProvider(): array
+    {
+        return [
+            '0.001 km = 1 m' => ['0.001', Kilometers::make(), Meters::make(), '1'],
+            '1 dam = 10 m' => ['1', Decameters::make(), Meters::make(), '10'],
+            '1 hm = 100 m' => ['1', Hectometers::make(), Meters::make(), '100'],
+            '1 km = 1000 m' => ['1', Kilometers::make(), Meters::make(), '1000'],
+            '1 km = 1000000 mm' => ['1', Kilometers::make(), Millimeters::make(), '1000000'],
+            '1 m = 10 dm' => ['1', Meters::make(), Decimeters::make(), '10'],
+            '1 m = 100 cm' => ['1', Meters::make(), Centimeters::make(), '100'],
+            '1 m = 1000 mm' => ['1', Meters::make(), Millimeters::make(), '1000'],
+            '1 m = 1000000 um' => ['1', Meters::make(), Micrometers::make(), '1000000'],
+            '1 m = 1000000000 nm' => ['1', Meters::make(), Nanometers::make(), '1000000000'],
+            '5.5 m = 5.5 m (identity)' => ['5.5', Meters::make(), Meters::make(), '5.5'],
+            '500 cm = 5 m' => ['500', Centimeters::make(), Meters::make(), '5'],
+            '2500 m = 2.5 km' => ['2500', Meters::make(), Kilometers::make(), '2.5'],
+        ];
+    }
+
     public function testConstructionAndValueAccess(): void
     {
         $length = new Length(BigDecimal::of('42'), Meters::make());
@@ -77,6 +100,7 @@ final class LengthTest extends TestCase
         self::assertTrue($length->value()->isEqualTo(BigDecimal::of('3.14159')));
     }
 
+    /** @throws UnitNotFound */
     public function testConstructionWithFromDsl(): void
     {
         $length = Meters::from(42);
@@ -103,7 +127,7 @@ final class LengthTest extends TestCase
 
     public function testTypedConversionToKilometers(): void
     {
-        $length = Meters::from(1200)->toKilometers();
+        $length = Length::meters(1200)->toKilometers();
 
         self::assertTrue($length->value()->isEqualTo(BigDecimal::of('1.2')));
         self::assertInstanceOf(Kilometers::class, $length->uom());
@@ -111,7 +135,7 @@ final class LengthTest extends TestCase
 
     public function testToCubicCreatesCubicMetersVolume(): void
     {
-        $volume = Meters::from(12)->toCubic();
+        $volume = Length::meters(12)->toCubic();
 
         self::assertTrue($volume->value()->isEqualTo(BigDecimal::of('1728')));
         self::assertInstanceOf(CubicMeters::class, $volume->uom());
@@ -119,7 +143,7 @@ final class LengthTest extends TestCase
 
     public function testCubedAliasMatchesToCubic(): void
     {
-        $volume = Meters::from(2)->cubed();
+        $volume = Length::meters(2)->cubed();
 
         self::assertTrue($volume->value()->isEqualTo(BigDecimal::of('8')));
         self::assertInstanceOf(CubicMeters::class, $volume->uom());
@@ -392,27 +416,6 @@ final class LengthTest extends TestCase
     // Data-provider-based systematic conversion tests
     // ---------------------------------------------------------------
 
-    /**
-     * @return array<string, array{string, LengthUnit, LengthUnit, string}>
-     */
-    public static function conversionProvider(): array
-    {
-        return [
-            '1 km = 1000 m' => ['1', Kilometers::make(), Meters::make(), '1000'],
-            '1 m = 100 cm' => ['1', Meters::make(), Centimeters::make(), '100'],
-            '1 m = 1000 mm' => ['1', Meters::make(), Millimeters::make(), '1000'],
-            '1 km = 1000000 mm' => ['1', Kilometers::make(), Millimeters::make(), '1000000'],
-            '1 m = 10 dm' => ['1', Meters::make(), Decimeters::make(), '10'],
-            '1 dam = 10 m' => ['1', Decameters::make(), Meters::make(), '10'],
-            '1 hm = 100 m' => ['1', Hectometers::make(), Meters::make(), '100'],
-            '1 m = 1000000 um' => ['1', Meters::make(), Micrometers::make(), '1000000'],
-            '1 m = 1000000000 nm' => ['1', Meters::make(), Nanometers::make(), '1000000000'],
-            '500 cm = 5 m' => ['500', Centimeters::make(), Meters::make(), '5'],
-            '2500 m = 2.5 km' => ['2500', Meters::make(), Kilometers::make(), '2.5'],
-            '5.5 m = 5.5 m (identity)' => ['5.5', Meters::make(), Meters::make(), '5.5'],
-            '0.001 km = 1 m' => ['0.001', Kilometers::make(), Meters::make(), '1'],
-        ];
-    }
 
     #[DataProvider('conversionProvider')]
     public function testConversion(string $inputValue, LengthUnit $from, LengthUnit $to, string $expected): void
@@ -518,7 +521,7 @@ final class LengthTest extends TestCase
         $length = new Length(BigDecimal::of('1'), Meters::make());
         $result = $length->toInches();
 
-        self::assertEqualsWithDelta(39.3701, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(39.3701, (float) (string) $result->value(), 0.001);
         self::assertInstanceOf(Inches::class, $result->uom());
     }
 
@@ -535,7 +538,7 @@ final class LengthTest extends TestCase
         $length = new Length(BigDecimal::of('1'), Meters::make());
         $result = $length->toFeet();
 
-        self::assertEqualsWithDelta(3.28084, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(3.28084, (float) (string) $result->value(), 0.001);
         self::assertInstanceOf(Feet::class, $result->uom());
     }
 
@@ -560,7 +563,7 @@ final class LengthTest extends TestCase
         $length = new Length(BigDecimal::of('1'), Meters::make());
         $result = $length->toYards();
 
-        self::assertEqualsWithDelta(1.09361, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(1.09361, (float) (string) $result->value(), 0.001);
         self::assertInstanceOf(Yards::class, $result->uom());
     }
 
@@ -594,7 +597,7 @@ final class LengthTest extends TestCase
         $length = new Length(BigDecimal::of('1'), Kilometers::make());
         $result = $length->toMiles();
 
-        self::assertEqualsWithDelta(0.621371, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(0.621371, (float) (string) $result->value(), 0.001);
     }
 
     public function testMilesToFeet(): void
@@ -627,7 +630,7 @@ final class LengthTest extends TestCase
         $length = new Length(BigDecimal::of('1.852'), Kilometers::make());
         $result = $length->toNauticalMiles();
 
-        self::assertEqualsWithDelta(1.0, (float)(string)$result->value(), 0.001);
+        self::assertEqualsWithDelta(1.0, (float) (string) $result->value(), 0.001);
     }
 
     public function testAstronomicalUnitsToMeters(): void
@@ -644,7 +647,7 @@ final class LengthTest extends TestCase
         $length = new Length(BigDecimal::of('1'), AstronomicalUnits::make());
         $result = $length->toKilometers();
 
-        self::assertEqualsWithDelta(149597870.7, (float)(string)$result->value(), 0.1);
+        self::assertEqualsWithDelta(149597870.7, (float) (string) $result->value(), 0.1);
     }
 
     public function testLightYearsToMeters(): void
@@ -661,7 +664,7 @@ final class LengthTest extends TestCase
         $length = new Length(BigDecimal::of('1'), LightYears::make());
         $result = $length->toAstronomicalUnits();
 
-        self::assertEqualsWithDelta(63241.077, (float)(string)$result->value(), 0.1);
+        self::assertEqualsWithDelta(63241.077, (float) (string) $result->value(), 0.1);
     }
 
     // ---------------------------------------------------------------
@@ -696,7 +699,7 @@ final class LengthTest extends TestCase
         $converted = $original->toInches();
         $roundTrip = $converted->toMeters();
 
-        self::assertEqualsWithDelta(5.0, (float)(string)$roundTrip->value(), 0.0001);
+        self::assertEqualsWithDelta(5.0, (float) (string) $roundTrip->value(), 0.0001);
     }
 
     public function testRoundTripKilometersToMilesAndBack(): void
@@ -705,7 +708,7 @@ final class LengthTest extends TestCase
         $converted = $original->toMiles();
         $roundTrip = $converted->toKilometers();
 
-        self::assertEqualsWithDelta(100.0, (float)(string)$roundTrip->value(), 0.0001);
+        self::assertEqualsWithDelta(100.0, (float) (string) $roundTrip->value(), 0.0001);
     }
 
     // ---------------------------------------------------------------

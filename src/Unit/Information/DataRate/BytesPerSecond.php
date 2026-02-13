@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Information\DataRateUnit;
 use Override;
 
 /**
- * @psalm-api
+ * The base data rate unit representing one byte transferred per second.
+ *
+ * Symbol: B/s. Conversion factor: 1 (base unit).
+ * All other data rate units convert through bytes per second.
+ *
+ * @see BytesPerSecond::make()
  */
 final readonly class BytesPerSecond extends DataRateUnit
 {
@@ -18,5 +23,11 @@ final readonly class BytesPerSecond extends DataRateUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::BASE->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'B/s';
     }
 }

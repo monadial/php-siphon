@@ -6,7 +6,6 @@ namespace Monadial\Siphon\Unit\Space;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
-
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\Unit\Motion\Velocity;
 use Monadial\Siphon\Unit\Space\Length\AstronomicalUnits;
@@ -29,8 +28,23 @@ use Monadial\Siphon\Unit\Space\Volume\CubicMeters;
 use Monadial\Siphon\Unit\Time\Time;
 
 /**
- * @psalm-api
- * @psalm-immutable
+ * Length represents the distance between two points in space.
+ *
+ * This is one of the seven SI base quantities. The SI base unit is the meter (m),
+ * defined since 2019 by fixing the speed of light in vacuum to exactly 299,792,458 m/s.
+ *
+ * Available units: Nanometers (nm), Micrometers (um), Millimeters (mm), Centimeters (cm),
+ * Decimeters (dm), Meters (m), Decameters (dam), Hectometers (hm), Kilometers (km),
+ * Inches (in), Feet (ft), Yards (yd), Miles (mi), NauticalMiles (nmi),
+ * AstronomicalUnits (au), LightYears (ly).
+ *
+ * Usage:
+ *     $length = Length::meters(5);
+ *     $inFeet = $length->toFeet();
+ *     $area = $length->timesLength(Length::meters(3)); // 15 m^2
+ *     $velocity = $length->dividedByTime(Time::seconds(2)); // 2.5 m/s
+ *
+ * @see LengthUnit for the abstract unit base class.
  * @template-extends Quantity<LengthUnit>
  */
 final readonly class Length extends Quantity
@@ -297,30 +311,24 @@ final readonly class Length extends Quantity
     // Cross-dimensional operations
     // ---------------------------------------------------------------
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
-    public function timesLength(Length $that): Area
+    public function timesLength(self $that): Area
     {
         $base = $this->toBaseValue()->multipliedBy($that->toBaseValue());
+
         return Area::squareMeters($base);
     }
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
     public function timesArea(Area $that): Volume
     {
         $base = $this->toBaseValue()->multipliedBy($that->toBaseValue());
+
         return Volume::cubicMeters($base);
     }
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
     public function dividedByTime(Time $that): Velocity
     {
         $base = $this->toBaseValue()->dividedBy($that->toBaseValue(), 20, RoundingMode::HALF_UP);
+
         return Velocity::metersPerSecond($base);
     }
 }

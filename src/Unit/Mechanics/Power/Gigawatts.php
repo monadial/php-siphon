@@ -10,7 +10,13 @@ use Monadial\Siphon\Unit\Mechanics\PowerUnit;
 use Override;
 
 /**
- * @psalm-api
+ * Gigawatt (GW) -- one billion watts.
+ *
+ * Symbol: GW. Conversion factor: 10^9 (1 GW = 1,000,000,000 W).
+ * Used for national power grid capacity and large-scale energy infrastructure.
+ * A large nuclear power station typically generates 1-1.6 GW.
+ *
+ * @see Power::gigawatts() for the factory method
  */
 final readonly class Gigawatts extends PowerUnit
 {
@@ -18,5 +24,11 @@ final readonly class Gigawatts extends PowerUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::GIGA->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'GW';
     }
 }

@@ -10,7 +10,12 @@ use Monadial\Siphon\Unit\Space\LengthUnit;
 use Override;
 
 /**
- * @psalm-api
+ * Decameter (dam) -- a unit of length equal to 10 meters.
+ *
+ * Uncommonly used in practice but part of the complete set of SI metric prefixes.
+ * Roughly the width of a bowling lane (approximately 18 m including gutters).
+ *
+ * @see Length::decameters() to create a Length quantity in decameters.
  */
 final readonly class Decameters extends LengthUnit
 {
@@ -18,5 +23,11 @@ final readonly class Decameters extends LengthUnit
     public function factor(): BigDecimal
     {
         return MetricSystem::DECA->factor();
+    }
+
+    #[Override]
+    public function symbol(): string
+    {
+        return 'dam';
     }
 }
