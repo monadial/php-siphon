@@ -202,4 +202,62 @@ final class ElectricPotentialTest extends TestCase
 
         self::assertTrue($result->value()->isEqualTo(BigDecimal::of('0')));
     }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (plural forms)
+    // ---------------------------------------------------------------
+
+    public function testVoltsFactory(): void
+    {
+        self::assertInstanceOf(Volts::class, ElectricPotential::volts(1)->uom());
+    }
+
+    public function testKilovoltsFactory(): void
+    {
+        self::assertInstanceOf(Kilovolts::class, ElectricPotential::kilovolts(1)->uom());
+    }
+
+    public function testMegavoltsFactory(): void
+    {
+        self::assertInstanceOf(Megavolts::class, ElectricPotential::megavolts(1)->uom());
+    }
+
+    public function testMicrovoltsFactory(): void
+    {
+        self::assertInstanceOf(Microvolts::class, ElectricPotential::microvolts(1)->uom());
+    }
+
+    public function testMillivoltsFactory(): void
+    {
+        self::assertInstanceOf(Millivolts::class, ElectricPotential::millivolts(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (singular forms)
+    // ---------------------------------------------------------------
+
+    public function testVoltFactory(): void
+    {
+        self::assertInstanceOf(Volts::class, ElectricPotential::volt(1)->uom());
+    }
+
+    public function testKilovoltFactory(): void
+    {
+        self::assertInstanceOf(Kilovolts::class, ElectricPotential::kilovolt(1)->uom());
+    }
+
+    public function testMegavoltFactory(): void
+    {
+        self::assertInstanceOf(Megavolts::class, ElectricPotential::megavolt(1)->uom());
+    }
+
+    public function testMicrovoltFactory(): void
+    {
+        self::assertInstanceOf(Microvolts::class, ElectricPotential::microvolt(1)->uom());
+    }
+
+    public function testMillivoltFactory(): void
+    {
+        self::assertInstanceOf(Millivolts::class, ElectricPotential::millivolt(1)->uom());
+    }
 }

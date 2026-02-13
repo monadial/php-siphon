@@ -72,4 +72,42 @@ final class LuminousFluxTest extends TestCase
 
         self::assertTrue($result->value()->isEqualTo(BigDecimal::of('1000000')));
     }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (plural forms)
+    // ---------------------------------------------------------------
+
+    public function testKilolumensFactory(): void
+    {
+        self::assertInstanceOf(Kilolumens::class, LuminousFlux::kilolumens(1)->uom());
+    }
+
+    public function testLumensFactory(): void
+    {
+        self::assertInstanceOf(Lumens::class, LuminousFlux::lumens(1)->uom());
+    }
+
+    public function testMillilumensFactory(): void
+    {
+        self::assertInstanceOf(Millilumens::class, LuminousFlux::millilumens(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (singular forms)
+    // ---------------------------------------------------------------
+
+    public function testKilolumenFactory(): void
+    {
+        self::assertInstanceOf(Kilolumens::class, LuminousFlux::kilolumen(1)->uom());
+    }
+
+    public function testLumenFactory(): void
+    {
+        self::assertInstanceOf(Lumens::class, LuminousFlux::lumen(1)->uom());
+    }
+
+    public function testMillilumenFactory(): void
+    {
+        self::assertInstanceOf(Millilumens::class, LuminousFlux::millilumen(1)->uom());
+    }
 }

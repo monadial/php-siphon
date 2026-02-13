@@ -161,4 +161,75 @@ final class DataRateTest extends TestCase
 
         self::assertTrue($roundTrip->value()->isEqualTo(BigDecimal::of('1000')));
     }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods
+    // ---------------------------------------------------------------
+
+    public function testBitsPerSecondFactory(): void
+    {
+        self::assertInstanceOf(BitsPerSecond::class, DataRate::bitsPerSecond(1)->uom());
+    }
+
+    public function testBytesPerSecondFactory(): void
+    {
+        self::assertInstanceOf(BytesPerSecond::class, DataRate::bytesPerSecond(1)->uom());
+    }
+
+    public function testGigabitsPerSecondFactory(): void
+    {
+        self::assertInstanceOf(GigabitsPerSecond::class, DataRate::gigabitsPerSecond(1)->uom());
+    }
+
+    public function testGigabytesPerSecondFactory(): void
+    {
+        self::assertInstanceOf(GigabytesPerSecond::class, DataRate::gigabytesPerSecond(1)->uom());
+    }
+
+    public function testKilobitsPerSecondFactory(): void
+    {
+        self::assertInstanceOf(KilobitsPerSecond::class, DataRate::kilobitsPerSecond(1)->uom());
+    }
+
+    public function testKilobytesPerSecondFactory(): void
+    {
+        self::assertInstanceOf(KilobytesPerSecond::class, DataRate::kilobytesPerSecond(1)->uom());
+    }
+
+    public function testMegabitsPerSecondFactory(): void
+    {
+        self::assertInstanceOf(MegabitsPerSecond::class, DataRate::megabitsPerSecond(1)->uom());
+    }
+
+    public function testMegabytesPerSecondFactory(): void
+    {
+        self::assertInstanceOf(MegabytesPerSecond::class, DataRate::megabytesPerSecond(1)->uom());
+    }
+
+    public function testTerabytesPerSecondFactory(): void
+    {
+        self::assertInstanceOf(TerabytesPerSecond::class, DataRate::terabytesPerSecond(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Conversion method tests
+    // ---------------------------------------------------------------
+
+    public function testToKilobitsPerSecond(): void
+    {
+        $result = DataRate::bytesPerSecond(125)->toKilobitsPerSecond();
+        self::assertInstanceOf(KilobitsPerSecond::class, $result->uom());
+    }
+
+    public function testToMegabitsPerSecond(): void
+    {
+        $result = DataRate::bytesPerSecond(125000)->toMegabitsPerSecond();
+        self::assertInstanceOf(MegabitsPerSecond::class, $result->uom());
+    }
+
+    public function testToGigabitsPerSecond(): void
+    {
+        $result = DataRate::bytesPerSecond(125000000)->toGigabitsPerSecond();
+        self::assertInstanceOf(GigabitsPerSecond::class, $result->uom());
+    }
 }

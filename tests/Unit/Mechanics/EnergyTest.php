@@ -7,6 +7,9 @@ namespace Monadial\Siphon\Tests\Unit\Mechanics;
 use Brick\Math\BigDecimal;
 use Monadial\Siphon\Exception\ParseFailure;
 use Monadial\Siphon\Exception\UnitNotFound;
+use Monadial\Siphon\Parsing\AliasGenerator;
+use Monadial\Siphon\Parsing\QuantityParser;
+use Monadial\Siphon\Parsing\UnitRegistry;
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Mechanics\Energy;
@@ -47,6 +50,9 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Kilocalories::class)]
 #[UsesClass(BritishThermalUnits::class)]
 #[UsesClass(Electronvolts::class)]
+#[UsesClass(AliasGenerator::class)]
+#[UsesClass(QuantityParser::class)]
+#[UsesClass(UnitRegistry::class)]
 final class EnergyTest extends TestCase
 {
     // ---------------------------------------------------------------
@@ -325,5 +331,212 @@ final class EnergyTest extends TestCase
         self::assertInstanceOf(Megajoules::class, $energy->uom());
         self::assertTrue($energy->value()->isEqualTo(BigDecimal::of('2.5')));
         self::assertSame('2.5 MJ', (string) $energy);
+    }
+
+    // ---------------------------------------------------------------
+    // Factory method coverage (plural forms)
+    // ---------------------------------------------------------------
+
+    public function testFactoryBritishThermalUnits(): void
+    {
+        self::assertInstanceOf(BritishThermalUnits::class, Energy::britishThermalUnits(1)->uom());
+    }
+
+    public function testFactoryCalories(): void
+    {
+        self::assertInstanceOf(Calories::class, Energy::calories(1)->uom());
+    }
+
+    public function testFactoryElectronvolts(): void
+    {
+        self::assertInstanceOf(Electronvolts::class, Energy::electronvolts(1)->uom());
+    }
+
+    public function testFactoryGigajoules(): void
+    {
+        self::assertInstanceOf(Gigajoules::class, Energy::gigajoules(1)->uom());
+    }
+
+    public function testFactoryGigawattHours(): void
+    {
+        self::assertInstanceOf(GigawattHours::class, Energy::gigawattHours(1)->uom());
+    }
+
+    public function testFactoryJoules(): void
+    {
+        self::assertInstanceOf(Joules::class, Energy::joules(1)->uom());
+    }
+
+    public function testFactoryKilocalories(): void
+    {
+        self::assertInstanceOf(Kilocalories::class, Energy::kilocalories(1)->uom());
+    }
+
+    public function testFactoryKilojoules(): void
+    {
+        self::assertInstanceOf(Kilojoules::class, Energy::kilojoules(1)->uom());
+    }
+
+    public function testFactoryKilowattHours(): void
+    {
+        self::assertInstanceOf(KilowattHours::class, Energy::kilowattHours(1)->uom());
+    }
+
+    public function testFactoryMegajoules(): void
+    {
+        self::assertInstanceOf(Megajoules::class, Energy::megajoules(1)->uom());
+    }
+
+    public function testFactoryMegawattHours(): void
+    {
+        self::assertInstanceOf(MegawattHours::class, Energy::megawattHours(1)->uom());
+    }
+
+    public function testFactoryMillijoules(): void
+    {
+        self::assertInstanceOf(Millijoules::class, Energy::millijoules(1)->uom());
+    }
+
+    public function testFactoryWattHours(): void
+    {
+        self::assertInstanceOf(WattHours::class, Energy::wattHours(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Factory method coverage (singular forms)
+    // ---------------------------------------------------------------
+
+    public function testFactoryBritishThermalUnit(): void
+    {
+        self::assertInstanceOf(BritishThermalUnits::class, Energy::britishThermalUnit(1)->uom());
+    }
+
+    public function testFactoryCalorie(): void
+    {
+        self::assertInstanceOf(Calories::class, Energy::calorie(1)->uom());
+    }
+
+    public function testFactoryElectronvolt(): void
+    {
+        self::assertInstanceOf(Electronvolts::class, Energy::electronvolt(1)->uom());
+    }
+
+    public function testFactoryGigajoule(): void
+    {
+        self::assertInstanceOf(Gigajoules::class, Energy::gigajoule(1)->uom());
+    }
+
+    public function testFactoryGigawattHour(): void
+    {
+        self::assertInstanceOf(GigawattHours::class, Energy::gigawattHour(1)->uom());
+    }
+
+    public function testFactoryJoule(): void
+    {
+        self::assertInstanceOf(Joules::class, Energy::joule(1)->uom());
+    }
+
+    public function testFactoryKilocalorie(): void
+    {
+        self::assertInstanceOf(Kilocalories::class, Energy::kilocalorie(1)->uom());
+    }
+
+    public function testFactoryKilojoule(): void
+    {
+        self::assertInstanceOf(Kilojoules::class, Energy::kilojoule(1)->uom());
+    }
+
+    public function testFactoryKilowattHour(): void
+    {
+        self::assertInstanceOf(KilowattHours::class, Energy::kilowattHour(1)->uom());
+    }
+
+    public function testFactoryMegajoule(): void
+    {
+        self::assertInstanceOf(Megajoules::class, Energy::megajoule(1)->uom());
+    }
+
+    public function testFactoryMegawattHour(): void
+    {
+        self::assertInstanceOf(MegawattHours::class, Energy::megawattHour(1)->uom());
+    }
+
+    public function testFactoryMillijoule(): void
+    {
+        self::assertInstanceOf(Millijoules::class, Energy::millijoule(1)->uom());
+    }
+
+    public function testFactoryWattHour(): void
+    {
+        self::assertInstanceOf(WattHours::class, Energy::wattHour(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Conversion method coverage
+    // ---------------------------------------------------------------
+
+    public function testToJoulesReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Joules::class, Energy::kilojoules(1)->toJoules()->uom());
+    }
+
+    public function testToMillijoulesReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Millijoules::class, Energy::joules(1)->toMillijoules()->uom());
+    }
+
+    public function testToKilojoulesReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Kilojoules::class, Energy::joules(1000)->toKilojoules()->uom());
+    }
+
+    public function testToMegajoulesReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Megajoules::class, Energy::joules(1000000)->toMegajoules()->uom());
+    }
+
+    public function testToGigajoulesReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Gigajoules::class, Energy::joules(1000000000)->toGigajoules()->uom());
+    }
+
+    public function testToWattHoursReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(WattHours::class, Energy::joules(3600)->toWattHours()->uom());
+    }
+
+    public function testToKilowattHoursReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(KilowattHours::class, Energy::joules(3600000)->toKilowattHours()->uom());
+    }
+
+    public function testToMegawattHoursReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(MegawattHours::class, Energy::joules(3600000000)->toMegawattHours()->uom());
+    }
+
+    public function testToGigawattHoursReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(GigawattHours::class, Energy::joules('3600000000000')->toGigawattHours()->uom());
+    }
+
+    public function testToCaloriesReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Calories::class, Energy::joules(100)->toCalories()->uom());
+    }
+
+    public function testToKilocaloriesReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Kilocalories::class, Energy::joules(10000)->toKilocalories()->uom());
+    }
+
+    public function testToBritishThermalUnitsReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(BritishThermalUnits::class, Energy::joules(1055)->toBritishThermalUnits()->uom());
+    }
+
+    public function testToElectronvoltsReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Electronvolts::class, Energy::joules(1)->toElectronvolts()->uom());
     }
 }

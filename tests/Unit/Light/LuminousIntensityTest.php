@@ -72,4 +72,42 @@ final class LuminousIntensityTest extends TestCase
 
         self::assertTrue($result->value()->isEqualTo(BigDecimal::of('1000000')));
     }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (plural forms)
+    // ---------------------------------------------------------------
+
+    public function testCandelasFactory(): void
+    {
+        self::assertInstanceOf(Candelas::class, LuminousIntensity::candelas(1)->uom());
+    }
+
+    public function testKilocandelasFactory(): void
+    {
+        self::assertInstanceOf(Kilocandelas::class, LuminousIntensity::kilocandelas(1)->uom());
+    }
+
+    public function testMillicandelasFactory(): void
+    {
+        self::assertInstanceOf(Millicandelas::class, LuminousIntensity::millicandelas(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (singular forms)
+    // ---------------------------------------------------------------
+
+    public function testCandelaFactory(): void
+    {
+        self::assertInstanceOf(Candelas::class, LuminousIntensity::candela(1)->uom());
+    }
+
+    public function testKilocandelaFactory(): void
+    {
+        self::assertInstanceOf(Kilocandelas::class, LuminousIntensity::kilocandela(1)->uom());
+    }
+
+    public function testMillicandelaFactory(): void
+    {
+        self::assertInstanceOf(Millicandelas::class, LuminousIntensity::millicandela(1)->uom());
+    }
 }

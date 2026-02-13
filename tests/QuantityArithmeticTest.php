@@ -9,15 +9,28 @@ use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\RoundingMode;
 use Monadial\Siphon\Exception\ParseFailure;
 use Monadial\Siphon\Exception\UnitNotFound;
+use Monadial\Siphon\Parsing\AliasGenerator;
 use Monadial\Siphon\Parsing\QuantityParser;
 use Monadial\Siphon\Parsing\UnitRegistry;
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Space\Length;
+use Monadial\Siphon\Unit\Space\Length\AstronomicalUnits;
 use Monadial\Siphon\Unit\Space\Length\Centimeters;
+use Monadial\Siphon\Unit\Space\Length\Decameters;
+use Monadial\Siphon\Unit\Space\Length\Decimeters;
+use Monadial\Siphon\Unit\Space\Length\Feet;
+use Monadial\Siphon\Unit\Space\Length\Hectometers;
+use Monadial\Siphon\Unit\Space\Length\Inches;
 use Monadial\Siphon\Unit\Space\Length\Kilometers;
+use Monadial\Siphon\Unit\Space\Length\LightYears;
 use Monadial\Siphon\Unit\Space\Length\Meters;
+use Monadial\Siphon\Unit\Space\Length\Micrometers;
+use Monadial\Siphon\Unit\Space\Length\Miles;
 use Monadial\Siphon\Unit\Space\Length\Millimeters;
+use Monadial\Siphon\Unit\Space\Length\Nanometers;
+use Monadial\Siphon\Unit\Space\Length\NauticalMiles;
+use Monadial\Siphon\Unit\Space\Length\Yards;
 use Monadial\Siphon\Unit\Space\LengthUnit;
 use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -34,6 +47,19 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Kilometers::class)]
 #[UsesClass(Centimeters::class)]
 #[UsesClass(Millimeters::class)]
+#[UsesClass(Decameters::class)]
+#[UsesClass(Decimeters::class)]
+#[UsesClass(Feet::class)]
+#[UsesClass(Hectometers::class)]
+#[UsesClass(Inches::class)]
+#[UsesClass(LightYears::class)]
+#[UsesClass(Micrometers::class)]
+#[UsesClass(Miles::class)]
+#[UsesClass(Nanometers::class)]
+#[UsesClass(NauticalMiles::class)]
+#[UsesClass(AstronomicalUnits::class)]
+#[UsesClass(Yards::class)]
+#[UsesClass(AliasGenerator::class)]
 #[UsesClass(QuantityParser::class)]
 #[UsesClass(UnitRegistry::class)]
 final class QuantityArithmeticTest extends TestCase

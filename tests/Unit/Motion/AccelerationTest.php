@@ -126,4 +126,48 @@ final class AccelerationTest extends TestCase
 
         self::assertInstanceOf(Acceleration::class, $result);
     }
+
+    // ---------------------------------------------------------------
+    // Factory method tests
+    // ---------------------------------------------------------------
+
+    public function testFactoryFeetPerSecondSquared(): void
+    {
+        $q = Acceleration::feetPerSecondSquared(1);
+        self::assertInstanceOf(FeetPerSecondSquared::class, $q->uom());
+    }
+
+    public function testFactoryMetersPerSecondSquared(): void
+    {
+        $q = Acceleration::metersPerSecondSquared(1);
+        self::assertInstanceOf(MetersPerSecondSquared::class, $q->uom());
+    }
+
+    public function testFactoryStandardGravity(): void
+    {
+        $q = Acceleration::standardGravity(1);
+        self::assertInstanceOf(StandardGravity::class, $q->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Conversion method tests
+    // ---------------------------------------------------------------
+
+    public function testToMetersPerSecondSquared(): void
+    {
+        $result = Acceleration::standardGravity(1)->toMetersPerSecondSquared();
+        self::assertInstanceOf(MetersPerSecondSquared::class, $result->uom());
+    }
+
+    public function testToFeetPerSecondSquared(): void
+    {
+        $result = Acceleration::metersPerSecondSquared(1)->toFeetPerSecondSquared();
+        self::assertInstanceOf(FeetPerSecondSquared::class, $result->uom());
+    }
+
+    public function testToStandardGravity(): void
+    {
+        $result = Acceleration::metersPerSecondSquared(1)->toStandardGravity();
+        self::assertInstanceOf(StandardGravity::class, $result->uom());
+    }
 }

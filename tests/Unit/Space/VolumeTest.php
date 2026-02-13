@@ -692,4 +692,187 @@ final class VolumeTest extends TestCase
         self::assertInstanceOf(Teaspoons::class, $volume->toTeaspoons()->uom());
         self::assertInstanceOf(ImperialGallons::class, $volume->toImperialGallons()->uom());
     }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (plural forms)
+    // ---------------------------------------------------------------
+
+    public function testCentilitresFactory(): void
+    {
+        self::assertInstanceOf(Centilitres::class, Volume::centilitres(1)->uom());
+    }
+
+    public function testCubicCentimetersFactory(): void
+    {
+        self::assertInstanceOf(CubicCentimeters::class, Volume::cubicCentimeters(1)->uom());
+    }
+
+    public function testCubicFeetFactory(): void
+    {
+        self::assertInstanceOf(CubicFeet::class, Volume::cubicFeet(1)->uom());
+    }
+
+    public function testCubicInchesFactory(): void
+    {
+        self::assertInstanceOf(CubicInches::class, Volume::cubicInches(1)->uom());
+    }
+
+    public function testCubicMetersFactory(): void
+    {
+        self::assertInstanceOf(CubicMeters::class, Volume::cubicMeters(1)->uom());
+    }
+
+    public function testCubicYardsFactory(): void
+    {
+        self::assertInstanceOf(CubicYards::class, Volume::cubicYards(1)->uom());
+    }
+
+    public function testDecilitresFactory(): void
+    {
+        self::assertInstanceOf(Decilitres::class, Volume::decilitres(1)->uom());
+    }
+
+    public function testFluidOuncesFactory(): void
+    {
+        self::assertInstanceOf(FluidOunces::class, Volume::fluidOunces(1)->uom());
+    }
+
+    public function testHectolitresFactory(): void
+    {
+        self::assertInstanceOf(Hectolitres::class, Volume::hectolitres(1)->uom());
+    }
+
+    public function testImperialGallonsFactory(): void
+    {
+        self::assertInstanceOf(ImperialGallons::class, Volume::imperialGallons(1)->uom());
+    }
+
+    public function testLitresFactory(): void
+    {
+        self::assertInstanceOf(Litres::class, Volume::litres(1)->uom());
+    }
+
+    public function testMillilitresFactory(): void
+    {
+        self::assertInstanceOf(Millilitres::class, Volume::millilitres(1)->uom());
+    }
+
+    public function testTablespoonsFactory(): void
+    {
+        self::assertInstanceOf(Tablespoons::class, Volume::tablespoons(1)->uom());
+    }
+
+    public function testTeaspoonsFactory(): void
+    {
+        self::assertInstanceOf(Teaspoons::class, Volume::teaspoons(1)->uom());
+    }
+
+    public function testUsCupsFactory(): void
+    {
+        self::assertInstanceOf(UsCups::class, Volume::usCups(1)->uom());
+    }
+
+    public function testUsGallonsFactory(): void
+    {
+        self::assertInstanceOf(UsGallons::class, Volume::usGallons(1)->uom());
+    }
+
+    public function testUsPintsFactory(): void
+    {
+        self::assertInstanceOf(UsPints::class, Volume::usPints(1)->uom());
+    }
+
+    public function testUsQuartsFactory(): void
+    {
+        self::assertInstanceOf(UsQuarts::class, Volume::usQuarts(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (singular forms)
+    // ---------------------------------------------------------------
+
+    public function testCentilitreFactory(): void
+    {
+        self::assertInstanceOf(Centilitres::class, Volume::centilitre(1)->uom());
+    }
+
+    public function testCubicCentimeterFactory(): void
+    {
+        self::assertInstanceOf(CubicCentimeters::class, Volume::cubicCentimeter(1)->uom());
+    }
+
+    public function testCubicInchFactory(): void
+    {
+        self::assertInstanceOf(CubicInches::class, Volume::cubicInch(1)->uom());
+    }
+
+    public function testCubicMeterFactory(): void
+    {
+        self::assertInstanceOf(CubicMeters::class, Volume::cubicMeter(1)->uom());
+    }
+
+    public function testCubicYardFactory(): void
+    {
+        self::assertInstanceOf(CubicYards::class, Volume::cubicYard(1)->uom());
+    }
+
+    public function testDecilitreFactory(): void
+    {
+        self::assertInstanceOf(Decilitres::class, Volume::decilitre(1)->uom());
+    }
+
+    public function testFluidOunceFactory(): void
+    {
+        self::assertInstanceOf(FluidOunces::class, Volume::fluidOunce(1)->uom());
+    }
+
+    public function testHectolitreFactory(): void
+    {
+        self::assertInstanceOf(Hectolitres::class, Volume::hectolitre(1)->uom());
+    }
+
+    public function testImperialGallonFactory(): void
+    {
+        self::assertInstanceOf(ImperialGallons::class, Volume::imperialGallon(1)->uom());
+    }
+
+    public function testLitreFactory(): void
+    {
+        self::assertInstanceOf(Litres::class, Volume::litre(1)->uom());
+    }
+
+    public function testMillilitreFactory(): void
+    {
+        self::assertInstanceOf(Millilitres::class, Volume::millilitre(1)->uom());
+    }
+
+    public function testTablespoonFactory(): void
+    {
+        self::assertInstanceOf(Tablespoons::class, Volume::tablespoon(1)->uom());
+    }
+
+    public function testTeaspoonFactory(): void
+    {
+        self::assertInstanceOf(Teaspoons::class, Volume::teaspoon(1)->uom());
+    }
+
+    public function testUsCupFactory(): void
+    {
+        self::assertInstanceOf(UsCups::class, Volume::usCup(1)->uom());
+    }
+
+    public function testUsGallonFactory(): void
+    {
+        self::assertInstanceOf(UsGallons::class, Volume::usGallon(1)->uom());
+    }
+
+    public function testUsPintFactory(): void
+    {
+        self::assertInstanceOf(UsPints::class, Volume::usPint(1)->uom());
+    }
+
+    public function testUsQuartFactory(): void
+    {
+        self::assertInstanceOf(UsQuarts::class, Volume::usQuart(1)->uom());
+    }
 }

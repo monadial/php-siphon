@@ -82,4 +82,52 @@ final class InductanceTest extends TestCase
 
         self::assertTrue($result->value()->isEqualTo(BigDecimal::of('5')));
     }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (plural forms)
+    // ---------------------------------------------------------------
+
+    public function testHenrysFactory(): void
+    {
+        self::assertInstanceOf(Henrys::class, Inductance::henrys(1)->uom());
+    }
+
+    public function testMicrohenrysFactory(): void
+    {
+        self::assertInstanceOf(Microhenrys::class, Inductance::microhenrys(1)->uom());
+    }
+
+    public function testMillihenrysFactory(): void
+    {
+        self::assertInstanceOf(Millihenrys::class, Inductance::millihenrys(1)->uom());
+    }
+
+    public function testNanohenrysFactory(): void
+    {
+        self::assertInstanceOf(Nanohenrys::class, Inductance::nanohenrys(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (singular forms)
+    // ---------------------------------------------------------------
+
+    public function testHenryFactory(): void
+    {
+        self::assertInstanceOf(Henrys::class, Inductance::henry(1)->uom());
+    }
+
+    public function testMicrohenryFactory(): void
+    {
+        self::assertInstanceOf(Microhenrys::class, Inductance::microhenry(1)->uom());
+    }
+
+    public function testMillihenryFactory(): void
+    {
+        self::assertInstanceOf(Millihenrys::class, Inductance::millihenry(1)->uom());
+    }
+
+    public function testNanohenryFactory(): void
+    {
+        self::assertInstanceOf(Nanohenrys::class, Inductance::nanohenry(1)->uom());
+    }
 }

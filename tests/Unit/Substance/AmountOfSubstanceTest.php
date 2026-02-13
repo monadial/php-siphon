@@ -74,4 +74,52 @@ final class AmountOfSubstanceTest extends TestCase
 
         self::assertTrue($result->value()->isEqualTo(BigDecimal::of('1000000000')));
     }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (plural forms)
+    // ---------------------------------------------------------------
+
+    public function testKilomolesFactory(): void
+    {
+        self::assertInstanceOf(Kilomoles::class, AmountOfSubstance::kilomoles(1)->uom());
+    }
+
+    public function testMicromolesFactory(): void
+    {
+        self::assertInstanceOf(Micromoles::class, AmountOfSubstance::micromoles(1)->uom());
+    }
+
+    public function testMillimolesFactory(): void
+    {
+        self::assertInstanceOf(Millimoles::class, AmountOfSubstance::millimoles(1)->uom());
+    }
+
+    public function testMolesFactory(): void
+    {
+        self::assertInstanceOf(Moles::class, AmountOfSubstance::moles(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (singular forms)
+    // ---------------------------------------------------------------
+
+    public function testKilomoleFactory(): void
+    {
+        self::assertInstanceOf(Kilomoles::class, AmountOfSubstance::kilomole(1)->uom());
+    }
+
+    public function testMicromoleFactory(): void
+    {
+        self::assertInstanceOf(Micromoles::class, AmountOfSubstance::micromole(1)->uom());
+    }
+
+    public function testMillimoleFactory(): void
+    {
+        self::assertInstanceOf(Millimoles::class, AmountOfSubstance::millimole(1)->uom());
+    }
+
+    public function testMoleFactory(): void
+    {
+        self::assertInstanceOf(Moles::class, AmountOfSubstance::mole(1)->uom());
+    }
 }

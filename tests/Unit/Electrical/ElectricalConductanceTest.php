@@ -164,4 +164,23 @@ final class ElectricalConductanceTest extends TestCase
 
         self::assertTrue($result->value()->isEqualTo(BigDecimal::of('0')));
     }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods
+    // ---------------------------------------------------------------
+
+    public function testSiemensFactory(): void
+    {
+        self::assertInstanceOf(Siemens::class, ElectricalConductance::siemens(1)->uom());
+    }
+
+    public function testMillisiemensFactory(): void
+    {
+        self::assertInstanceOf(Millisiemens::class, ElectricalConductance::millisiemens(1)->uom());
+    }
+
+    public function testMicrosiemensFactory(): void
+    {
+        self::assertInstanceOf(Microsiemens::class, ElectricalConductance::microsiemens(1)->uom());
+    }
 }

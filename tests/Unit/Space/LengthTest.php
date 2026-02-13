@@ -727,4 +727,162 @@ final class LengthTest extends TestCase
         self::assertInstanceOf(AstronomicalUnits::class, $length->toAstronomicalUnits()->uom());
         self::assertInstanceOf(LightYears::class, $length->toLightYears()->uom());
     }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (plural forms)
+    // ---------------------------------------------------------------
+
+    public function testAstronomicalUnitsFactory(): void
+    {
+        self::assertInstanceOf(AstronomicalUnits::class, Length::astronomicalUnits(1)->uom());
+    }
+
+    public function testCentimetersFactory(): void
+    {
+        self::assertInstanceOf(Centimeters::class, Length::centimeters(1)->uom());
+    }
+
+    public function testDecametersFactory(): void
+    {
+        self::assertInstanceOf(Decameters::class, Length::decameters(1)->uom());
+    }
+
+    public function testDecimetersFactory(): void
+    {
+        self::assertInstanceOf(Decimeters::class, Length::decimeters(1)->uom());
+    }
+
+    public function testFeetFactory(): void
+    {
+        self::assertInstanceOf(Feet::class, Length::feet(1)->uom());
+    }
+
+    public function testHectometersFactory(): void
+    {
+        self::assertInstanceOf(Hectometers::class, Length::hectometers(1)->uom());
+    }
+
+    public function testInchesFactory(): void
+    {
+        self::assertInstanceOf(Inches::class, Length::inches(1)->uom());
+    }
+
+    public function testKilometersFactory(): void
+    {
+        self::assertInstanceOf(Kilometers::class, Length::kilometers(1)->uom());
+    }
+
+    public function testLightYearsFactory(): void
+    {
+        self::assertInstanceOf(LightYears::class, Length::lightYears(1)->uom());
+    }
+
+    public function testMicrometersFactory(): void
+    {
+        self::assertInstanceOf(Micrometers::class, Length::micrometers(1)->uom());
+    }
+
+    public function testMilesFactory(): void
+    {
+        self::assertInstanceOf(Miles::class, Length::miles(1)->uom());
+    }
+
+    public function testMillimetersFactory(): void
+    {
+        self::assertInstanceOf(Millimeters::class, Length::millimeters(1)->uom());
+    }
+
+    public function testNanometersFactory(): void
+    {
+        self::assertInstanceOf(Nanometers::class, Length::nanometers(1)->uom());
+    }
+
+    public function testNauticalMilesFactory(): void
+    {
+        self::assertInstanceOf(NauticalMiles::class, Length::nauticalMiles(1)->uom());
+    }
+
+    public function testYardsFactory(): void
+    {
+        self::assertInstanceOf(Yards::class, Length::yards(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (singular forms)
+    // ---------------------------------------------------------------
+
+    public function testAstronomicalUnitFactory(): void
+    {
+        self::assertInstanceOf(AstronomicalUnits::class, Length::astronomicalUnit(1)->uom());
+    }
+
+    public function testCentimeterFactory(): void
+    {
+        self::assertInstanceOf(Centimeters::class, Length::centimeter(1)->uom());
+    }
+
+    public function testDecameterFactory(): void
+    {
+        self::assertInstanceOf(Decameters::class, Length::decameter(1)->uom());
+    }
+
+    public function testdecimeterFactory(): void
+    {
+        self::assertInstanceOf(Decimeters::class, Length::decimeter(1)->uom());
+    }
+
+    public function testFootFactory(): void
+    {
+        self::assertInstanceOf(Feet::class, Length::foot(1)->uom());
+    }
+
+    public function testHectometerFactory(): void
+    {
+        self::assertInstanceOf(Hectometers::class, Length::hectometer(1)->uom());
+    }
+
+    public function testInchFactory(): void
+    {
+        self::assertInstanceOf(Inches::class, Length::inch(1)->uom());
+    }
+
+    public function testKilometerFactory(): void
+    {
+        self::assertInstanceOf(Kilometers::class, Length::kilometer(1)->uom());
+    }
+
+    public function testLightYearFactory(): void
+    {
+        self::assertInstanceOf(LightYears::class, Length::lightYear(1)->uom());
+    }
+
+    public function testMicrometerFactory(): void
+    {
+        self::assertInstanceOf(Micrometers::class, Length::micrometer(1)->uom());
+    }
+
+    public function testMileFactory(): void
+    {
+        self::assertInstanceOf(Miles::class, Length::mile(1)->uom());
+    }
+
+    public function testMillimeterFactory(): void
+    {
+        self::assertInstanceOf(Millimeters::class, Length::millimeter(1)->uom());
+    }
+
+    public function testNanometerFactory(): void
+    {
+        self::assertInstanceOf(Nanometers::class, Length::nanometer(1)->uom());
+    }
+
+    public function testNauticalMileFactory(): void
+    {
+        self::assertInstanceOf(NauticalMiles::class, Length::nauticalMile(1)->uom());
+    }
+
+    public function testYardFactory(): void
+    {
+        self::assertInstanceOf(Yards::class, Length::yard(1)->uom());
+    }
 }

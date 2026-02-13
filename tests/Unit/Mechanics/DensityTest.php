@@ -11,6 +11,7 @@ use Monadial\Siphon\Unit\Mechanics\Density;
 use Monadial\Siphon\Unit\Mechanics\Density\GramsPerCubicCentimeter;
 use Monadial\Siphon\Unit\Mechanics\Density\GramsPerLitre;
 use Monadial\Siphon\Unit\Mechanics\Density\KilogramsPerCubicMeter;
+use Monadial\Siphon\Unit\Mechanics\DensityUnit;
 use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -20,6 +21,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Quantity::class)]
 #[UsesClass(UnitOfMeasure::class)]
 #[UsesClass(MetricSystem::class)]
+#[UsesClass(DensityUnit::class)]
 #[UsesClass(KilogramsPerCubicMeter::class)]
 #[UsesClass(GramsPerCubicCentimeter::class)]
 #[UsesClass(GramsPerLitre::class)]
@@ -94,5 +96,45 @@ final class DensityTest extends TestCase
         $result = $density->toGramsPerCubicCentimeter();
 
         self::assertTrue($result->value()->isEqualTo(BigDecimal::of('0.997')));
+    }
+
+    // ---------------------------------------------------------------
+    // Factory method coverage
+    // ---------------------------------------------------------------
+
+    public function testFactoryGramsPerCubicCentimeter(): void
+    {
+        self::assertInstanceOf(GramsPerCubicCentimeter::class, Density::gramsPerCubicCentimeter(1)->uom());
+    }
+
+    public function testFactoryGramsPerLitre(): void
+    {
+        self::assertInstanceOf(GramsPerLitre::class, Density::gramsPerLitre(1)->uom());
+    }
+
+    public function testFactoryKilogramsPerCubicMeter(): void
+    {
+        self::assertInstanceOf(KilogramsPerCubicMeter::class, Density::kilogramsPerCubicMeter(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Conversion method coverage
+    // ---------------------------------------------------------------
+
+    public function testToKilogramsPerCubicMeterReturnsCorrectUnit(): void
+    {
+        $result = Density::gramsPerCubicCentimeter(1)->toKilogramsPerCubicMeter();
+        self::assertInstanceOf(KilogramsPerCubicMeter::class, $result->uom());
+    }
+
+    public function testToGramsPerCubicCentimeterReturnsCorrectUnit(): void
+    {
+        $result = Density::kilogramsPerCubicMeter(1000)->toGramsPerCubicCentimeter();
+        self::assertInstanceOf(GramsPerCubicCentimeter::class, $result->uom());
+    }
+
+    public function testToGramsPerLitreReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(GramsPerLitre::class, Density::kilogramsPerCubicMeter(1)->toGramsPerLitre()->uom());
     }
 }

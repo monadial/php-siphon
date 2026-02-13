@@ -7,6 +7,7 @@ namespace Monadial\Siphon\Tests;
 use Brick\Math\BigDecimal;
 use Monadial\Siphon\Exception\UnitNotFound;
 use Monadial\Siphon\System\MetricSystem;
+use Monadial\Siphon\Tests\Stub\OrphanUnit;
 use Monadial\Siphon\Unit\Mechanics\Power;
 use Monadial\Siphon\Unit\Mechanics\Power\Watts;
 use Monadial\Siphon\Unit\Space\Area\SquareMeters;
@@ -15,6 +16,8 @@ use Monadial\Siphon\Unit\Space\Length\Centimeters;
 use Monadial\Siphon\Unit\Space\Length\Kilometers;
 use Monadial\Siphon\Unit\Space\Length\Meters;
 use Monadial\Siphon\Unit\Space\Length\Millimeters;
+use Monadial\Siphon\Unit\Temperature\Temperature\Celsius;
+use Monadial\Siphon\Unit\Temperature\TemperatureUnit;
 use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -30,6 +33,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Length::class)]
 #[UsesClass(Power::class)]
 #[UsesClass(Watts::class)]
+#[UsesClass(Celsius::class)]
+#[UsesClass(TemperatureUnit::class)]
 final class UnitOfMeasureTest extends TestCase
 {
     public function testMakeReturnsInstanceOfMeters(): void
@@ -142,5 +147,44 @@ final class UnitOfMeasureTest extends TestCase
         self::assertInstanceOf(Power::class, $power);
         self::assertTrue($power->value()->isEqualTo(BigDecimal::of('100.5')));
         self::assertInstanceOf(Watts::class, $power->uom());
+    }
+
+    public function testNameReturnsSingleWordLowercased(): void
+    {
+        self::assertSame('meters', Meters::make()->name());
+    }
+
+    public function testNameConvertsMultiWordPascalCaseToLowercaseWithSpaces(): void
+    {
+        self::assertSame('square meters', SquareMeters::make()->name());
+    }
+
+    public function testSymbolReturnsUnitSymbol(): void
+    {
+        self::assertSame('m', Meters::make()->symbol());
+        self::assertSame('cm', Centimeters::make()->symbol());
+        self::assertSame('km', Kilometers::make()->symbol());
+    }
+
+    public function testOffsetReturnsZeroForLinearUnits(): void
+    {
+        self::assertTrue(Meters::make()->offset()->isEqualTo(BigDecimal::zero()));
+    }
+
+    public function testOffsetReturnsNonZeroForAffineUnits(): void
+    {
+        $offset = Celsius::make()->offset();
+
+        self::assertFalse($offset->isEqualTo(BigDecimal::zero()));
+        self::assertTrue($offset->isEqualTo(BigDecimal::of('273.15')));
+    }
+
+    /** @throws UnitNotFound */
+    public function testFromThrowsWhenQuantityClassCannotBeInferred(): void
+    {
+        $this->expectException(UnitNotFound::class);
+        $this->expectExceptionMessage('Unable to infer quantity class for unit');
+
+        OrphanUnit::from(42);
     }
 }

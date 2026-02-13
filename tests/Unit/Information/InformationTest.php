@@ -227,4 +227,152 @@ final class InformationTest extends TestCase
 
         self::assertTrue($roundTrip->value()->isEqualTo(BigDecimal::of('2048')));
     }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (plural forms)
+    // ---------------------------------------------------------------
+
+    public function testBitsFactory(): void
+    {
+        self::assertInstanceOf(Bits::class, Information::bits(1)->uom());
+    }
+
+    public function testBytesFactory(): void
+    {
+        self::assertInstanceOf(Bytes::class, Information::bytes(1)->uom());
+    }
+
+    public function testExabytesFactory(): void
+    {
+        self::assertInstanceOf(Exabytes::class, Information::exabytes(1)->uom());
+    }
+
+    public function testExbibytesFactory(): void
+    {
+        self::assertInstanceOf(Exbibytes::class, Information::exbibytes(1)->uom());
+    }
+
+    public function testGibibytesFactory(): void
+    {
+        self::assertInstanceOf(Gibibytes::class, Information::gibibytes(1)->uom());
+    }
+
+    public function testGigabytesFactory(): void
+    {
+        self::assertInstanceOf(Gigabytes::class, Information::gigabytes(1)->uom());
+    }
+
+    public function testKibibytesFactory(): void
+    {
+        self::assertInstanceOf(Kibibytes::class, Information::kibibytes(1)->uom());
+    }
+
+    public function testKilobytesFactory(): void
+    {
+        self::assertInstanceOf(Kilobytes::class, Information::kilobytes(1)->uom());
+    }
+
+    public function testMebibytesFactory(): void
+    {
+        self::assertInstanceOf(Mebibytes::class, Information::mebibytes(1)->uom());
+    }
+
+    public function testMegabytesFactory(): void
+    {
+        self::assertInstanceOf(Megabytes::class, Information::megabytes(1)->uom());
+    }
+
+    public function testPebibytesFactory(): void
+    {
+        self::assertInstanceOf(Pebibytes::class, Information::pebibytes(1)->uom());
+    }
+
+    public function testPetabytesFactory(): void
+    {
+        self::assertInstanceOf(Petabytes::class, Information::petabytes(1)->uom());
+    }
+
+    public function testTebibytesFactory(): void
+    {
+        self::assertInstanceOf(Tebibytes::class, Information::tebibytes(1)->uom());
+    }
+
+    public function testTerabytesFactory(): void
+    {
+        self::assertInstanceOf(Terabytes::class, Information::terabytes(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (singular forms)
+    // ---------------------------------------------------------------
+
+    public function testBitFactory(): void
+    {
+        self::assertInstanceOf(Bits::class, Information::bit(1)->uom());
+    }
+
+    public function testByteFactory(): void
+    {
+        self::assertInstanceOf(Bytes::class, Information::byte(1)->uom());
+    }
+
+    public function testExabyteFactory(): void
+    {
+        self::assertInstanceOf(Exabytes::class, Information::exabyte(1)->uom());
+    }
+
+    public function testExbibyteFactory(): void
+    {
+        self::assertInstanceOf(Exbibytes::class, Information::exbibyte(1)->uom());
+    }
+
+    public function testGibibyteFactory(): void
+    {
+        self::assertInstanceOf(Gibibytes::class, Information::gibibyte(1)->uom());
+    }
+
+    public function testGigabyteFactory(): void
+    {
+        self::assertInstanceOf(Gigabytes::class, Information::gigabyte(1)->uom());
+    }
+
+    public function testKibibyteFactory(): void
+    {
+        self::assertInstanceOf(Kibibytes::class, Information::kibibyte(1)->uom());
+    }
+
+    public function testKilobyteFactory(): void
+    {
+        self::assertInstanceOf(Kilobytes::class, Information::kilobyte(1)->uom());
+    }
+
+    public function testMebibyteFactory(): void
+    {
+        self::assertInstanceOf(Mebibytes::class, Information::mebibyte(1)->uom());
+    }
+
+    public function testMegabyteFactory(): void
+    {
+        self::assertInstanceOf(Megabytes::class, Information::megabyte(1)->uom());
+    }
+
+    public function testPebibyteFactory(): void
+    {
+        self::assertInstanceOf(Pebibytes::class, Information::pebibyte(1)->uom());
+    }
+
+    public function testPetabyteFactory(): void
+    {
+        self::assertInstanceOf(Petabytes::class, Information::petabyte(1)->uom());
+    }
+
+    public function testTebibyteFactory(): void
+    {
+        self::assertInstanceOf(Tebibytes::class, Information::tebibyte(1)->uom());
+    }
+
+    public function testTerabyteFactory(): void
+    {
+        self::assertInstanceOf(Terabytes::class, Information::terabyte(1)->uom());
+    }
 }

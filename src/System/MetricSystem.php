@@ -7,6 +7,24 @@ namespace Monadial\Siphon\System;
 use Brick\Math\BigDecimal;
 use Override;
 
+/**
+ * SI metric prefixes from QUECTO (10^-30) to QUETTA (10^30).
+ *
+ * Each case represents a standard SI decimal prefix and returns its
+ * {@see BigDecimal} multiplication factor via {@see factor()}. The BASE
+ * case (factor = 1) represents the unprefixed base unit.
+ *
+ * These prefixes follow the 2022 SI resolution that added quecto, ronto,
+ * ronna, and quetta to the existing set of 20 prefixes.
+ *
+ * Usage:
+ *
+ *     MetricSystem::KILO->factor(); // BigDecimal("1000")
+ *     MetricSystem::MILLI->factor(); // BigDecimal("0.001")
+ *
+ * @see System
+ * @see BinarySystem for IEC binary prefixes.
+ */
 enum MetricSystem implements System
 {
     case QUECTO;

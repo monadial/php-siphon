@@ -285,4 +285,136 @@ final class PressureTest extends TestCase
 
         self::assertInstanceOf(Pressure::class, $result);
     }
+
+    // ---------------------------------------------------------------
+    // Factory method coverage (plural forms)
+    // ---------------------------------------------------------------
+
+    public function testFactoryAtmospheres(): void
+    {
+        self::assertInstanceOf(Atmospheres::class, Pressure::atmospheres(1)->uom());
+    }
+
+    public function testFactoryBars(): void
+    {
+        self::assertInstanceOf(Bars::class, Pressure::bars(1)->uom());
+    }
+
+    public function testFactoryKilopascals(): void
+    {
+        self::assertInstanceOf(Kilopascals::class, Pressure::kilopascals(1)->uom());
+    }
+
+    public function testFactoryMegapascals(): void
+    {
+        self::assertInstanceOf(Megapascals::class, Pressure::megapascals(1)->uom());
+    }
+
+    public function testFactoryMillibars(): void
+    {
+        self::assertInstanceOf(Millibars::class, Pressure::millibars(1)->uom());
+    }
+
+    public function testFactoryMillimetersOfMercury(): void
+    {
+        self::assertInstanceOf(MillimetersOfMercury::class, Pressure::millimetersOfMercury(1)->uom());
+    }
+
+    public function testFactoryPascals(): void
+    {
+        self::assertInstanceOf(Pascals::class, Pressure::pascals(1)->uom());
+    }
+
+    public function testFactoryPoundsPerSquareInch(): void
+    {
+        self::assertInstanceOf(PoundsPerSquareInch::class, Pressure::poundsPerSquareInch(1)->uom());
+    }
+
+    public function testFactoryTorr(): void
+    {
+        self::assertInstanceOf(Torr::class, Pressure::torr(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Factory method coverage (singular forms)
+    // ---------------------------------------------------------------
+
+    public function testFactoryAtmosphere(): void
+    {
+        self::assertInstanceOf(Atmospheres::class, Pressure::atmosphere(1)->uom());
+    }
+
+    public function testFactoryBar(): void
+    {
+        self::assertInstanceOf(Bars::class, Pressure::bar(1)->uom());
+    }
+
+    public function testFactoryKilopascal(): void
+    {
+        self::assertInstanceOf(Kilopascals::class, Pressure::kilopascal(1)->uom());
+    }
+
+    public function testFactoryMegapascal(): void
+    {
+        self::assertInstanceOf(Megapascals::class, Pressure::megapascal(1)->uom());
+    }
+
+    public function testFactoryMillibar(): void
+    {
+        self::assertInstanceOf(Millibars::class, Pressure::millibar(1)->uom());
+    }
+
+    public function testFactoryPascal(): void
+    {
+        self::assertInstanceOf(Pascals::class, Pressure::pascal(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Conversion method coverage
+    // ---------------------------------------------------------------
+
+    public function testToPascalsReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Pascals::class, Pressure::kilopascals(1)->toPascals()->uom());
+    }
+
+    public function testToKilopascalsReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Kilopascals::class, Pressure::pascals(1000)->toKilopascals()->uom());
+    }
+
+    public function testToMegapascalsReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Megapascals::class, Pressure::pascals(1000000)->toMegapascals()->uom());
+    }
+
+    public function testToBarsReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Bars::class, Pressure::pascals(100000)->toBars()->uom());
+    }
+
+    public function testToMillibarsReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Millibars::class, Pressure::pascals(100)->toMillibars()->uom());
+    }
+
+    public function testToAtmospheresReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Atmospheres::class, Pressure::pascals(101325)->toAtmospheres()->uom());
+    }
+
+    public function testToPoundsPerSquareInchReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(PoundsPerSquareInch::class, Pressure::pascals(6895)->toPoundsPerSquareInch()->uom());
+    }
+
+    public function testToTorrReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Torr::class, Pressure::pascals(133)->toTorr()->uom());
+    }
+
+    public function testToMillimetersOfMercuryReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(MillimetersOfMercury::class, Pressure::pascals(133)->toMillimetersOfMercury()->uom());
+    }
 }

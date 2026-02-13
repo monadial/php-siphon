@@ -7,6 +7,22 @@ namespace Monadial\Siphon\System;
 use Brick\Math\BigDecimal;
 use Override;
 
+/**
+ * IEC binary prefixes from BYTE (2^0) to EXBI (2^60).
+ *
+ * Each case represents a standard IEC binary prefix and returns its
+ * {@see BigDecimal} multiplication factor via {@see factor()}. Binary
+ * prefixes use powers of 1024 instead of 1000, distinguishing kibibytes
+ * (KiB = 1024 B) from kilobytes (kB = 1000 B).
+ *
+ * Usage:
+ *
+ *     BinarySystem::KIBI->factor(); // BigDecimal("1024")
+ *     BinarySystem::GIBI->factor(); // BigDecimal("1073741824")
+ *
+ * @see System
+ * @see MetricSystem for SI decimal prefixes.
+ */
 enum BinarySystem implements System
 {
     case BYTE;

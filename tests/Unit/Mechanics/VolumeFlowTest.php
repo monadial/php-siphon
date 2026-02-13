@@ -12,6 +12,7 @@ use Monadial\Siphon\Unit\Mechanics\VolumeFlow\CubicMetersPerSecond;
 use Monadial\Siphon\Unit\Mechanics\VolumeFlow\GallonsPerMinute;
 use Monadial\Siphon\Unit\Mechanics\VolumeFlow\LitresPerMinute;
 use Monadial\Siphon\Unit\Mechanics\VolumeFlow\LitresPerSecond;
+use Monadial\Siphon\Unit\Mechanics\VolumeFlowUnit;
 use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -21,6 +22,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Quantity::class)]
 #[UsesClass(UnitOfMeasure::class)]
 #[UsesClass(MetricSystem::class)]
+#[UsesClass(VolumeFlowUnit::class)]
 #[UsesClass(CubicMetersPerSecond::class)]
 #[UsesClass(LitresPerMinute::class)]
 #[UsesClass(GallonsPerMinute::class)]
@@ -96,5 +98,55 @@ final class VolumeFlowTest extends TestCase
         $result = $flow->toLitresPerMinute();
 
         self::assertEqualsWithDelta(60.0, (float) (string) $result->value(), 0.01);
+    }
+
+    // ---------------------------------------------------------------
+    // Factory method coverage
+    // ---------------------------------------------------------------
+
+    public function testFactoryCubicMetersPerSecond(): void
+    {
+        self::assertInstanceOf(CubicMetersPerSecond::class, VolumeFlow::cubicMetersPerSecond(1)->uom());
+    }
+
+    public function testFactoryGallonsPerMinute(): void
+    {
+        self::assertInstanceOf(GallonsPerMinute::class, VolumeFlow::gallonsPerMinute(1)->uom());
+    }
+
+    public function testFactoryLitresPerMinute(): void
+    {
+        self::assertInstanceOf(LitresPerMinute::class, VolumeFlow::litresPerMinute(1)->uom());
+    }
+
+    public function testFactoryLitresPerSecond(): void
+    {
+        self::assertInstanceOf(LitresPerSecond::class, VolumeFlow::litresPerSecond(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Conversion method coverage
+    // ---------------------------------------------------------------
+
+    public function testToCubicMetersPerSecondReturnsCorrectUnit(): void
+    {
+        $result = VolumeFlow::litresPerSecond(1000)->toCubicMetersPerSecond();
+        self::assertInstanceOf(CubicMetersPerSecond::class, $result->uom());
+    }
+
+    public function testToLitresPerMinuteReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(LitresPerMinute::class, VolumeFlow::cubicMetersPerSecond(1)->toLitresPerMinute()->uom());
+    }
+
+    public function testToGallonsPerMinuteReturnsCorrectUnit(): void
+    {
+        $result = VolumeFlow::cubicMetersPerSecond(1)->toGallonsPerMinute();
+        self::assertInstanceOf(GallonsPerMinute::class, $result->uom());
+    }
+
+    public function testToLitresPerSecondReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(LitresPerSecond::class, VolumeFlow::cubicMetersPerSecond(1)->toLitresPerSecond()->uom());
     }
 }

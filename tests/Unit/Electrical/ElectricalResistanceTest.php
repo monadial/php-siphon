@@ -232,4 +232,82 @@ final class ElectricalResistanceTest extends TestCase
 
         self::assertTrue($result->value()->isEqualTo(BigDecimal::of('0')));
     }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (plural forms)
+    // ---------------------------------------------------------------
+
+    public function testOhmsFactory(): void
+    {
+        self::assertInstanceOf(Ohms::class, ElectricalResistance::ohms(1)->uom());
+    }
+
+    public function testGigohmsFactory(): void
+    {
+        self::assertInstanceOf(Gigohms::class, ElectricalResistance::gigohms(1)->uom());
+    }
+
+    public function testKilohmsFactory(): void
+    {
+        self::assertInstanceOf(Kilohms::class, ElectricalResistance::kilohms(1)->uom());
+    }
+
+    public function testMegohmsFactory(): void
+    {
+        self::assertInstanceOf(Megohms::class, ElectricalResistance::megohms(1)->uom());
+    }
+
+    public function testMicrohmsFactory(): void
+    {
+        self::assertInstanceOf(Microhms::class, ElectricalResistance::microhms(1)->uom());
+    }
+
+    public function testMilliohmsFactory(): void
+    {
+        self::assertInstanceOf(Milliohms::class, ElectricalResistance::milliohms(1)->uom());
+    }
+
+    public function testNanohmsFactory(): void
+    {
+        self::assertInstanceOf(Nanohms::class, ElectricalResistance::nanohms(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (singular forms)
+    // ---------------------------------------------------------------
+
+    public function testOhmFactory(): void
+    {
+        self::assertInstanceOf(Ohms::class, ElectricalResistance::ohm(1)->uom());
+    }
+
+    public function testGigohmFactory(): void
+    {
+        self::assertInstanceOf(Gigohms::class, ElectricalResistance::gigohm(1)->uom());
+    }
+
+    public function testKilohmFactory(): void
+    {
+        self::assertInstanceOf(Kilohms::class, ElectricalResistance::kilohm(1)->uom());
+    }
+
+    public function testMegohmFactory(): void
+    {
+        self::assertInstanceOf(Megohms::class, ElectricalResistance::megohm(1)->uom());
+    }
+
+    public function testMicrohmFactory(): void
+    {
+        self::assertInstanceOf(Microhms::class, ElectricalResistance::microhm(1)->uom());
+    }
+
+    public function testMilliohmFactory(): void
+    {
+        self::assertInstanceOf(Milliohms::class, ElectricalResistance::milliohm(1)->uom());
+    }
+
+    public function testNanohmFactory(): void
+    {
+        self::assertInstanceOf(Nanohms::class, ElectricalResistance::nanohm(1)->uom());
+    }
 }

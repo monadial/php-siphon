@@ -114,4 +114,38 @@ final class DimensionlessTest extends TestCase
 
         self::assertTrue($result->value()->isEqualTo(BigDecimal::of('12')));
     }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods
+    // ---------------------------------------------------------------
+
+    public function testDozenFactory(): void
+    {
+        self::assertInstanceOf(Dozen::class, Dimensionless::dozen(1)->uom());
+    }
+
+    public function testEachFactory(): void
+    {
+        self::assertInstanceOf(Each::class, Dimensionless::each(1)->uom());
+    }
+
+    public function testGrossFactory(): void
+    {
+        self::assertInstanceOf(Gross::class, Dimensionless::gross(1)->uom());
+    }
+
+    public function testGrosFactory(): void
+    {
+        self::assertInstanceOf(Gross::class, Dimensionless::gros(1)->uom());
+    }
+
+    public function testPercentFactory(): void
+    {
+        self::assertInstanceOf(Percent::class, Dimensionless::percent(1)->uom());
+    }
+
+    public function testScoreFactory(): void
+    {
+        self::assertInstanceOf(Score::class, Dimensionless::score(1)->uom());
+    }
 }

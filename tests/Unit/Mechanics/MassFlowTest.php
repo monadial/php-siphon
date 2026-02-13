@@ -11,6 +11,7 @@ use Monadial\Siphon\Unit\Mechanics\MassFlow;
 use Monadial\Siphon\Unit\Mechanics\MassFlow\KilogramsPerHour;
 use Monadial\Siphon\Unit\Mechanics\MassFlow\KilogramsPerSecond;
 use Monadial\Siphon\Unit\Mechanics\MassFlow\PoundsPerSecond;
+use Monadial\Siphon\Unit\Mechanics\MassFlowUnit;
 use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -20,6 +21,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Quantity::class)]
 #[UsesClass(UnitOfMeasure::class)]
 #[UsesClass(MetricSystem::class)]
+#[UsesClass(MassFlowUnit::class)]
 #[UsesClass(KilogramsPerSecond::class)]
 #[UsesClass(PoundsPerSecond::class)]
 #[UsesClass(KilogramsPerHour::class)]
@@ -76,5 +78,44 @@ final class MassFlowTest extends TestCase
         $result = $flow->toKilogramsPerHour();
 
         self::assertEqualsWithDelta(1632.93, (float) (string) $result->value(), 0.1);
+    }
+
+    // ---------------------------------------------------------------
+    // Factory method coverage
+    // ---------------------------------------------------------------
+
+    public function testFactoryKilogramsPerHour(): void
+    {
+        self::assertInstanceOf(KilogramsPerHour::class, MassFlow::kilogramsPerHour(1)->uom());
+    }
+
+    public function testFactoryKilogramsPerSecond(): void
+    {
+        self::assertInstanceOf(KilogramsPerSecond::class, MassFlow::kilogramsPerSecond(1)->uom());
+    }
+
+    public function testFactoryPoundsPerSecond(): void
+    {
+        self::assertInstanceOf(PoundsPerSecond::class, MassFlow::poundsPerSecond(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Conversion method coverage
+    // ---------------------------------------------------------------
+
+    public function testToKilogramsPerSecondReturnsCorrectUnit(): void
+    {
+        $result = MassFlow::kilogramsPerHour(3600)->toKilogramsPerSecond();
+        self::assertInstanceOf(KilogramsPerSecond::class, $result->uom());
+    }
+
+    public function testToPoundsPerSecondReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(PoundsPerSecond::class, MassFlow::kilogramsPerSecond(1)->toPoundsPerSecond()->uom());
+    }
+
+    public function testToKilogramsPerHourReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(KilogramsPerHour::class, MassFlow::kilogramsPerSecond(1)->toKilogramsPerHour()->uom());
     }
 }

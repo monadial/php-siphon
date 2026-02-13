@@ -82,4 +82,52 @@ final class ElectricCurrentTest extends TestCase
 
         self::assertTrue($result->value()->isEqualTo(BigDecimal::of('5')));
     }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (plural forms)
+    // ---------------------------------------------------------------
+
+    public function testAmperesFactory(): void
+    {
+        self::assertInstanceOf(Amperes::class, ElectricCurrent::amperes(1)->uom());
+    }
+
+    public function testKiloamperesFactory(): void
+    {
+        self::assertInstanceOf(Kiloamperes::class, ElectricCurrent::kiloamperes(1)->uom());
+    }
+
+    public function testMicroamperesFactory(): void
+    {
+        self::assertInstanceOf(Microamperes::class, ElectricCurrent::microamperes(1)->uom());
+    }
+
+    public function testMilliamperesFactory(): void
+    {
+        self::assertInstanceOf(Milliamperes::class, ElectricCurrent::milliamperes(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (singular forms)
+    // ---------------------------------------------------------------
+
+    public function testAmpereFactory(): void
+    {
+        self::assertInstanceOf(Amperes::class, ElectricCurrent::ampere(1)->uom());
+    }
+
+    public function testKiloampereFactory(): void
+    {
+        self::assertInstanceOf(Kiloamperes::class, ElectricCurrent::kiloampere(1)->uom());
+    }
+
+    public function testMicroampereFactory(): void
+    {
+        self::assertInstanceOf(Microamperes::class, ElectricCurrent::microampere(1)->uom());
+    }
+
+    public function testMilliampereFactory(): void
+    {
+        self::assertInstanceOf(Milliamperes::class, ElectricCurrent::milliampere(1)->uom());
+    }
 }

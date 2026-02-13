@@ -236,4 +236,82 @@ final class ElectricChargeTest extends TestCase
 
         self::assertTrue($result->value()->isEqualTo(BigDecimal::of('0')));
     }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (plural forms)
+    // ---------------------------------------------------------------
+
+    public function testAmpereHoursFactory(): void
+    {
+        self::assertInstanceOf(AmpereHours::class, ElectricCharge::ampereHours(1)->uom());
+    }
+
+    public function testCoulombsFactory(): void
+    {
+        self::assertInstanceOf(Coulombs::class, ElectricCharge::coulombs(1)->uom());
+    }
+
+    public function testMicrocoulombsFactory(): void
+    {
+        self::assertInstanceOf(Microcoulombs::class, ElectricCharge::microcoulombs(1)->uom());
+    }
+
+    public function testMilliampereHoursFactory(): void
+    {
+        self::assertInstanceOf(MilliampereHours::class, ElectricCharge::milliampereHours(1)->uom());
+    }
+
+    public function testMillicoulombsFactory(): void
+    {
+        self::assertInstanceOf(Millicoulombs::class, ElectricCharge::millicoulombs(1)->uom());
+    }
+
+    public function testNanocoulombsFactory(): void
+    {
+        self::assertInstanceOf(Nanocoulombs::class, ElectricCharge::nanocoulombs(1)->uom());
+    }
+
+    public function testPicocoulombsFactory(): void
+    {
+        self::assertInstanceOf(Picocoulombs::class, ElectricCharge::picocoulombs(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (singular forms)
+    // ---------------------------------------------------------------
+
+    public function testAmpereHourFactory(): void
+    {
+        self::assertInstanceOf(AmpereHours::class, ElectricCharge::ampereHour(1)->uom());
+    }
+
+    public function testCoulombFactory(): void
+    {
+        self::assertInstanceOf(Coulombs::class, ElectricCharge::coulomb(1)->uom());
+    }
+
+    public function testMicrocoulombFactory(): void
+    {
+        self::assertInstanceOf(Microcoulombs::class, ElectricCharge::microcoulomb(1)->uom());
+    }
+
+    public function testMilliampereHourFactory(): void
+    {
+        self::assertInstanceOf(MilliampereHours::class, ElectricCharge::milliampereHour(1)->uom());
+    }
+
+    public function testMillicoulombFactory(): void
+    {
+        self::assertInstanceOf(Millicoulombs::class, ElectricCharge::millicoulomb(1)->uom());
+    }
+
+    public function testNanocoulombFactory(): void
+    {
+        self::assertInstanceOf(Nanocoulombs::class, ElectricCharge::nanocoulomb(1)->uom());
+    }
+
+    public function testPicocoulombFactory(): void
+    {
+        self::assertInstanceOf(Picocoulombs::class, ElectricCharge::picocoulomb(1)->uom());
+    }
 }

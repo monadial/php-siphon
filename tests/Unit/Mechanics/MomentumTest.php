@@ -10,6 +10,7 @@ use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Mechanics\Momentum;
 use Monadial\Siphon\Unit\Mechanics\Momentum\KilogramMetersPerSecond;
 use Monadial\Siphon\Unit\Mechanics\Momentum\NewtonSeconds;
+use Monadial\Siphon\Unit\Mechanics\MomentumUnit;
 use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -19,6 +20,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Quantity::class)]
 #[UsesClass(UnitOfMeasure::class)]
 #[UsesClass(MetricSystem::class)]
+#[UsesClass(MomentumUnit::class)]
 #[UsesClass(NewtonSeconds::class)]
 #[UsesClass(KilogramMetersPerSecond::class)]
 final class MomentumTest extends TestCase
@@ -64,5 +66,39 @@ final class MomentumTest extends TestCase
         $result = $momentum->toKilogramMetersPerSecond();
 
         self::assertTrue($result->value()->isEqualTo(BigDecimal::of('0')));
+    }
+
+    // ---------------------------------------------------------------
+    // Factory method coverage
+    // ---------------------------------------------------------------
+
+    public function testFactoryKilogramMetersPerSecond(): void
+    {
+        self::assertInstanceOf(KilogramMetersPerSecond::class, Momentum::kilogramMetersPerSecond(1)->uom());
+    }
+
+    public function testFactoryNewtonSeconds(): void
+    {
+        self::assertInstanceOf(NewtonSeconds::class, Momentum::newtonSeconds(1)->uom());
+    }
+
+    public function testFactoryNewtonSecond(): void
+    {
+        self::assertInstanceOf(NewtonSeconds::class, Momentum::newtonSecond(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Conversion method coverage
+    // ---------------------------------------------------------------
+
+    public function testToNewtonSecondsReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(NewtonSeconds::class, Momentum::kilogramMetersPerSecond(1)->toNewtonSeconds()->uom());
+    }
+
+    public function testToKilogramMetersPerSecondReturnsCorrectUnit(): void
+    {
+        $result = Momentum::newtonSeconds(1)->toKilogramMetersPerSecond();
+        self::assertInstanceOf(KilogramMetersPerSecond::class, $result->uom());
     }
 }

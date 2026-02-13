@@ -131,17 +131,27 @@ final class AliasGenerator
     ];
 
     /**
-     * @var WeakMap<UnitOfMeasure, list<string>>
+     * @var WeakMap<UnitOfMeasure, list<string>>|null
      */
-    private static WeakMap $cache;
+    private static ?WeakMap $cache = null;
+
+    /**
+     * Clear the alias cache (useful for testing).
+     */
+    public static function clearCache(): void
+    {
+        self::$cache = null;
+    }
 
     /**
      * @return list<string>
      */
     public static function generate(UnitOfMeasure $unit): array
     {
-        if (!isset(self::$cache)) {
-            self::$cache = new WeakMap();
+        if (self::$cache === null) {
+            /** @var WeakMap<UnitOfMeasure, list<string>> $cache */
+            $cache = new WeakMap();
+            self::$cache = $cache;
         }
 
         if (isset(self::$cache[$unit])) {

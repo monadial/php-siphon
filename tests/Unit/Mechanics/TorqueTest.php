@@ -10,6 +10,7 @@ use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Mechanics\Torque;
 use Monadial\Siphon\Unit\Mechanics\Torque\NewtonMeters;
 use Monadial\Siphon\Unit\Mechanics\Torque\PoundFeet;
+use Monadial\Siphon\Unit\Mechanics\TorqueUnit;
 use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -19,6 +20,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Quantity::class)]
 #[UsesClass(UnitOfMeasure::class)]
 #[UsesClass(MetricSystem::class)]
+#[UsesClass(TorqueUnit::class)]
 #[UsesClass(NewtonMeters::class)]
 #[UsesClass(PoundFeet::class)]
 final class TorqueTest extends TestCase
@@ -65,5 +67,38 @@ final class TorqueTest extends TestCase
         $result = $torque->toPoundFeet();
 
         self::assertEqualsWithDelta(221.3, (float) (string) $result->value(), 0.1);
+    }
+
+    // ---------------------------------------------------------------
+    // Factory method coverage
+    // ---------------------------------------------------------------
+
+    public function testFactoryNewtonMeters(): void
+    {
+        self::assertInstanceOf(NewtonMeters::class, Torque::newtonMeters(1)->uom());
+    }
+
+    public function testFactoryNewtonMeter(): void
+    {
+        self::assertInstanceOf(NewtonMeters::class, Torque::newtonMeter(1)->uom());
+    }
+
+    public function testFactoryPoundFeet(): void
+    {
+        self::assertInstanceOf(PoundFeet::class, Torque::poundFeet(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Conversion method coverage
+    // ---------------------------------------------------------------
+
+    public function testToNewtonMetersReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(NewtonMeters::class, Torque::poundFeet(1)->toNewtonMeters()->uom());
+    }
+
+    public function testToPoundFeetReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(PoundFeet::class, Torque::newtonMeters(1)->toPoundFeet()->uom());
     }
 }

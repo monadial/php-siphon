@@ -25,9 +25,9 @@ final class UnitRegistry
     private static array $tokens = [];
 
     /**
-     * @var WeakMap<stdClass, array<string, class-string<UnitOfMeasure>>>
+     * @var WeakMap<stdClass, array<string, class-string<UnitOfMeasure>>>|null
      */
-    private static WeakMap $registryCache;
+    private static ?WeakMap $registryCache = null;
 
     /**
      * @template T of Quantity<UnitOfMeasure>
@@ -37,8 +37,10 @@ final class UnitRegistry
      */
     public static function forQuantity(string $quantityClass): array
     {
-        if (!isset(self::$registryCache)) {
-            self::$registryCache = new WeakMap();
+        if (self::$registryCache === null) {
+            /** @var WeakMap<stdClass, array<string, class-string<UnitOfMeasure>>> $cache */
+            $cache = new WeakMap();
+            self::$registryCache = $cache;
         }
 
         $token = self::tokenFor($quantityClass);
@@ -59,7 +61,7 @@ final class UnitRegistry
     public static function clear(): void
     {
         self::$tokens = [];
-        self::$registryCache = new WeakMap();
+        self::$registryCache = null;
     }
 
     /**

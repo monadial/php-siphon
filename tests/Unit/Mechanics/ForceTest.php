@@ -194,4 +194,111 @@ final class ForceTest extends TestCase
 
         self::assertInstanceOf(Force::class, $result);
     }
+
+    // ---------------------------------------------------------------
+    // Factory method coverage (plural forms)
+    // ---------------------------------------------------------------
+
+    public function testFactoryDynes(): void
+    {
+        self::assertInstanceOf(Dynes::class, Force::dynes(1)->uom());
+    }
+
+    public function testFactoryKilogramForce(): void
+    {
+        self::assertInstanceOf(KilogramForce::class, Force::kilogramForce(1)->uom());
+    }
+
+    public function testFactoryKilonewtons(): void
+    {
+        self::assertInstanceOf(Kilonewtons::class, Force::kilonewtons(1)->uom());
+    }
+
+    public function testFactoryMeganewtons(): void
+    {
+        self::assertInstanceOf(Meganewtons::class, Force::meganewtons(1)->uom());
+    }
+
+    public function testFactoryMillinewtons(): void
+    {
+        self::assertInstanceOf(Millinewtons::class, Force::millinewtons(1)->uom());
+    }
+
+    public function testFactoryNewtons(): void
+    {
+        self::assertInstanceOf(Newtons::class, Force::newtons(1)->uom());
+    }
+
+    public function testFactoryPoundForce(): void
+    {
+        self::assertInstanceOf(PoundForce::class, Force::poundForce(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Factory method coverage (singular forms)
+    // ---------------------------------------------------------------
+
+    public function testFactoryDyne(): void
+    {
+        self::assertInstanceOf(Dynes::class, Force::dyne(1)->uom());
+    }
+
+    public function testFactoryKilonewton(): void
+    {
+        self::assertInstanceOf(Kilonewtons::class, Force::kilonewton(1)->uom());
+    }
+
+    public function testFactoryMeganewton(): void
+    {
+        self::assertInstanceOf(Meganewtons::class, Force::meganewton(1)->uom());
+    }
+
+    public function testFactoryMillinewton(): void
+    {
+        self::assertInstanceOf(Millinewtons::class, Force::millinewton(1)->uom());
+    }
+
+    public function testFactoryNewton(): void
+    {
+        self::assertInstanceOf(Newtons::class, Force::newton(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Conversion method coverage
+    // ---------------------------------------------------------------
+
+    public function testToNewtonsReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Newtons::class, Force::kilonewtons(1)->toNewtons()->uom());
+    }
+
+    public function testToKilonewtonsReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Kilonewtons::class, Force::newtons(1000)->toKilonewtons()->uom());
+    }
+
+    public function testToMeganewtonsReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Meganewtons::class, Force::newtons(1000000)->toMeganewtons()->uom());
+    }
+
+    public function testToMillinewtonsReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Millinewtons::class, Force::newtons(1)->toMillinewtons()->uom());
+    }
+
+    public function testToDynesReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Dynes::class, Force::newtons(1)->toDynes()->uom());
+    }
+
+    public function testToPoundForceReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(PoundForce::class, Force::newtons(1)->toPoundForce()->uom());
+    }
+
+    public function testToKilogramForceReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(KilogramForce::class, Force::newtons(10)->toKilogramForce()->uom());
+    }
 }

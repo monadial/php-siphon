@@ -132,4 +132,32 @@ final class SolidAngleTest extends TestCase
 
         self::assertTrue($result->value()->isEqualTo(BigDecimal::of('0')));
     }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (plural forms)
+    // ---------------------------------------------------------------
+
+    public function testSquareDegreesFactory(): void
+    {
+        self::assertInstanceOf(SquareDegrees::class, SolidAngle::squareDegrees(1)->uom());
+    }
+
+    public function testSteradiansFactory(): void
+    {
+        self::assertInstanceOf(Steradians::class, SolidAngle::steradians(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (singular forms)
+    // ---------------------------------------------------------------
+
+    public function testSquareDegreeFactory(): void
+    {
+        self::assertInstanceOf(SquareDegrees::class, SolidAngle::squareDegree(1)->uom());
+    }
+
+    public function testSteradianFactory(): void
+    {
+        self::assertInstanceOf(Steradians::class, SolidAngle::steradian(1)->uom());
+    }
 }

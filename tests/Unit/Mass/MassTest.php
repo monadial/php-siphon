@@ -16,6 +16,7 @@ use Monadial\Siphon\Unit\Mass\Mass\Ounces;
 use Monadial\Siphon\Unit\Mass\Mass\Pounds;
 use Monadial\Siphon\Unit\Mass\Mass\Stones;
 use Monadial\Siphon\Unit\Mass\Mass\Tonnes;
+use Monadial\Siphon\Unit\Mass\MassUnit;
 use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -25,6 +26,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Quantity::class)]
 #[UsesClass(UnitOfMeasure::class)]
 #[UsesClass(MetricSystem::class)]
+#[UsesClass(MassUnit::class)]
 #[UsesClass(Micrograms::class)]
 #[UsesClass(Milligrams::class)]
 #[UsesClass(Grams::class)]
@@ -219,5 +221,157 @@ final class MassTest extends TestCase
         $roundTrip = $converted->toKilograms();
 
         self::assertEqualsWithDelta(100.0, (float) (string) $roundTrip->value(), 0.0001);
+    }
+
+    // ---------------------------------------------------------------
+    // Factory method tests
+    // ---------------------------------------------------------------
+
+    public function testFactoryGrams(): void
+    {
+        $q = Mass::grams(1);
+        self::assertInstanceOf(Grams::class, $q->uom());
+    }
+
+    public function testFactoryGram(): void
+    {
+        $q = Mass::gram(1);
+        self::assertInstanceOf(Grams::class, $q->uom());
+    }
+
+    public function testFactoryKilograms(): void
+    {
+        $q = Mass::kilograms(1);
+        self::assertInstanceOf(Kilograms::class, $q->uom());
+    }
+
+    public function testFactoryKilogram(): void
+    {
+        $q = Mass::kilogram(1);
+        self::assertInstanceOf(Kilograms::class, $q->uom());
+    }
+
+    public function testFactoryMicrograms(): void
+    {
+        $q = Mass::micrograms(1);
+        self::assertInstanceOf(Micrograms::class, $q->uom());
+    }
+
+    public function testFactoryMicrogram(): void
+    {
+        $q = Mass::microgram(1);
+        self::assertInstanceOf(Micrograms::class, $q->uom());
+    }
+
+    public function testFactoryMilligrams(): void
+    {
+        $q = Mass::milligrams(1);
+        self::assertInstanceOf(Milligrams::class, $q->uom());
+    }
+
+    public function testFactoryMilligram(): void
+    {
+        $q = Mass::milligram(1);
+        self::assertInstanceOf(Milligrams::class, $q->uom());
+    }
+
+    public function testFactoryOunces(): void
+    {
+        $q = Mass::ounces(1);
+        self::assertInstanceOf(Ounces::class, $q->uom());
+    }
+
+    public function testFactoryOunce(): void
+    {
+        $q = Mass::ounce(1);
+        self::assertInstanceOf(Ounces::class, $q->uom());
+    }
+
+    public function testFactoryPounds(): void
+    {
+        $q = Mass::pounds(1);
+        self::assertInstanceOf(Pounds::class, $q->uom());
+    }
+
+    public function testFactoryPound(): void
+    {
+        $q = Mass::pound(1);
+        self::assertInstanceOf(Pounds::class, $q->uom());
+    }
+
+    public function testFactoryStones(): void
+    {
+        $q = Mass::stones(1);
+        self::assertInstanceOf(Stones::class, $q->uom());
+    }
+
+    public function testFactoryStone(): void
+    {
+        $q = Mass::stone(1);
+        self::assertInstanceOf(Stones::class, $q->uom());
+    }
+
+    public function testFactoryTonnes(): void
+    {
+        $q = Mass::tonnes(1);
+        self::assertInstanceOf(Tonnes::class, $q->uom());
+    }
+
+    public function testFactoryTonne(): void
+    {
+        $q = Mass::tonne(1);
+        self::assertInstanceOf(Tonnes::class, $q->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Conversion method tests
+    // ---------------------------------------------------------------
+
+    public function testToMicrograms(): void
+    {
+        $result = Mass::kilograms(1)->toMicrograms();
+        self::assertInstanceOf(Micrograms::class, $result->uom());
+    }
+
+    public function testToMilligrams(): void
+    {
+        $result = Mass::kilograms(1)->toMilligrams();
+        self::assertInstanceOf(Milligrams::class, $result->uom());
+    }
+
+    public function testToGrams(): void
+    {
+        $result = Mass::kilograms(1)->toGrams();
+        self::assertInstanceOf(Grams::class, $result->uom());
+    }
+
+    public function testToKilograms(): void
+    {
+        $result = Mass::grams(1000)->toKilograms();
+        self::assertInstanceOf(Kilograms::class, $result->uom());
+    }
+
+    public function testToTonnes(): void
+    {
+        $result = Mass::kilograms(1000)->toTonnes();
+        self::assertInstanceOf(Tonnes::class, $result->uom());
+    }
+
+    public function testToPounds(): void
+    {
+        $result = Mass::kilograms(1)->toPounds();
+        self::assertInstanceOf(Pounds::class, $result->uom());
+    }
+
+    public function testToOunces(): void
+    {
+        $result = Mass::kilograms(1)->toOunces();
+        self::assertInstanceOf(Ounces::class, $result->uom());
+    }
+
+    public function testToStones(): void
+    {
+        $result = Mass::kilograms(1)->toStones();
+        self::assertInstanceOf(Stones::class, $result->uom());
     }
 }

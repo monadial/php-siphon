@@ -261,4 +261,72 @@ final class AngleTest extends TestCase
 
         self::assertTrue($result->value()->isEqualTo(BigDecimal::of('0')));
     }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (plural forms)
+    // ---------------------------------------------------------------
+
+    public function testArcminutesFactory(): void
+    {
+        self::assertInstanceOf(Arcminutes::class, Angle::arcminutes(1)->uom());
+    }
+
+    public function testArcsecondsFactory(): void
+    {
+        self::assertInstanceOf(Arcseconds::class, Angle::arcseconds(1)->uom());
+    }
+
+    public function testDegreesFactory(): void
+    {
+        self::assertInstanceOf(Degrees::class, Angle::degrees(1)->uom());
+    }
+
+    public function testGradiansFactory(): void
+    {
+        self::assertInstanceOf(Gradians::class, Angle::gradians(1)->uom());
+    }
+
+    public function testRadiansFactory(): void
+    {
+        self::assertInstanceOf(Radians::class, Angle::radians(1)->uom());
+    }
+
+    public function testTurnsFactory(): void
+    {
+        self::assertInstanceOf(Turns::class, Angle::turns(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (singular forms)
+    // ---------------------------------------------------------------
+
+    public function testArcminuteFactory(): void
+    {
+        self::assertInstanceOf(Arcminutes::class, Angle::arcminute(1)->uom());
+    }
+
+    public function testArcsecondFactory(): void
+    {
+        self::assertInstanceOf(Arcseconds::class, Angle::arcsecond(1)->uom());
+    }
+
+    public function testDegreeFactory(): void
+    {
+        self::assertInstanceOf(Degrees::class, Angle::degree(1)->uom());
+    }
+
+    public function testGradianFactory(): void
+    {
+        self::assertInstanceOf(Gradians::class, Angle::gradian(1)->uom());
+    }
+
+    public function testRadianFactory(): void
+    {
+        self::assertInstanceOf(Radians::class, Angle::radian(1)->uom());
+    }
+
+    public function testTurnFactory(): void
+    {
+        self::assertInstanceOf(Turns::class, Angle::turn(1)->uom());
+    }
 }

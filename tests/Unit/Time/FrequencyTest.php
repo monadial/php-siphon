@@ -14,6 +14,7 @@ use Monadial\Siphon\Unit\Time\Frequency\Kilohertz;
 use Monadial\Siphon\Unit\Time\Frequency\Megahertz;
 use Monadial\Siphon\Unit\Time\Frequency\RevolutionsPerMinute;
 use Monadial\Siphon\Unit\Time\Frequency\Terahertz;
+use Monadial\Siphon\Unit\Time\FrequencyUnit;
 use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -23,6 +24,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Quantity::class)]
 #[UsesClass(UnitOfMeasure::class)]
 #[UsesClass(MetricSystem::class)]
+#[UsesClass(FrequencyUnit::class)]
 #[UsesClass(Hertz::class)]
 #[UsesClass(Kilohertz::class)]
 #[UsesClass(Megahertz::class)]
@@ -172,5 +174,85 @@ final class FrequencyTest extends TestCase
         $roundTrip = $converted->toHertz();
 
         self::assertEqualsWithDelta(50.0, (float) (string) $roundTrip->value(), 0.0001);
+    }
+
+    // ---------------------------------------------------------------
+    // Factory method tests
+    // ---------------------------------------------------------------
+
+    public function testFactoryGigahertz(): void
+    {
+        $q = Frequency::gigahertz(1);
+        self::assertInstanceOf(Gigahertz::class, $q->uom());
+    }
+
+    public function testFactoryHertz(): void
+    {
+        $q = Frequency::hertz(1);
+        self::assertInstanceOf(Hertz::class, $q->uom());
+    }
+
+    public function testFactoryKilohertz(): void
+    {
+        $q = Frequency::kilohertz(1);
+        self::assertInstanceOf(Kilohertz::class, $q->uom());
+    }
+
+    public function testFactoryMegahertz(): void
+    {
+        $q = Frequency::megahertz(1);
+        self::assertInstanceOf(Megahertz::class, $q->uom());
+    }
+
+    public function testFactoryRevolutionsPerMinute(): void
+    {
+        $q = Frequency::revolutionsPerMinute(1);
+        self::assertInstanceOf(RevolutionsPerMinute::class, $q->uom());
+    }
+
+    public function testFactoryTerahertz(): void
+    {
+        $q = Frequency::terahertz(1);
+        self::assertInstanceOf(Terahertz::class, $q->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Conversion method tests
+    // ---------------------------------------------------------------
+
+    public function testToHertz(): void
+    {
+        $result = Frequency::kilohertz(1)->toHertz();
+        self::assertInstanceOf(Hertz::class, $result->uom());
+    }
+
+    public function testToKilohertz(): void
+    {
+        $result = Frequency::hertz(1000)->toKilohertz();
+        self::assertInstanceOf(Kilohertz::class, $result->uom());
+    }
+
+    public function testToMegahertz(): void
+    {
+        $result = Frequency::hertz(1000000)->toMegahertz();
+        self::assertInstanceOf(Megahertz::class, $result->uom());
+    }
+
+    public function testToGigahertz(): void
+    {
+        $result = Frequency::megahertz(1000)->toGigahertz();
+        self::assertInstanceOf(Gigahertz::class, $result->uom());
+    }
+
+    public function testToTerahertz(): void
+    {
+        $result = Frequency::gigahertz(1000)->toTerahertz();
+        self::assertInstanceOf(Terahertz::class, $result->uom());
+    }
+
+    public function testToRevolutionsPerMinute(): void
+    {
+        $result = Frequency::hertz(1)->toRevolutionsPerMinute();
+        self::assertInstanceOf(RevolutionsPerMinute::class, $result->uom());
     }
 }

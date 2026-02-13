@@ -90,4 +90,52 @@ final class MagneticFluxDensityTest extends TestCase
 
         self::assertTrue($result->value()->isEqualTo(BigDecimal::of('1')));
     }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (plural forms)
+    // ---------------------------------------------------------------
+
+    public function testTeslasFactory(): void
+    {
+        self::assertInstanceOf(Teslas::class, MagneticFluxDensity::teslas(1)->uom());
+    }
+
+    public function testMilliteslasFactory(): void
+    {
+        self::assertInstanceOf(Milliteslas::class, MagneticFluxDensity::milliteslas(1)->uom());
+    }
+
+    public function testMicroteslasFactory(): void
+    {
+        self::assertInstanceOf(Microteslas::class, MagneticFluxDensity::microteslas(1)->uom());
+    }
+
+    public function testGaussFactory(): void
+    {
+        self::assertInstanceOf(Gauss::class, MagneticFluxDensity::gauss(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (singular forms)
+    // ---------------------------------------------------------------
+
+    public function testTeslaFactory(): void
+    {
+        self::assertInstanceOf(Teslas::class, MagneticFluxDensity::tesla(1)->uom());
+    }
+
+    public function testMilliteslaFactory(): void
+    {
+        self::assertInstanceOf(Milliteslas::class, MagneticFluxDensity::millitesla(1)->uom());
+    }
+
+    public function testMicroteslaFactory(): void
+    {
+        self::assertInstanceOf(Microteslas::class, MagneticFluxDensity::microtesla(1)->uom());
+    }
+
+    public function testGausFactory(): void
+    {
+        self::assertInstanceOf(Gauss::class, MagneticFluxDensity::gaus(1)->uom());
+    }
 }

@@ -72,4 +72,42 @@ final class MagneticFluxTest extends TestCase
 
         self::assertTrue($result->value()->isEqualTo(BigDecimal::of('5')));
     }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (plural forms)
+    // ---------------------------------------------------------------
+
+    public function testWebersFactory(): void
+    {
+        self::assertInstanceOf(Webers::class, MagneticFlux::webers(1)->uom());
+    }
+
+    public function testMilliwebersFactory(): void
+    {
+        self::assertInstanceOf(Milliwebers::class, MagneticFlux::milliwebers(1)->uom());
+    }
+
+    public function testMicrowebersFactory(): void
+    {
+        self::assertInstanceOf(Microwebers::class, MagneticFlux::microwebers(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (singular forms)
+    // ---------------------------------------------------------------
+
+    public function testWeberFactory(): void
+    {
+        self::assertInstanceOf(Webers::class, MagneticFlux::weber(1)->uom());
+    }
+
+    public function testMilliweberFactory(): void
+    {
+        self::assertInstanceOf(Milliwebers::class, MagneticFlux::milliweber(1)->uom());
+    }
+
+    public function testMicroweberFactory(): void
+    {
+        self::assertInstanceOf(Microwebers::class, MagneticFlux::microweber(1)->uom());
+    }
 }

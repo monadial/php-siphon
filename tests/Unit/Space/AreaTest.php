@@ -536,4 +536,117 @@ final class AreaTest extends TestCase
         self::assertInstanceOf(Acres::class, $area->toAcres()->uom());
         self::assertInstanceOf(Barns::class, $area->toBarns()->uom());
     }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (plural forms)
+    // ---------------------------------------------------------------
+
+    public function testAcresFactory(): void
+    {
+        self::assertInstanceOf(Acres::class, Area::acres(1)->uom());
+    }
+
+    public function testBarnsFactory(): void
+    {
+        self::assertInstanceOf(Barns::class, Area::barns(1)->uom());
+    }
+
+    public function testHectaresFactory(): void
+    {
+        self::assertInstanceOf(Hectares::class, Area::hectares(1)->uom());
+    }
+
+    public function testSquareCentimetersFactory(): void
+    {
+        self::assertInstanceOf(SquareCentimeters::class, Area::squareCentimeters(1)->uom());
+    }
+
+    public function testSquareFeetFactory(): void
+    {
+        self::assertInstanceOf(SquareFeet::class, Area::squareFeet(1)->uom());
+    }
+
+    public function testSquareInchesFactory(): void
+    {
+        self::assertInstanceOf(SquareInches::class, Area::squareInches(1)->uom());
+    }
+
+    public function testSquareKilometersFactory(): void
+    {
+        self::assertInstanceOf(SquareKilometers::class, Area::squareKilometers(1)->uom());
+    }
+
+    public function testSquareMetersFactory(): void
+    {
+        self::assertInstanceOf(SquareMeters::class, Area::squareMeters(1)->uom());
+    }
+
+    public function testSquareMilesFactory(): void
+    {
+        self::assertInstanceOf(SquareMiles::class, Area::squareMiles(1)->uom());
+    }
+
+    public function testSquareMillimetersFactory(): void
+    {
+        self::assertInstanceOf(SquareMillimeters::class, Area::squareMillimeters(1)->uom());
+    }
+
+    public function testSquareYardsFactory(): void
+    {
+        self::assertInstanceOf(SquareYards::class, Area::squareYards(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (singular forms)
+    // ---------------------------------------------------------------
+
+    public function testAcreFactory(): void
+    {
+        self::assertInstanceOf(Acres::class, Area::acre(1)->uom());
+    }
+
+    public function testBarnFactory(): void
+    {
+        self::assertInstanceOf(Barns::class, Area::barn(1)->uom());
+    }
+
+    public function testHectareFactory(): void
+    {
+        self::assertInstanceOf(Hectares::class, Area::hectare(1)->uom());
+    }
+
+    public function testSquareCentimeterFactory(): void
+    {
+        self::assertInstanceOf(SquareCentimeters::class, Area::squareCentimeter(1)->uom());
+    }
+
+    public function testSquareInchFactory(): void
+    {
+        self::assertInstanceOf(SquareInches::class, Area::squareInch(1)->uom());
+    }
+
+    public function testSquareKilometerFactory(): void
+    {
+        self::assertInstanceOf(SquareKilometers::class, Area::squareKilometer(1)->uom());
+    }
+
+    public function testSquareMeterFactory(): void
+    {
+        self::assertInstanceOf(SquareMeters::class, Area::squareMeter(1)->uom());
+    }
+
+    public function testSquareMileFactory(): void
+    {
+        self::assertInstanceOf(SquareMiles::class, Area::squareMile(1)->uom());
+    }
+
+    public function testSquareMillimeterFactory(): void
+    {
+        self::assertInstanceOf(SquareMillimeters::class, Area::squareMillimeter(1)->uom());
+    }
+
+    public function testSquareYardFactory(): void
+    {
+        self::assertInstanceOf(SquareYards::class, Area::squareYard(1)->uom());
+    }
 }

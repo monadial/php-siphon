@@ -102,4 +102,72 @@ final class CapacitanceTest extends TestCase
 
         self::assertTrue($result->value()->isEqualTo(BigDecimal::of('5')));
     }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (plural forms)
+    // ---------------------------------------------------------------
+
+    public function testFaradsFactory(): void
+    {
+        self::assertInstanceOf(Farads::class, Capacitance::farads(1)->uom());
+    }
+
+    public function testKilofaradsFactory(): void
+    {
+        self::assertInstanceOf(Kilofarads::class, Capacitance::kilofarads(1)->uom());
+    }
+
+    public function testMicrofaradsFactory(): void
+    {
+        self::assertInstanceOf(Microfarads::class, Capacitance::microfarads(1)->uom());
+    }
+
+    public function testMillifaradsFactory(): void
+    {
+        self::assertInstanceOf(Millifarads::class, Capacitance::millifarads(1)->uom());
+    }
+
+    public function testNanofaradsFactory(): void
+    {
+        self::assertInstanceOf(Nanofarads::class, Capacitance::nanofarads(1)->uom());
+    }
+
+    public function testPicofaradsFactory(): void
+    {
+        self::assertInstanceOf(Picofarads::class, Capacitance::picofarads(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Typed factory methods (singular forms)
+    // ---------------------------------------------------------------
+
+    public function testFaradFactory(): void
+    {
+        self::assertInstanceOf(Farads::class, Capacitance::farad(1)->uom());
+    }
+
+    public function testKilofaradFactory(): void
+    {
+        self::assertInstanceOf(Kilofarads::class, Capacitance::kilofarad(1)->uom());
+    }
+
+    public function testMicrofaradFactory(): void
+    {
+        self::assertInstanceOf(Microfarads::class, Capacitance::microfarad(1)->uom());
+    }
+
+    public function testMillifaradFactory(): void
+    {
+        self::assertInstanceOf(Millifarads::class, Capacitance::millifarad(1)->uom());
+    }
+
+    public function testNanofaradFactory(): void
+    {
+        self::assertInstanceOf(Nanofarads::class, Capacitance::nanofarad(1)->uom());
+    }
+
+    public function testPicofaradFactory(): void
+    {
+        self::assertInstanceOf(Picofarads::class, Capacitance::picofarad(1)->uom());
+    }
 }

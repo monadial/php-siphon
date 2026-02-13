@@ -18,6 +18,7 @@ use Monadial\Siphon\Unit\Time\Time\Nanoseconds;
 use Monadial\Siphon\Unit\Time\Time\Seconds;
 use Monadial\Siphon\Unit\Time\Time\Weeks;
 use Monadial\Siphon\Unit\Time\Time\Years;
+use Monadial\Siphon\Unit\Time\TimeUnit;
 use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -27,6 +28,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Quantity::class)]
 #[UsesClass(UnitOfMeasure::class)]
 #[UsesClass(MetricSystem::class)]
+#[UsesClass(TimeUnit::class)]
 #[UsesClass(Nanoseconds::class)]
 #[UsesClass(Microseconds::class)]
 #[UsesClass(Milliseconds::class)]
@@ -269,5 +271,193 @@ final class TimeTest extends TestCase
         self::assertInstanceOf(Weeks::class, $time->toWeeks()->uom());
         self::assertInstanceOf(Months::class, $time->toMonths()->uom());
         self::assertInstanceOf(Years::class, $time->toYears()->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Factory method tests
+    // ---------------------------------------------------------------
+
+    public function testFactoryDays(): void
+    {
+        $q = Time::days(1);
+        self::assertInstanceOf(Days::class, $q->uom());
+    }
+
+    public function testFactoryDay(): void
+    {
+        $q = Time::day(1);
+        self::assertInstanceOf(Days::class, $q->uom());
+    }
+
+    public function testFactoryHours(): void
+    {
+        $q = Time::hours(1);
+        self::assertInstanceOf(Hours::class, $q->uom());
+    }
+
+    public function testFactoryHour(): void
+    {
+        $q = Time::hour(1);
+        self::assertInstanceOf(Hours::class, $q->uom());
+    }
+
+    public function testFactoryMicroseconds(): void
+    {
+        $q = Time::microseconds(1);
+        self::assertInstanceOf(Microseconds::class, $q->uom());
+    }
+
+    public function testFactoryMicrosecond(): void
+    {
+        $q = Time::microsecond(1);
+        self::assertInstanceOf(Microseconds::class, $q->uom());
+    }
+
+    public function testFactoryMilliseconds(): void
+    {
+        $q = Time::milliseconds(1);
+        self::assertInstanceOf(Milliseconds::class, $q->uom());
+    }
+
+    public function testFactoryMillisecond(): void
+    {
+        $q = Time::millisecond(1);
+        self::assertInstanceOf(Milliseconds::class, $q->uom());
+    }
+
+    public function testFactoryMinutes(): void
+    {
+        $q = Time::minutes(1);
+        self::assertInstanceOf(Minutes::class, $q->uom());
+    }
+
+    public function testFactoryMinute(): void
+    {
+        $q = Time::minute(1);
+        self::assertInstanceOf(Minutes::class, $q->uom());
+    }
+
+    public function testFactoryMonths(): void
+    {
+        $q = Time::months(1);
+        self::assertInstanceOf(Months::class, $q->uom());
+    }
+
+    public function testFactoryMonth(): void
+    {
+        $q = Time::month(1);
+        self::assertInstanceOf(Months::class, $q->uom());
+    }
+
+    public function testFactoryNanoseconds(): void
+    {
+        $q = Time::nanoseconds(1);
+        self::assertInstanceOf(Nanoseconds::class, $q->uom());
+    }
+
+    public function testFactoryNanosecond(): void
+    {
+        $q = Time::nanosecond(1);
+        self::assertInstanceOf(Nanoseconds::class, $q->uom());
+    }
+
+    public function testFactorySeconds(): void
+    {
+        $q = Time::seconds(1);
+        self::assertInstanceOf(Seconds::class, $q->uom());
+    }
+
+    public function testFactorySecond(): void
+    {
+        $q = Time::second(1);
+        self::assertInstanceOf(Seconds::class, $q->uom());
+    }
+
+    public function testFactoryWeeks(): void
+    {
+        $q = Time::weeks(1);
+        self::assertInstanceOf(Weeks::class, $q->uom());
+    }
+
+    public function testFactoryWeek(): void
+    {
+        $q = Time::week(1);
+        self::assertInstanceOf(Weeks::class, $q->uom());
+    }
+
+    public function testFactoryYears(): void
+    {
+        $q = Time::years(1);
+        self::assertInstanceOf(Years::class, $q->uom());
+    }
+
+    public function testFactoryYear(): void
+    {
+        $q = Time::year(1);
+        self::assertInstanceOf(Years::class, $q->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Conversion method tests
+    // ---------------------------------------------------------------
+
+    public function testToNanoseconds(): void
+    {
+        $result = Time::seconds(1)->toNanoseconds();
+        self::assertInstanceOf(Nanoseconds::class, $result->uom());
+    }
+
+    public function testToMicroseconds(): void
+    {
+        $result = Time::seconds(1)->toMicroseconds();
+        self::assertInstanceOf(Microseconds::class, $result->uom());
+    }
+
+    public function testToMilliseconds(): void
+    {
+        $result = Time::seconds(1)->toMilliseconds();
+        self::assertInstanceOf(Milliseconds::class, $result->uom());
+    }
+
+    public function testToSeconds(): void
+    {
+        $result = Time::minutes(1)->toSeconds();
+        self::assertInstanceOf(Seconds::class, $result->uom());
+    }
+
+    public function testToMinutes(): void
+    {
+        $result = Time::hours(1)->toMinutes();
+        self::assertInstanceOf(Minutes::class, $result->uom());
+    }
+
+    public function testToHours(): void
+    {
+        $result = Time::days(1)->toHours();
+        self::assertInstanceOf(Hours::class, $result->uom());
+    }
+
+    public function testToDays(): void
+    {
+        $result = Time::weeks(1)->toDays();
+        self::assertInstanceOf(Days::class, $result->uom());
+    }
+
+    public function testToWeeks(): void
+    {
+        $result = Time::days(7)->toWeeks();
+        self::assertInstanceOf(Weeks::class, $result->uom());
+    }
+
+    public function testToMonths(): void
+    {
+        $result = Time::years(1)->toMonths();
+        self::assertInstanceOf(Months::class, $result->uom());
+    }
+
+    public function testToYears(): void
+    {
+        $result = Time::months(12)->toYears();
+        self::assertInstanceOf(Years::class, $result->uom());
     }
 }

@@ -6,12 +6,18 @@ namespace Monadial\Siphon\Tests\Market;
 
 use Brick\Math\BigDecimal;
 use Brick\Money\Currency;
+use Brick\Money\Money as BrickMoney;
 use Monadial\Siphon\Exception\InvalidArgument;
 use Monadial\Siphon\Exception\ParseFailure;
 use Monadial\Siphon\Market\ExchangeRate;
 use Monadial\Siphon\Market\Money;
 use Monadial\Siphon\Market\Price;
+use Monadial\Siphon\Quantity;
+use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Mass\Mass;
+use Monadial\Siphon\Unit\Mass\Mass\Kilograms;
+use Monadial\Siphon\Unit\Mass\MassUnit;
+use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -19,6 +25,12 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Money::class)]
 #[UsesClass(ExchangeRate::class)]
 #[UsesClass(Price::class)]
+#[UsesClass(Quantity::class)]
+#[UsesClass(UnitOfMeasure::class)]
+#[UsesClass(Mass::class)]
+#[UsesClass(MassUnit::class)]
+#[UsesClass(Kilograms::class)]
+#[UsesClass(MetricSystem::class)]
 final class MoneyTest extends TestCase
 {
     // ---------------------------------------------------------------
@@ -66,6 +78,15 @@ final class MoneyTest extends TestCase
         $b = Money::parse('EUR 10.50');
         self::assertSame('10.50', (string) $b->amount());
         self::assertSame('EUR', $b->currencyCode());
+    }
+
+    /** @throws ParseFailure */
+    public function testParseInvalidInputThrows(): void
+    {
+        $this->expectException(ParseFailure::class);
+        $this->expectExceptionMessage('Unable to parse money from');
+
+        Money::parse('not money');
     }
 
     // ---------------------------------------------------------------
@@ -326,6 +347,16 @@ final class MoneyTest extends TestCase
     {
         $money = Money::usd('50.00');
         self::assertSame('50.00 USD', (string) $money);
+    }
+
+    public function testInnerReturnsBrickMoneyInstance(): void
+    {
+        $money = Money::usd('42.50');
+        $inner = $money->inner();
+
+        self::assertInstanceOf(BrickMoney::class, $inner);
+        self::assertSame('42.50', (string) $inner->getAmount());
+        self::assertSame('USD', $inner->getCurrency()->getCurrencyCode());
     }
 
     // ---------------------------------------------------------------

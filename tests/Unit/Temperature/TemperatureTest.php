@@ -14,6 +14,7 @@ use Monadial\Siphon\Unit\Temperature\Temperature\Kelvins;
 use Monadial\Siphon\Unit\Temperature\Temperature\Kilokelvins;
 use Monadial\Siphon\Unit\Temperature\Temperature\Millikelvins;
 use Monadial\Siphon\Unit\Temperature\Temperature\Rankine;
+use Monadial\Siphon\Unit\Temperature\TemperatureUnit;
 use Monadial\Siphon\UnitOfMeasure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -23,6 +24,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Quantity::class)]
 #[UsesClass(UnitOfMeasure::class)]
 #[UsesClass(MetricSystem::class)]
+#[UsesClass(TemperatureUnit::class)]
 #[UsesClass(Millikelvins::class)]
 #[UsesClass(Kelvins::class)]
 #[UsesClass(Kilokelvins::class)]
@@ -199,5 +201,103 @@ final class TemperatureTest extends TestCase
         $result = $temp->toKelvins()->toFahrenheit();
 
         self::assertEqualsWithDelta(72.0, (float) (string) $result->value(), 0.01);
+    }
+
+    // ---------------------------------------------------------------
+    // Factory method tests
+    // ---------------------------------------------------------------
+
+    public function testFactoryCelsius(): void
+    {
+        $q = Temperature::celsius(1);
+        self::assertInstanceOf(Celsius::class, $q->uom());
+    }
+
+    public function testFactoryFahrenheit(): void
+    {
+        $q = Temperature::fahrenheit(1);
+        self::assertInstanceOf(Fahrenheit::class, $q->uom());
+    }
+
+    public function testFactoryKelvins(): void
+    {
+        $q = Temperature::kelvins(1);
+        self::assertInstanceOf(Kelvins::class, $q->uom());
+    }
+
+    public function testFactoryKelvin(): void
+    {
+        $q = Temperature::kelvin(1);
+        self::assertInstanceOf(Kelvins::class, $q->uom());
+    }
+
+    public function testFactoryKilokelvins(): void
+    {
+        $q = Temperature::kilokelvins(1);
+        self::assertInstanceOf(Kilokelvins::class, $q->uom());
+    }
+
+    public function testFactoryKilokelvin(): void
+    {
+        $q = Temperature::kilokelvin(1);
+        self::assertInstanceOf(Kilokelvins::class, $q->uom());
+    }
+
+    public function testFactoryMillikelvins(): void
+    {
+        $q = Temperature::millikelvins(1);
+        self::assertInstanceOf(Millikelvins::class, $q->uom());
+    }
+
+    public function testFactoryMillikelvin(): void
+    {
+        $q = Temperature::millikelvin(1);
+        self::assertInstanceOf(Millikelvins::class, $q->uom());
+    }
+
+    public function testFactoryRankine(): void
+    {
+        $q = Temperature::rankine(1);
+        self::assertInstanceOf(Rankine::class, $q->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Conversion method tests
+    // ---------------------------------------------------------------
+
+    public function testToMillikelvins(): void
+    {
+        $result = Temperature::kelvins(1)->toMillikelvins();
+        self::assertInstanceOf(Millikelvins::class, $result->uom());
+    }
+
+    public function testToKelvins(): void
+    {
+        $result = Temperature::celsius(0)->toKelvins();
+        self::assertInstanceOf(Kelvins::class, $result->uom());
+    }
+
+    public function testToKilokelvins(): void
+    {
+        $result = Temperature::kelvins(1000)->toKilokelvins();
+        self::assertInstanceOf(Kilokelvins::class, $result->uom());
+    }
+
+    public function testToCelsius(): void
+    {
+        $result = Temperature::kelvins(300)->toCelsius();
+        self::assertInstanceOf(Celsius::class, $result->uom());
+    }
+
+    public function testToFahrenheit(): void
+    {
+        $result = Temperature::kelvins(300)->toFahrenheit();
+        self::assertInstanceOf(Fahrenheit::class, $result->uom());
+    }
+
+    public function testToRankine(): void
+    {
+        $result = Temperature::kelvins(300)->toRankine();
+        self::assertInstanceOf(Rankine::class, $result->uom());
     }
 }

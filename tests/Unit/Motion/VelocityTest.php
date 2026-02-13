@@ -7,6 +7,9 @@ namespace Monadial\Siphon\Tests\Unit\Motion;
 use Brick\Math\BigDecimal;
 use Monadial\Siphon\Exception\ParseFailure;
 use Monadial\Siphon\Exception\UnitNotFound;
+use Monadial\Siphon\Parsing\AliasGenerator;
+use Monadial\Siphon\Parsing\QuantityParser;
+use Monadial\Siphon\Parsing\UnitRegistry;
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Motion\Velocity;
@@ -35,6 +38,9 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(FeetPerSecond::class)]
 #[UsesClass(KilometersPerSecond::class)]
 #[UsesClass(MillimetersPerSecond::class)]
+#[UsesClass(AliasGenerator::class)]
+#[UsesClass(QuantityParser::class)]
+#[UsesClass(UnitRegistry::class)]
 final class VelocityTest extends TestCase
 {
     // ---------------------------------------------------------------
@@ -259,5 +265,103 @@ final class VelocityTest extends TestCase
         self::assertInstanceOf(KilometersPerHour::class, $parsed->uom());
         self::assertTrue($parsed->value()->isEqualTo(BigDecimal::of('100')));
         self::assertSame('100 km/h', (string) $parsed);
+    }
+
+    // ---------------------------------------------------------------
+    // Factory method tests
+    // ---------------------------------------------------------------
+
+    public function testFactoryFeetPerSecond(): void
+    {
+        $q = Velocity::feetPerSecond(1);
+        self::assertInstanceOf(FeetPerSecond::class, $q->uom());
+    }
+
+    public function testFactoryKilometersPerHour(): void
+    {
+        $q = Velocity::kilometersPerHour(1);
+        self::assertInstanceOf(KilometersPerHour::class, $q->uom());
+    }
+
+    public function testFactoryKilometersPerSecond(): void
+    {
+        $q = Velocity::kilometersPerSecond(1);
+        self::assertInstanceOf(KilometersPerSecond::class, $q->uom());
+    }
+
+    public function testFactoryKnots(): void
+    {
+        $q = Velocity::knots(1);
+        self::assertInstanceOf(Knots::class, $q->uom());
+    }
+
+    public function testFactoryKnot(): void
+    {
+        $q = Velocity::knot(1);
+        self::assertInstanceOf(Knots::class, $q->uom());
+    }
+
+    public function testFactoryMetersPerSecond(): void
+    {
+        $q = Velocity::metersPerSecond(1);
+        self::assertInstanceOf(MetersPerSecond::class, $q->uom());
+    }
+
+    public function testFactoryMilesPerHour(): void
+    {
+        $q = Velocity::milesPerHour(1);
+        self::assertInstanceOf(MilesPerHour::class, $q->uom());
+    }
+
+    public function testFactoryMillimetersPerSecond(): void
+    {
+        $q = Velocity::millimetersPerSecond(1);
+        self::assertInstanceOf(MillimetersPerSecond::class, $q->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Conversion method tests
+    // ---------------------------------------------------------------
+
+    public function testToMetersPerSecond(): void
+    {
+        $result = Velocity::kilometersPerHour(3600)->toMetersPerSecond();
+        self::assertInstanceOf(MetersPerSecond::class, $result->uom());
+    }
+
+    public function testToKilometersPerHour(): void
+    {
+        $result = Velocity::metersPerSecond(1)->toKilometersPerHour();
+        self::assertInstanceOf(KilometersPerHour::class, $result->uom());
+    }
+
+    public function testToMilesPerHour(): void
+    {
+        $result = Velocity::metersPerSecond(1)->toMilesPerHour();
+        self::assertInstanceOf(MilesPerHour::class, $result->uom());
+    }
+
+    public function testToKnots(): void
+    {
+        $result = Velocity::metersPerSecond(1)->toKnots();
+        self::assertInstanceOf(Knots::class, $result->uom());
+    }
+
+    public function testToFeetPerSecond(): void
+    {
+        $result = Velocity::metersPerSecond(1)->toFeetPerSecond();
+        self::assertInstanceOf(FeetPerSecond::class, $result->uom());
+    }
+
+    public function testToKilometersPerSecond(): void
+    {
+        $result = Velocity::metersPerSecond(1000)->toKilometersPerSecond();
+        self::assertInstanceOf(KilometersPerSecond::class, $result->uom());
+    }
+
+    public function testToMillimetersPerSecond(): void
+    {
+        $result = Velocity::metersPerSecond(1)->toMillimetersPerSecond();
+        self::assertInstanceOf(MillimetersPerSecond::class, $result->uom());
     }
 }

@@ -9,7 +9,9 @@ use Monadial\Siphon\Exception\UnitNotFound;
 use Monadial\Siphon\Quantity;
 use Monadial\Siphon\System\MetricSystem;
 use Monadial\Siphon\Unit\Mechanics\Energy;
+use Monadial\Siphon\Unit\Mechanics\Energy\Joules;
 use Monadial\Siphon\Unit\Mechanics\Energy\WattHours;
+use Monadial\Siphon\Unit\Mechanics\EnergyUnit;
 use Monadial\Siphon\Unit\Mechanics\Power;
 use Monadial\Siphon\Unit\Mechanics\Power\BtusPerHour;
 use Monadial\Siphon\Unit\Mechanics\Power\Gigawatts;
@@ -46,6 +48,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(TimeUnit::class)]
 #[UsesClass(Hours::class)]
 #[UsesClass(Seconds::class)]
+#[UsesClass(Joules::class)]
+#[UsesClass(EnergyUnit::class)]
 final class PowerTest extends TestCase
 {
     // ---------------------------------------------------------------
@@ -275,5 +279,112 @@ final class PowerTest extends TestCase
 
         self::assertEqualsWithDelta(300.0, (float) (string) $energy->value(), 0.01);
         self::assertInstanceOf(WattHours::class, $energy->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Factory method coverage (plural forms)
+    // ---------------------------------------------------------------
+
+    public function testFactoryBtusPerHour(): void
+    {
+        self::assertInstanceOf(BtusPerHour::class, Power::btusPerHour(1)->uom());
+    }
+
+    public function testFactoryGigawatts(): void
+    {
+        self::assertInstanceOf(Gigawatts::class, Power::gigawatts(1)->uom());
+    }
+
+    public function testFactoryHorsepower(): void
+    {
+        self::assertInstanceOf(Horsepower::class, Power::horsepower(1)->uom());
+    }
+
+    public function testFactoryKilowatts(): void
+    {
+        self::assertInstanceOf(Kilowatts::class, Power::kilowatts(1)->uom());
+    }
+
+    public function testFactoryMegawatts(): void
+    {
+        self::assertInstanceOf(Megawatts::class, Power::megawatts(1)->uom());
+    }
+
+    public function testFactoryMilliwatts(): void
+    {
+        self::assertInstanceOf(Milliwatts::class, Power::milliwatts(1)->uom());
+    }
+
+    public function testFactoryWatts(): void
+    {
+        self::assertInstanceOf(Watts::class, Power::watts(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Factory method coverage (singular forms)
+    // ---------------------------------------------------------------
+
+    public function testFactoryGigawatt(): void
+    {
+        self::assertInstanceOf(Gigawatts::class, Power::gigawatt(1)->uom());
+    }
+
+    public function testFactoryKilowatt(): void
+    {
+        self::assertInstanceOf(Kilowatts::class, Power::kilowatt(1)->uom());
+    }
+
+    public function testFactoryMegawatt(): void
+    {
+        self::assertInstanceOf(Megawatts::class, Power::megawatt(1)->uom());
+    }
+
+    public function testFactoryMilliwatt(): void
+    {
+        self::assertInstanceOf(Milliwatts::class, Power::milliwatt(1)->uom());
+    }
+
+    public function testFactoryWatt(): void
+    {
+        self::assertInstanceOf(Watts::class, Power::watt(1)->uom());
+    }
+
+    // ---------------------------------------------------------------
+    // Conversion method coverage
+    // ---------------------------------------------------------------
+
+    public function testToWattsReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Watts::class, Power::kilowatts(1)->toWatts()->uom());
+    }
+
+    public function testToMilliwattsReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Milliwatts::class, Power::watts(1)->toMilliwatts()->uom());
+    }
+
+    public function testToKilowattsReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Kilowatts::class, Power::watts(1000)->toKilowatts()->uom());
+    }
+
+    public function testToMegawattsReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Megawatts::class, Power::watts(1000000)->toMegawatts()->uom());
+    }
+
+    public function testToGigawattsReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Gigawatts::class, Power::watts(1000000000)->toGigawatts()->uom());
+    }
+
+    public function testToHorsepowerReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(Horsepower::class, Power::watts(746)->toHorsepower()->uom());
+    }
+
+    public function testToBtusPerHourReturnsCorrectUnit(): void
+    {
+        self::assertInstanceOf(BtusPerHour::class, Power::watts(1)->toBtusPerHour()->uom());
     }
 }
