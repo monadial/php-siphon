@@ -1,0 +1,27 @@
+version: 1
+default: claude-default
+tiers:
+  claude-default:
+    engine: claude-code
+    provider: anthropic
+    model: claude-opus-5
+    keyRef: anthropic
+    params:
+      maxTurns: 40
+      timeoutMinutes: 30
+  claude-low:
+    engine: claude-code
+    provider: anthropic
+    model: claude-sonnet-5
+    keyRef: anthropic
+    params:
+      maxTurns: 40
+      timeoutMinutes: 30
+  claude-high:
+    engine: claude-code
+    provider: anthropic
+    model: claude-fable-5.1
+    keyRef: anthropic
+    params:
+      maxTurns: 40
+      timeoutMinutes: 30

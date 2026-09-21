@@ -1,0 +1,45 @@
+version: 1
+roles:
+  product:
+    - tomas
+  engineering:
+    - tomas
+  design:
+    - tomas
+defaultDecider: engineering
+policies:
+  coding_agent:
+    start_after_signoff: false
+    hold_on_dissent: false
+    shadow_billing: false
+  git:
+    isolation: worktree
+fileTypes:
+  code:
+    - "**/*.ts"
+    - "**/*.tsx"
+    - "**/*.py"
+    - "**/*.go"
+    - "**/*.sql"
+  docs:
+    - "**/*.md"
+    - "**/*.mdx"
+  config:
+    - .aktum/**
+    - "**/*.yaml"
+    - "**/*.json"
+editor:
+  - type: docs
+    view: text
+  - type: code
+    view: code
+review: []
+signoff:
+  - lock: false
+    kind: spec
+    require:
+      - engineering
+      - product
+types:
+  - feature
+  - brainstorming

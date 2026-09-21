@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=../schema/framework.json
+version: 1
+name: superpowers
+detect: ["docs/superpowers/specs/**", "docs/superpowers/plans/**"]
+artifacts:
+  - { kind: spec, path: "docs/superpowers/specs/{date}-{slug}-design.md", primary: true }
+  - { kind: plan, path: "docs/superpowers/plans/{date}-{slug}.md" }
+  - { kind: code-review, path: "docs/superpowers/reviews/{date}-{slug}-review.md" }
