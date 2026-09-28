@@ -45,3 +45,5 @@ signoff:
 types:
   - feature
   - brainstorming
+runtime:
+  image: php:8.4-cli
