@@ -25,3 +25,16 @@ tiers:
     params:
       maxTurns: 40
       timeoutMinutes: 30
+engines:
+  claude-code:
+    version: "2.1.274"
+    integrity:
+      "@anthropic-ai/claude-code": sha512-UI8TGoOO0fYT38VSoAjtu9C0EQkOwgwA4+ETFCgQhTO9NZvpgCERANL0UzioEW89b2zbcoL1B3z+7W37QdBxOA==
+      "@anthropic-ai/claude-code-darwin-arm64": sha512-/rlrB+1ovRPWuLYNpuOvWY4dGOGyanW008KeHST6ZjOVfEFBFyqqFJiBaRpDNy5LdlnozZZYWUoMWr8W0KXyEg==
+      "@anthropic-ai/claude-code-darwin-x64": sha512-zFcxR5XfroaBmWy2HX8fZ/e/kpAQ4GPIz+cAQMq55SAHP4UorpxQj/upplfvfDC3lSKFfYBDhhSXBs99fKkjJw==
+      "@anthropic-ai/claude-code-linux-arm64": sha512-6cCEg5z4awB1i8H1vRMRqLCV9a6rSSzsXXJTpBE2Nte29NMJ2B49PwRcGvdMASYWOmMNgO6ErYQ6ckuQSeSo/g==
+      "@anthropic-ai/claude-code-linux-arm64-musl": sha512-WNM6kiyfmVfjY5yi44+8JBJ/5y20QvAnpjVjas9dRm28PEBLEANF2mDxHBeZa9lR9fjdLhuFxZoyYi4F/pT1NQ==
+      "@anthropic-ai/claude-code-linux-x64": sha512-xiC1514UgW1aRvHOtfgUVUACWtOwm42TIeQlllHFAMFLrBYy+cG+MfSTlTYnjUPpu4zmUeEDEs2VdZL/iLIwGQ==
+      "@anthropic-ai/claude-code-linux-x64-musl": sha512-uie3ymQ3ZNgRsevP4gWeVK47hL0M4+J8iZA34In7OagGGk2mMPZ07Ft+JDETQrApDwTwqOnhPuO50W4ccUjg9g==
+      "@anthropic-ai/claude-code-win32-arm64": sha512-nhIqku3HdRnxm1AX5C1k8eINa8vuV9rSOmGlo0JEMw5y6mYybSJIEEwOIEGZXIzFFPzm54Y8UASg9gSQm3k8pw==
+      "@anthropic-ai/claude-code-win32-x64": sha512-D/OLuM2LsRnjTNwFP1LMYqdCa/q6RI1dzaKXCU57NXFOrldkWN9mTdpYxOyo9bl/sR3rHeJ1+ETWQX5DeQlcig==
