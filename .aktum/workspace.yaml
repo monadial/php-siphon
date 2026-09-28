@@ -9,6 +9,8 @@ roles:
 defaultDecider: engineering
 skills:
   pack: superpowers
+  version: v6.3.0
+  commit: b36e0829c6d0140e93cfef2ca599b1b07d4a7797
 policies:
   coding_agent:
     start_after_signoff: false
