@@ -29,12 +29,12 @@ engines:
   claude-code:
     version: "2.1.284"
     integrity:
-      "@anthropic-ai/claude-code": sha512-UI8TGoOO0fYT38VSoAjtu9C0EQkOwgwA4+ETFCgQhTO9NZvpgCERANL0UzioEW89b2zbcoL1B3z+7W37QdBxOA==
-      "@anthropic-ai/claude-code-darwin-arm64": sha512-/rlrB+1ovRPWuLYNpuOvWY4dGOGyanW008KeHST6ZjOVfEFBFyqqFJiBaRpDNy5LdlnozZZYWUoMWr8W0KXyEg==
-      "@anthropic-ai/claude-code-darwin-x64": sha512-zFcxR5XfroaBmWy2HX8fZ/e/kpAQ4GPIz+cAQMq55SAHP4UorpxQj/upplfvfDC3lSKFfYBDhhSXBs99fKkjJw==
-      "@anthropic-ai/claude-code-linux-arm64": sha512-6cCEg5z4awB1i8H1vRMRqLCV9a6rSSzsXXJTpBE2Nte29NMJ2B49PwRcGvdMASYWOmMNgO6ErYQ6ckuQSeSo/g==
-      "@anthropic-ai/claude-code-linux-arm64-musl": sha512-WNM6kiyfmVfjY5yi44+8JBJ/5y20QvAnpjVjas9dRm28PEBLEANF2mDxHBeZa9lR9fjdLhuFxZoyYi4F/pT1NQ==
-      "@anthropic-ai/claude-code-linux-x64": sha512-xiC1514UgW1aRvHOtfgUVUACWtOwm42TIeQlllHFAMFLrBYy+cG+MfSTlTYnjUPpu4zmUeEDEs2VdZL/iLIwGQ==
-      "@anthropic-ai/claude-code-linux-x64-musl": sha512-uie3ymQ3ZNgRsevP4gWeVK47hL0M4+J8iZA34In7OagGGk2mMPZ07Ft+JDETQrApDwTwqOnhPuO50W4ccUjg9g==
-      "@anthropic-ai/claude-code-win32-arm64": sha512-nhIqku3HdRnxm1AX5C1k8eINa8vuV9rSOmGlo0JEMw5y6mYybSJIEEwOIEGZXIzFFPzm54Y8UASg9gSQm3k8pw==
-      "@anthropic-ai/claude-code-win32-x64": sha512-D/OLuM2LsRnjTNwFP1LMYqdCa/q6RI1dzaKXCU57NXFOrldkWN9mTdpYxOyo9bl/sR3rHeJ1+ETWQX5DeQlcig==
+      "@anthropic-ai/claude-code": sha512-IuENsoLa+Y5fx5VaP0Md3n5UO7aYxjbFE/iydSDw6tMo2171oaxaaBa9oIepPG9NILd1owSx74ozsqAkTbEOjw==
+      "@anthropic-ai/claude-code-darwin-arm64": sha512-WczsKY4Bg4dlh5M2UILMHM/9xpBdDcXLulzCSE+TFIb6itI7q3kfYTIwvKOzxB557krwHEuKLgWkUiXGdojjVQ==
+      "@anthropic-ai/claude-code-darwin-x64": sha512-C/ccPWroFmQxT2ao6l4Fb8xbBrrQA/sGQNJSFqwfhpFUmwqmdvfPDqL4II60rkZ9KBaYHSOeowUJkdknOWPGiQ==
+      "@anthropic-ai/claude-code-linux-arm64": sha512-S2bS/X/WNr4oe5c2qOdWGIfL9O/oTVLG7mlCI8FNLPWTQ2tNoeaLFPUzpyEkB4aIv4CL8+dw6YocT0JUDoI/1A==
+      "@anthropic-ai/claude-code-linux-arm64-musl": sha512-+d0msskdpE9fCwOaqBrxTpGmLA8v2Kby/OPZu7XmAaukjvGryWCotPwDC0m9WVNUzCV0G+DZRmDWr1GCce5yEA==
+      "@anthropic-ai/claude-code-linux-x64": sha512-hjjPgN4u8DvnzZqWDYnU5xxQkykuUrkUoVeeutVLXjrhx4qeRPmwgZ69BFAHmV42FBRdiRwbLbiDE9nkQdAE8g==
+      "@anthropic-ai/claude-code-linux-x64-musl": sha512-6oPajQ/DRftfQOJ330vrnXsQQ9CkwSz6DkjjurfWZClpNNZbOv186EYk9llMR3PiKOA9W05DiPW86nddsgtP7w==
+      "@anthropic-ai/claude-code-win32-arm64": sha512-4bYKLZh7Wu8N3iVuDL+WTZAi40DYWDuzMky5tBZyVf/1w8o1jdx9UOgbRp/Hc9fMbGqt/Mo7gdbX93ANi6550Q==
+      "@anthropic-ai/claude-code-win32-x64": sha512-Usw9Z8unwN6sWlhAJm5pBdTj5LoYBotUddhCBpnnH1XFJT9dgxRvRXqhftuVQi6LhorFo/HD0VfeHmmJFNCMaw==
