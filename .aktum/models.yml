@@ -4,7 +4,7 @@ tiers:
   claude-default:
     engine: claude-code
     provider: anthropic
-    model: claude-opus-5-5
+    model: claude-opus-5
     keyRef: anthropic
     params:
       maxTurns: 40
@@ -12,7 +12,7 @@ tiers:
   claude-low:
     engine: claude-code
     provider: anthropic
-    model: claude-sonnet-5-5
+    model: claude-sonnet-5
     keyRef: anthropic
     params:
       maxTurns: 40
