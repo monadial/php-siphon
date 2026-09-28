@@ -7,6 +7,8 @@ roles:
   design:
     - tomas
 defaultDecider: engineering
+skills:
+  pack: superpowers
 policies:
   coding_agent:
     start_after_signoff: false
